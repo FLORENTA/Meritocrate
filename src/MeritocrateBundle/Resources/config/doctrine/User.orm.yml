@@ -1,0 +1,35 @@
+MeritocrateBundle\Entity\User:
+    type: entity
+    table: null
+    repositoryClass: MeritocrateBundle\Repository\UserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        fullname:
+            type: string
+            length: 255
+        dateofbirth:
+            type: date
+        gender:
+            type: string
+            length: 255
+        nationality:
+            type: string
+            length: 255
+        ethnicity:
+            type: string
+            length: 255
+        picture:
+            type: string
+            length: 255
+    oneToMany:
+        merits:
+            targetEntity: MeritocrateBundle\Entity\Merits
+            mappedBy: user
+        merits:
+            targetEntity: MeritocrateBundle\Entity\Merits
+            mappedBy: rator

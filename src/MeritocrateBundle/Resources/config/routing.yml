@@ -1,0 +1,11 @@
+meritocrate_user:
+    resource: "@MeritocrateBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
+meritocrate_discussion:
+    resource: "@MeritocrateBundle/Resources/config/routing/discussion.yml"
+    prefix:   /discussion
+
+meritocrate_homepage:
+    path:     /
+    defaults: { _controller: MeritocrateBundle:Default:index }

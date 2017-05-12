@@ -1,0 +1,23 @@
+MeritocrateBundle\Entity\Merits:
+    type: entity
+    table: null
+    repositoryClass: MeritocrateBundle\Repository\MeritsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        datecreation:
+            type: datetimetz
+    manyToOne:
+        user:
+            targetEntity: MeritocrateBundle\Entity\User
+            inversedBy: merits
+        rator:
+            targetEntity: MeritocrateBundle\Entity\User
+            inversedBy: merits
+        discussion:
+            targetEntity: MeritocrateBundle\Entity\Discussion
+            inversedBy: merits

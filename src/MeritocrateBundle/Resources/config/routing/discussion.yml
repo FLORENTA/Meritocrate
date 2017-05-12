@@ -1,0 +1,24 @@
+discussion_index:
+    path:     /
+    defaults: { _controller: "MeritocrateBundle:Discussion:index" }
+    methods:  GET
+
+discussion_show:
+    path:     /{id}/show
+    defaults: { _controller: "MeritocrateBundle:Discussion:show" }
+    methods:  GET
+
+discussion_new:
+    path:     /new
+    defaults: { _controller: "MeritocrateBundle:Discussion:new" }
+    methods:  [GET, POST]
+
+discussion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MeritocrateBundle:Discussion:edit" }
+    methods:  [GET, POST]
+
+discussion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MeritocrateBundle:Discussion:delete" }
+    methods:  DELETE

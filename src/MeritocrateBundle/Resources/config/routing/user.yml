@@ -1,0 +1,24 @@
+user_index:
+    path:     /
+    defaults: { _controller: "MeritocrateBundle:User:index" }
+    methods:  GET
+
+user_show:
+    path:     /{id}/show
+    defaults: { _controller: "MeritocrateBundle:User:show" }
+    methods:  GET
+
+user_new:
+    path:     /new
+    defaults: { _controller: "MeritocrateBundle:User:new" }
+    methods:  [GET, POST]
+
+user_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MeritocrateBundle:User:edit" }
+    methods:  [GET, POST]
+
+user_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MeritocrateBundle:User:delete" }
+    methods:  DELETE
