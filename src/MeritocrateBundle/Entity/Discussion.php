@@ -58,20 +58,6 @@ class Discussion
     }
 
     /**
-     * Set datecreation
-     *
-     * @param \DateTime $datecreation
-     *
-     * @return Discussion
-     */
-    public function setDatecreation($datecreation)
-    {
-        $this->datecreation = $datecreation;
-
-        return $this;
-    }
-
-    /**
      * Get datecreation
      *
      * @return \DateTime
@@ -91,6 +77,7 @@ class Discussion
     public function __construct()
     {
         $this->merits = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->datecreation = new \DateTime();
     }
 
     /**

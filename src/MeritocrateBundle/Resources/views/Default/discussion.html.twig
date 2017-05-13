@@ -2,21 +2,23 @@
 
 {% block content %}
     <div class="container">
-        <h2>Discussion creation</h2>
+        <h2>New discussion group</h2>
         {{ form_start(form) }}
         <div class="row">
-            <div class="input-field col 12">
-                {{ form_label(form, "Discussion group Name") }}
-                {{ form_widget(form) }}
-                {{ form_errors(form) }}
+            <div class="input-field input-field-custom col s12">
+                {{ form_label(form.name, "Discussion group name") }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
             </div>
-            <div class="input-field col 12">
-                <button class="btn btn-large waves-effect waves-light" type="submit" name="action">
-                    Create new discussion
-                    <i class="material-icons left">add</i>
-                </button>
-            </div>
+            <a><button class="btn btn-large waves-effect waves-light left" type="submit" name="action">
+                Create new discussion
+                <i class="material-icons left">add</i>
+            </button></a>
         </div>
         {{ form_end(form) }}
+        <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light right">
+            Go back to homepage
+            <i class="material-icons left">replay</i>
+        </button></a>
     </div>
 {% endblock %}
