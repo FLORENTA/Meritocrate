@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <div class="container">
+        <h2>Meritocrate</h2>
+        <div class="row">
+            <table class="highlight centered">
+                <thead>
+                    <tr>
+                        <th>Date of Creation</th>
+                        <th>Group Name</th>
+                        <th>Join</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                    <tr>
+                        <td>{{ group.datecreation|date }}</td>
+                        <td>{{ group.name }}</td>
+                        <td>
+                            <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
+                                <button class="btn waves-effect waves-light">
+                                    Join
+                                <i class="material-icons left">lock_open</i>
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+            <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light right">
+                    Back to Home
+                    <i class="material-icons left">replay</i>
+                </button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

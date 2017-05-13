@@ -38,3 +38,7 @@ MeritocrateBundle\Entity\User:
         merits:
             targetEntity: MeritocrateBundle\Entity\Merits
             mappedBy: rator
+    manyToMany:
+        discussions:
+            targetEntity: MeritocrateBundle\Entity\Discussion
+            mappedBy: user

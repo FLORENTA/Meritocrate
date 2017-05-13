@@ -8,6 +8,7 @@ meritocrate_admin:
 
 meritocrate_register:
     path:     /register
+    defaults: { _controller: MeritocrateBundle:Registration:register }
 
 meritocrate_new_discussion:
     path:     /admin/new
@@ -16,6 +17,16 @@ meritocrate_new_discussion:
 meritocrate_join_discussion:
     path:     /admin/join
     defaults: { _controller: MeritocrateBundle:Default:joinDiscussion }
+
+meritocrate_group_statistics:
+    path:     /admin/statistics
+    defaults: { _controller: MeritocrateBundle:Default:statistics }
+
+meritocrate_discussion_group:
+    path:     /admin/discussion/{id}
+    defaults: { _controller: MeritocrateBundle:Default:discussionGroup }
+    requirements:
+        id: \d+
 
 meritocrate_group_statistics:
     path:     /admin/statistics

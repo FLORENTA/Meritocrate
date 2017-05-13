@@ -19,4 +19,7 @@ MeritocrateBundle\Entity\Discussion:
         merits:
             targetEntity: MeritocrateBundle\Entity\Merits
             mappedBy: discussion
-
+    manyToMany:
+        users:
+            targetEntity: MeritocrateBundle\Entity\User
+            inversedBy: discussions

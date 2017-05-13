@@ -31,12 +31,33 @@ class DefaultController extends Controller
             $em->persist($discussion);
             $em->flush();
 
-            return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
+            return $this->redirectToRoute('meritocrate_discussion_group', array(
+                'id' => $discussion->getId(),
+            ));
         }
 
         return $this->render('MeritocrateBundle:Default:discussion.html.twig', array(
             'discussion' => $discussion,
             'form' => $form->createView(),
+        ));
+    }
+
+    public function discussionGroupAction($id){
+        $em = $this->getDoctrine()->getManager();
+        $group = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
+
+        return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(
+           'group' => $group,
+           'user' => $this->getUser()
+        ));
+    }
+
+    public function joinDiscussionAction(){
+        $em = $this->getDoctrine()->getManager();
+        $groups = $em->getRepository('MeritocrateBundle:Discussion')->findAll();
+
+        return $this->render('MeritocrateBundle:Default:show_groups.html.twig', array(
+            'groups' => $groups
         ));
     }
 }

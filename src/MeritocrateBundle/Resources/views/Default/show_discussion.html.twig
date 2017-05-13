@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Meritocrate</h2>
+        <div class="row">
+            <div class="col s12">
+                <p><b>{{ group.name }}</b> Group, created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
+            </div>
+            <div class="col s12">
+                <table class="highlight centered">
+                    <thead>
+                        <th>
+                            <td>Time stamp</td>
+                            <td>Username</td>
+                            <td>Picture</td>
+                            <td>Merit</td>
+                        </th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn waves-effet waves-light">
+                Press to speak
+                <i class="material-icons left">mic</i>
+            </button>
+        </div>
+    </div>
+    {{ dump(user) }}
+{% endblock %}
