@@ -1,1 +1,21 @@
 {% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h2>Meritocrate</h2>
+        <div class="col offset-s4 s4">
+            <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light left">
+                Sign in
+                <i class="material-icons left">perm_identity</i>
+            </button>
+            </a>
+            <a href="{{ path('meritocrate_register') }}"><button class="btn btn-large waves-effect waves-light right">
+                Sign up
+                <i class="material-icons left">assignment</i>
+            </button>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -14,18 +14,23 @@ MeritocrateBundle\Entity\User:
             length: 255
         dateofbirth:
             type: date
+            nullable: true
         gender:
             type: string
             length: 255
+            nullable: true
         nationality:
             type: string
             length: 255
+            nullable: true
         ethnicity:
             type: string
             length: 255
+            nullable: true
         picture:
             type: string
             length: 255
+            nullable: true
     oneToMany:
         merits:
             targetEntity: MeritocrateBundle\Entity\Merits

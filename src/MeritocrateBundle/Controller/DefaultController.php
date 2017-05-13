@@ -3,12 +3,19 @@
 namespace MeritocrateBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use MeritocrateBundle\Entity\Discussion;
 
 class DefaultController extends Controller
 {
     public function indexAction()
     {
         return $this->render('MeritocrateBundle:Default:index.html.twig');
+    }
+
+    public function boardAction()
+    {
+        return $this->render('MeritocrateBundle:Default:board.html.twig');
     }
 
     /* Method for creating a new discussion */
@@ -27,7 +34,7 @@ class DefaultController extends Controller
             return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
         }
 
-        return $this->render('discussion/discussion.html.twig', array(
+        return $this->render('MeritocrateBundle:Default:discussion.html.twig', array(
             'discussion' => $discussion,
             'form' => $form->createView(),
         ));

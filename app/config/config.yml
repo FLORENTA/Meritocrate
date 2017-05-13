@@ -8,7 +8,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-
+    image_directory: '%kernel.root_dir%/../web/bundles/meritocrate/images'
 framework:
     #esi: ~
     #translator: { fallbacks: ['%locale%'] }
@@ -73,7 +73,10 @@ swiftmailer:
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: Meritocrate\Entity\User
+    user_class: MeritocrateBundle\Entity\User
+    registration:
+        form:
+            type: MeritocrateBundle\Form\RegistrationType
     from_email:
             address: you@example.com
             sender_name: You

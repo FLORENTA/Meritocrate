@@ -1,11 +1,23 @@
-meritocrate_user:
-    resource: "@MeritocrateBundle/Resources/config/routing/user.yml"
-    prefix:   /user
-
-meritocrate_discussion:
-    resource: "@MeritocrateBundle/Resources/config/routing/discussion.yml"
-    prefix:   /discussion
-
 meritocrate_homepage:
     path:     /
     defaults: { _controller: MeritocrateBundle:Default:index }
+
+meritocrate_admin:
+    path:     /admin
+    defaults: { _controller: MeritocrateBundle:Default:board }
+
+meritocrate_register:
+    path:     /register
+
+meritocrate_new_discussion:
+    path:     /admin/new
+    defaults: { _controller: MeritocrateBundle:Default:newDiscussion }
+
+meritocrate_join_discussion:
+    path:     /admin/join
+    defaults: { _controller: MeritocrateBundle:Default:joinDiscussion }
+
+meritocrate_group_statistics:
+    path:     /admin/statistics
+    defaults: { _controller: MeritocrateBundle:Default:statistics }
+

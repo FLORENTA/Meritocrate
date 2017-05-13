@@ -18,32 +18,32 @@ class User extends BaseUser
     /**
      * @var string
      */
-    private $fullname;
+    protected $fullname;
 
     /**
      * @var \DateTime
      */
-    private $dateofbirth;
+    protected $dateofbirth;
 
     /**
      * @var string
      */
-    private $gender;
+    protected $gender;
 
     /**
      * @var string
      */
-    private $nationality;
+    protected $nationality;
 
     /**
      * @var string
      */
-    private $ethnicity;
+    protected $ethnicity;
 
     /**
      * @var string
      */
-    private $picture;
+    protected $picture;
 
     /**
      * @var \Doctrine\Common\Collections\Collection

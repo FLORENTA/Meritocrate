@@ -1,0 +1,68 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container">
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register', 'class' : 'col s12'}}) }}
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_label(form.full_name, "Full Name") }}
+            {{ form_errors(form.full_name) }}
+            {{ form_widget(form.full_name) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_label(form.username, "Username") }}
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_label(form.email, "Email") }}
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_label(form.plainPassword.first, "Password") }}
+            {{ form_errors(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_label(form.plainPassword.second, "Confirmation Password") }}
+            {{ form_errors(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_label(form.gender, "Gender") }}
+            {{ form_errors(form.gender) }}
+            {{ form_widget(form.gender) }}
+        </div>
+        <input type="date" class="datepicker col s12">
+            {{ form_label(form.dateofbirth, "Birthdate") }}
+            {{ form_errors(form.dateofbirth) }}
+            {{ form_widget(form.dateofbirth) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_label(form.nationality, "Nationality") }}
+            {{ form_errors(form.nationality) }}
+            {{ form_widget(form.nationality) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_label(form.ethnicity, "Ethnicity") }}
+            {{ form_errors(form.ethnicity) }}
+            {{ form_widget(form.ethnicity) }}
+        </div>
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>Choose a file</span>
+                <input type="file">
+            </div>
+            <div class="file-path-wrapper">
+                {{ form_widget(form.picture, {'attr' : {'class' : 'file-path validate', 'type' : 'text' }} ) }}
+            </div>
+        </div>
+        <div class="col s12">
+            <button class="btn waves-effect waves-light left" type="submit" name="action">
+                Submit
+                <i class="material-icons left">done</i>
+            </button>
+        </div>
+    </div>
+{{ form_end(form) }}
+</div>
