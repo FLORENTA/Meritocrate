@@ -32,3 +32,11 @@ meritocrate_group_statistics:
     path:     /admin/statistics
     defaults: { _controller: MeritocrateBundle:Default:statistics }
 
+meritocrate_set_speaker:
+    path:     /speaks
+    defaults: { _controller: MeritocrateBundle:Default:setSpeaker }
+
+meritocrate_get_speakers:
+    path:     /speaks
+    defaults: { _controller: MeritocrateBundle:Default:setSpeaker }
+

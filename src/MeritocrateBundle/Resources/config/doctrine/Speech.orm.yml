@@ -1,0 +1,20 @@
+MeritocrateBundle\Entity\Speech:
+    type: entity
+    table: null
+    repositoryClass: MeritocrateBundle\Repository\SpeechRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        timestamp:
+            type: datetimetz
+    manyToOne:
+        user:
+            targetEntity: MeritocrateBundle\Entity\User
+            inversedBy: speeches
+        discussion:
+            targetEntity: MeritocrateBundle\Entity\Discussion
+            inversedBy: speeches

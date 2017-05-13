@@ -228,4 +228,43 @@ class User extends BaseUser
     {
         return $this->merits;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $speeches;
+
+
+    /**
+     * Add speech
+     *
+     * @param \MeritocrateBundle\Entity\Speech $speech
+     *
+     * @return User
+     */
+    public function addSpeech(\MeritocrateBundle\Entity\Speech $speech)
+    {
+        $this->speeches[] = $speech;
+
+        return $this;
+    }
+
+    /**
+     * Remove speech
+     *
+     * @param \MeritocrateBundle\Entity\Speech $speech
+     */
+    public function removeSpeech(\MeritocrateBundle\Entity\Speech $speech)
+    {
+        $this->speeches->removeElement($speech);
+    }
+
+    /**
+     * Get speeches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSpeeches()
+    {
+        return $this->speeches;
+    }
 }

@@ -2,8 +2,11 @@
 
 namespace MeritocrateBundle\Controller;
 
+use MeritocrateBundle\Entity\Speech;
+use MeritocrateBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use MeritocrateBundle\Entity\Discussion;
 
 class DefaultController extends Controller
@@ -59,5 +62,41 @@ class DefaultController extends Controller
         return $this->render('MeritocrateBundle:Default:show_groups.html.twig', array(
             'groups' => $groups
         ));
+    }
+
+    public function setSpeakerAction(Request $request){
+
+        $speech = new Speech();
+        if($request->isXmlHttpRequest()){
+            $em = $this->getDoctrine()->getManager();
+            $idGroup = $request->request->get('idDiscussion');
+            $idUser = $request->request->get('idUser');
+
+            $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
+            $user = $em->getRepository('MeritocrateBundle:User')->findOneById($idUser);
+
+            $speech->setUser($user);
+            $speech->setDiscussion($discussion);
+
+            $em->persist($speech);
+            $em->flush();
+            return new Response('ok');
+        }
+    }
+
+    public function getSpeakerAction(Request $request){
+        if($request->isXmlHttpRequest()){
+            $em = $this->getDoctrine()->getManager();
+            $idGroup = $request->request->get('idDiscussion');
+            $idUser = $request->request->get('idUser');
+
+            $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
+            $user = $em->getRepository('MeritocrateBundle:User')->findOneById($idUser);
+
+
+
+            $em->flush();
+            return new Response('ok');
+        }
     }
 }
