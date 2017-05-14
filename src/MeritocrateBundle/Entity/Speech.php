@@ -106,4 +106,57 @@ class Speech
     {
         return $this->discussion;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $merits;
+
+
+    /**
+     * Set timestamp
+     *
+     * @param \DateTime $timestamp
+     *
+     * @return Speech
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
+    }
+
+    /**
+     * Add merit
+     *
+     * @param \MeritocrateBundle\Entity\Merits $merit
+     *
+     * @return Speech
+     */
+    public function addMerit(\MeritocrateBundle\Entity\Merits $merit)
+    {
+        $this->merits[] = $merit;
+
+        return $this;
+    }
+
+    /**
+     * Remove merit
+     *
+     * @param \MeritocrateBundle\Entity\Merits $merit
+     */
+    public function removeMerit(\MeritocrateBundle\Entity\Merits $merit)
+    {
+        $this->merits->removeElement($merit);
+    }
+
+    /**
+     * Get merits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMerits()
+    {
+        return $this->merits;
+    }
 }

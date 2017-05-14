@@ -18,3 +18,7 @@ MeritocrateBundle\Entity\Speech:
         discussion:
             targetEntity: MeritocrateBundle\Entity\Discussion
             inversedBy: speeches
+    oneToMany:
+        merits:
+            targetEntity: MeritocrateBundle\Entity\Merits
+            mappedBy: speech

@@ -21,3 +21,6 @@ MeritocrateBundle\Entity\Merits:
         discussion:
             targetEntity: MeritocrateBundle\Entity\Discussion
             inversedBy: merits
+        speech:
+            targetEntity: MeritocrateBundle\Entity\Speech
+            inversedBy: merits

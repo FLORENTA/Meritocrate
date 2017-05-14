@@ -4,6 +4,7 @@ namespace MeritocrateBundle\Controller;
 
 use MeritocrateBundle\Entity\Speech;
 use MeritocrateBundle\Entity\User;
+use MeritocrateBundle\Entity\Merits;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MeritocrateBundle\Entity\Discussion;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -51,10 +52,13 @@ class DefaultController extends Controller
 
     public function discussionGroupAction($id){
         $em = $this->getDoctrine()->getManager();
-        $group = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
-
+        $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
+        $speeches = $em->getRepository('MeritocrateBundle:Speech')->findBy(array(
+            'discussion' => $discussion
+        ));
         return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(
-           'group' => $group,
+           'group' => $discussion,
+           'speeches' => $speeches,
            'user' => $this->getUser()
         ));
     }
@@ -84,7 +88,8 @@ class DefaultController extends Controller
 
             $em->persist($speech);
             $em->flush();
-            return new Response('ok');
+
+            return new Response('You have been added to the list of speakers');
         }
     }
 
@@ -93,7 +98,7 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $idGroup = $request->request->get('idDiscussion');
             $idLastSpeech = $request->request->get('idLastSpeech');
-            dump($request);
+
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
 
             $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion);
@@ -113,11 +118,32 @@ class DefaultController extends Controller
         }
     }
 
-    public function addMeritAction(Request $request){
-        if($request->isXmlHttpRequest()) {
+    public function addMeritAction(Request $request)
+    {
+        $merit = new Merits();
+
+        if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
-            dump($request);
+
+            $idSpeaker = $request->request->get('idSpeaker');
+            $idRator = $request->request->get('idRator');
+            $idDiscussion = $request->request->get('idDiscussion');
+            $idSpeech = $request->request->get('idSpeech');
+
+            $speaker = $em->getRepository('MeritocrateBundle:User')->findOneById($idSpeaker);
+            $rator = $em->getRepository('MeritocrateBundle:User')->findOneById($idRator);
+            $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idDiscussion);
+            $speech = $em->getRepository('MeritocrateBundle:Speech')->findOneById($idSpeech);
+
+            $merit->setUser($speaker);
+            $merit->setRator($rator);
+            $merit->setDiscussion($discussion);
+            $merit->setSpeech($speech);
+
+            $em->persist($merit);
+            $em->flush();
 
             return new Response('ok');
         }
+    }
 }

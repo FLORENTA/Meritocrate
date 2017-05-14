@@ -9,12 +9,22 @@
             </div>
             <table class="highlight centered">
                 <thead>
-                    <tr>
-                        <td>Time stamp</td>
-                        <td>Username</td>
-                        <td>Picture</td>
-                        <td>Merit</td>
-                    </tr>
+                    {% if speeches is not empty %}
+                        {% for speech in speeches %}
+                            <tr>
+                                <td>{{ speech.timestamp|date('h:i:s a') }}</td>
+                                <td>{{ speech.user.username }}</td>
+                                <td><img src="{{ asset('bundles/meritocrate/images/'~speech.user.picture) }}"/></td>
+                                <td>
+                                    <button class="merits">
+                                        <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
+                                        <input type="hidden" class="idSpeaker" value="{{ speech.user.id }}"/>
+                                        <i class="material-icons">stars</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                 </thead>
                 <tbody id="tbody">
                 </tbody>
@@ -29,7 +39,7 @@
             </button>
         </div>
     </div>
-    {{ dump(user) }}
+    {{ dump(speeches) }}
 {% endblock %}
 {% block javascripts %}
 <script type="text/javascript">
@@ -39,12 +49,12 @@
         var buttonRefreshElt = document.getElementById('refresh');
         var tBodyElt = document.getElementById('tbody');
 
-        /***** SENDS A REQUEST WHEN A STUDENTS PRESSES TO SPEAK *****/
+        /***** SENDS A REQUEST WHEN SOMEONE PRESSES TO SPEAK *****/
         function ajaxPost(url, callback, idUser, idGroup){
             var req = new XMLHttpRequest();
             req.open('post', url, true);
             req.addEventListener("load", function(){
-                if(req.status >200 && req.status<=400){
+                if(req.status >=200 && req.status <400){
                     callback(req.responseText);
                 }
             });
@@ -54,10 +64,12 @@
         }
 
         buttonSpeakElt.addEventListener("click", function(){
+            this.disabled = true;
             var idUser = {{ user.id }};
 
             function show(response){
-                console.log(response);
+                alert(response);
+                buttonSpeakElt.disabled = false;
             }
             ajaxPost('{{ path('meritocrate_set_speaker') }}', show, idUser, idGroup);
         });
@@ -67,7 +79,7 @@
             var req = new XMLHttpRequest();
             req.open('post', url, true);
             req.addEventListener("load", function(){
-                if(req.status >=200 && req.status<400){
+                if(req.status >=200 && req.status <400){
                     callback(req.responseText);
                 }
             });
@@ -80,8 +92,16 @@
         }
 
         buttonRefreshElt.addEventListener("click", function(){
-            var idLastSpeech = "1";
+            /* How many rows in the table body ? */
+            var tBodyTrElts = document.querySelectorAll('#tbody tr');
+            var tBodyTrEltsLength = tBodyTrElts.length;
 
+            if(tBodyTrEltsLength == 0){
+                var idLastSpeech = "0";
+            }
+            else{
+                var idLastSpeech = tBodyTrElts[tBodyTrEltsLength-1].childNodes[3].childNodes[0].childNodes[0].getAttribute('value');
+            }
 
             /* Function executed in case of success of the request */
             function show(response){
@@ -106,12 +126,12 @@
 
                     var inputIdSpeechElt = document.createElement('input');
                     inputIdSpeechElt.setAttribute('type', 'hidden');
-                    inputIdSpeechElt.setAttribute('id', 'idSpeech');
+                    inputIdSpeechElt.setAttribute('class', 'idSpeech');
                     inputIdSpeechElt.setAttribute('value', response[i].id);
 
                     var inputIdSpeakerElt = document.createElement('input');
                     inputIdSpeakerElt.setAttribute('type', 'hidden');
-                    inputIdSpeakerElt.setAttribute('id', 'idSpeaker');
+                    inputIdSpeakerElt.setAttribute('class', 'idSpeaker');
                     inputIdSpeakerElt.setAttribute('value', response[i].user.id);
 
                     var imgElt = document.createElement('img');
@@ -137,17 +157,17 @@
                     tBodyElt.appendChild(trElt);
                 }
 
-                function ajaxAddMerit(url, callback, idGroup, idSpeaker, idSpeech){
+                function ajaxAddMerit(url, callback, idGroup, idSpeaker, idSpeech, idRator){
                     var req = new XMLHttpRequest();
                     req.open('post', url, true);
                     req.addEventListener("load", function(){
-                        if(req.status >200 && req.status<=400){
+                        if(req.status >=200 && req.status <400){
                             callback(req.responseText);
                         }
                     });
                     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
+                    req.send("idSpeaker="+idSpeaker+"&idDiscussion="+idGroup+"&idSpeech="+idSpeech+"&idRator="+idRator+"");
                 }
 
                 var meritElts = document.getElementsByClassName('merits');
@@ -156,13 +176,51 @@
                     meritElts[i].addEventListener("click", function(){
                         this.disabled = true;
                         this.lastElementChild.style.color = "gold";
+                        var idSpeech = this.childNodes[0].getAttribute('value');
+                        var idSpeaker = this.childNodes[1].getAttribute('value');
+                        var idRator = {{ user.id }};
 
-                        ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idGroup, idSpeaker, idSpeech);
+                        function show(response){
+                            console.log(response);
+                        }
+
+                        ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idGroup, idSpeaker, idSpeech, idRator);
                     });
                 }
             }
             ajaxUpdateUsers('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
         });
+
+        function ajaxAddMerit(url, callback, idGroup, idSpeaker, idSpeech, idRator){
+            var req = new XMLHttpRequest();
+            req.open('post', url, true);
+            req.addEventListener("load", function(){
+                if(req.status >=200 && req.status <400){
+                    callback(req.responseText);
+                }
+            });
+            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            req.send("idSpeaker="+idSpeaker+"&idDiscussion="+idGroup+"&idSpeech="+idSpeech+"&idRator="+idRator+"");
+        }
+
+        var meritElts = document.getElementsByClassName('merits');
+        console.log(meritElts.length);
+        for(i=0; i<meritElts.length; i++){
+            meritElts[i].addEventListener("click", function(){
+                this.disabled = true;
+                this.lastElementChild.style.color = "gold";
+                var idSpeech = this.childNodes[1].getAttribute('value');
+                var idSpeaker = this.childNodes[3].getAttribute('value');
+                var idRator = {{ user.id }};
+
+                function show(response){
+                    console.log(response);
+                }
+
+                ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idGroup, idSpeaker, idSpeech, idRator);
+            });
+        }
 
 </script>
 {% endblock %}

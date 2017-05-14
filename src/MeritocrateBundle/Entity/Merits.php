@@ -7,8 +7,9 @@ namespace MeritocrateBundle\Entity;
  */
 class Merits
 {
+
     /**
-     * @var int
+     * @var integer
      */
     private $id;
 
@@ -17,11 +18,31 @@ class Merits
      */
     private $datecreation;
 
+    /**
+     * @var \MeritocrateBundle\Entity\User
+     */
+    private $user;
+
+    /**
+     * @var \MeritocrateBundle\Entity\User
+     */
+    private $rator;
+
+    /**
+     * @var \MeritocrateBundle\Entity\Discussion
+     */
+    private $discussion;
+
+    /**
+     * @var \MeritocrateBundle\Entity\Speech
+     */
+    private $speech;
+
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -29,15 +50,11 @@ class Merits
     }
 
     /**
-     * Set datecreation
-     *
-     * @param \DateTime $datecreation
-     *
-     * @return Merits
+     * Constructor
      */
-    public function setDatecreation($datecreation)
+    public function __construct()
     {
-        $this->datecreation = $datecreation;
+        $this->datecreation = new \DateTime();
 
         return $this;
     }
@@ -51,45 +68,6 @@ class Merits
     {
         return $this->datecreation;
     }
-    /**
-     * @var \MeritocrateBundle\Entity\User
-     */
-    private $users;
-
-
-    /**
-     * Set users
-     *
-     * @param \MeritocrateBundle\Entity\User $users
-     *
-     * @return Merits
-     */
-    public function setUsers(\MeritocrateBundle\Entity\User $users = null)
-    {
-        $this->users = $users;
-
-        return $this;
-    }
-
-    /**
-     * Get users
-     *
-     * @return \MeritocrateBundle\Entity\User
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-    /**
-     * @var \MeritocrateBundle\Entity\User
-     */
-    private $user;
-
-    /**
-     * @var \MeritocrateBundle\Entity\Discussion
-     */
-    private $discussion;
-
 
     /**
      * Set user
@@ -116,6 +94,30 @@ class Merits
     }
 
     /**
+     * Set rator
+     *
+     * @param \MeritocrateBundle\Entity\User $rator
+     *
+     * @return Merits
+     */
+    public function setRator(\MeritocrateBundle\Entity\User $rator = null)
+    {
+        $this->rator = $rator;
+
+        return $this;
+    }
+
+    /**
+     * Get rator
+     *
+     * @return \MeritocrateBundle\Entity\User
+     */
+    public function getRator()
+    {
+        return $this->rator;
+    }
+
+    /**
      * Set discussion
      *
      * @param \MeritocrateBundle\Entity\Discussion $discussion
@@ -138,33 +140,28 @@ class Merits
     {
         return $this->discussion;
     }
-    /**
-     * @var \MeritocrateBundle\Entity\Rator
-     */
-    private $rator;
-
 
     /**
-     * Set rator
+     * Set speech
      *
-     * @param \MeritocrateBundle\Entity\Rator $rator
+     * @param \MeritocrateBundle\Entity\Speech $speech
      *
      * @return Merits
      */
-    public function setRator(\MeritocrateBundle\Entity\Rator $rator = null)
+    public function setSpeech(\MeritocrateBundle\Entity\Speech $speech = null)
     {
-        $this->rator = $rator;
+        $this->speech = $speech;
 
         return $this;
     }
 
     /**
-     * Get rator
+     * Get speech
      *
-     * @return \MeritocrateBundle\Entity\Rator
+     * @return \MeritocrateBundle\Entity\Speech
      */
-    public function getRator()
+    public function getSpeech()
     {
-        return $this->rator;
+        return $this->speech;
     }
 }
