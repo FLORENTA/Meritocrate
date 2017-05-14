@@ -37,6 +37,9 @@ meritocrate_set_speaker:
     defaults: { _controller: MeritocrateBundle:Default:setSpeaker }
 
 meritocrate_get_speakers:
-    path:     /speaks
-    defaults: { _controller: MeritocrateBundle:Default:setSpeaker }
+    path:     /speakersList
+    defaults: { _controller: MeritocrateBundle:Default:getSpeaker }
 
+meritocrate_add_merit:
+    path:     /addMerit
+    defaults: { _controller: MeritocrateBundle:Default:addMerit }

@@ -7,28 +7,25 @@
             <div class="col s12">
                 <p><b>{{ group.name }}</b> Group, created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
             </div>
-            <div class="col s12">
-                <table class="highlight centered">
-                    <thead>
-                        <th>
-                            <td>Time stamp</td>
-                            <td>Username</td>
-                            <td>Picture</td>
-                            <td>Merit</td>
-                        </th>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
+            <table class="highlight centered">
+                <thead>
+                    <tr>
+                        <td>Time stamp</td>
+                        <td>Username</td>
+                        <td>Picture</td>
+                        <td>Merit</td>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
             <button class="btn waves-effet waves-light" id="speak">
                 Press to speak
                 <i class="material-icons left">mic</i>
             </button>
-            <button class="btn waves-effet waves-light" id="refresh">
-                Press to speak
-                <i class="material-icons left">mic</i>
+            <button class="btn waves-effet waves-light right" id="refresh">
+                Refresh
+                <i class="material-icons left"></i>
             </button>
         </div>
     </div>
@@ -36,10 +33,13 @@
 {% endblock %}
 {% block javascripts %}
 <script type="text/javascript">
+        var idGroup = {{ group.id }};
 
-        var buttonElt = document.getElementById('speak');
+        var buttonSpeakElt = document.getElementById('speak');
         var buttonRefreshElt = document.getElementById('refresh');
+        var tBodyElt = document.getElementById('tbody');
 
+        /***** SENDS A REQUEST WHEN A STUDENTS PRESSES TO SPEAK *****/
         function ajaxPost(url, callback, idUser, idGroup){
             var req = new XMLHttpRequest();
             req.open('post', url, true);
@@ -53,9 +53,8 @@
             req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
         }
 
-        buttonElt.addEventListener("click", function(){
+        buttonSpeakElt.addEventListener("click", function(){
             var idUser = {{ user.id }};
-            var idGroup = {{ group.id }};
 
             function show(response){
                 console.log(response);
@@ -63,8 +62,107 @@
             ajaxPost('{{ path('meritocrate_set_speaker') }}', show, idUser, idGroup);
         });
 
+        /***** UPDATES THE SPEAKERS LIST EVERY 7 SECONDS *****/
+        function ajaxUpdateUsers(url, callback, idLastSpeech, idGroup){
+            var req = new XMLHttpRequest();
+            req.open('post', url, true);
+            req.addEventListener("load", function(){
+                if(req.status >=200 && req.status<400){
+                    callback(req.responseText);
+                }
+            });
+            req.addEventListener("error", function(){
+                console.log("erreur");
+            });
+            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            req.send("idLastSpeech="+idLastSpeech+"&idDiscussion="+idGroup+"");
+        }
+
+        buttonRefreshElt.addEventListener("click", function(){
+            var idLastSpeech = "1";
 
 
+            /* Function executed in case of success of the request */
+            function show(response){
+                var response = JSON.parse(response);
+
+                /* Let's loop over the response results */
+                for(i=0; i<response.length; i++){
+                    /* We catch the date & filters it to display the hour only */
+                    var date = '' + new Date(response[i].timestamp['timestamp']*1000) + '';
+                    date = date.substr(16, 8).toString("hh:mm tt");
+
+                    /* Let's create & fill the html elements to put into the table */
+                    var trElt = document.createElement('tr');
+
+                    var tdElt1 = document.createElement('td');
+                    var tdElt2 = document.createElement('td');
+                    var tdElt3 = document.createElement('td');
+
+                    var tdElt4 = document.createElement('td');
+                    var buttonTdElt4 = document.createElement('button');
+                    buttonTdElt4.setAttribute('class', 'merits');
+
+                    var inputIdSpeechElt = document.createElement('input');
+                    inputIdSpeechElt.setAttribute('type', 'hidden');
+                    inputIdSpeechElt.setAttribute('id', 'idSpeech');
+                    inputIdSpeechElt.setAttribute('value', response[i].id);
+
+                    var inputIdSpeakerElt = document.createElement('input');
+                    inputIdSpeakerElt.setAttribute('type', 'hidden');
+                    inputIdSpeakerElt.setAttribute('id', 'idSpeaker');
+                    inputIdSpeakerElt.setAttribute('value', response[i].user.id);
+
+                    var imgElt = document.createElement('img');
+                    imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}'+response[i].user.picture+'');
+
+                    var starElt = document.createElement('i');
+                    starElt.setAttribute('class', 'material-icons');
+                    starElt.textContent = "stars";
+
+                    tdElt1.textContent = date;
+                    tdElt2.textContent = response[i].user.username;
+
+                    tdElt3.appendChild(imgElt);
+                    buttonTdElt4.appendChild(inputIdSpeechElt);
+                    buttonTdElt4.appendChild(inputIdSpeakerElt);
+                    buttonTdElt4.appendChild(starElt);
+                    tdElt4.appendChild(buttonTdElt4);
+
+                    trElt.appendChild(tdElt1);
+                    trElt.appendChild(tdElt2);
+                    trElt.appendChild(tdElt3);
+                    trElt.appendChild(tdElt4);
+                    tBodyElt.appendChild(trElt);
+                }
+
+                function ajaxAddMerit(url, callback, idGroup, idSpeaker, idSpeech){
+                    var req = new XMLHttpRequest();
+                    req.open('post', url, true);
+                    req.addEventListener("load", function(){
+                        if(req.status >200 && req.status<=400){
+                            callback(req.responseText);
+                        }
+                    });
+                    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
+                }
+
+                var meritElts = document.getElementsByClassName('merits');
+
+                for(i=0; i<meritElts.length; i++){
+                    meritElts[i].addEventListener("click", function(){
+                        this.disabled = true;
+                        this.lastElementChild.style.color = "gold";
+
+                        ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idGroup, idSpeaker, idSpeech);
+                    });
+                }
+            }
+            ajaxUpdateUsers('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
+        });
 
 </script>
 {% endblock %}

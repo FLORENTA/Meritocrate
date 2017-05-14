@@ -5,9 +5,13 @@ namespace MeritocrateBundle\Controller;
 use MeritocrateBundle\Entity\Speech;
 use MeritocrateBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use MeritocrateBundle\Entity\Discussion;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use MeritocrateBundle\Entity\Discussion;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class DefaultController extends Controller
 {
@@ -88,15 +92,32 @@ class DefaultController extends Controller
         if($request->isXmlHttpRequest()){
             $em = $this->getDoctrine()->getManager();
             $idGroup = $request->request->get('idDiscussion');
-            $idUser = $request->request->get('idUser');
-
+            $idLastSpeech = $request->request->get('idLastSpeech');
+            dump($request);
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
-            $user = $em->getRepository('MeritocrateBundle:User')->findOneById($idUser);
 
+            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion);
 
+            $encoders = new JsonEncoder();
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceHandler(function ($speeches) {
+                return $speeches->getId();
+            });
+            $serializer = new Serializer(array($normalizer), array($encoders));
 
-            $em->flush();
-            return new Response('ok');
+            $speeches = $serializer->serialize($speeches, "json");
+
+            $response = new Response($speeches);
+            $response->headers->set('Content-Type','application/json');
+            return $response;
         }
     }
+
+    public function addMeritAction(Request $request){
+        if($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            dump($request);
+
+            return new Response('ok');
+        }
 }

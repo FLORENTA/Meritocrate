@@ -15,7 +15,7 @@
                 <tbody>
                     {% for group in groups %}
                     <tr>
-                        <td>{{ group.datecreation|date }}</td>
+                        <td>{{ group.datecreation|date('m/d/Y') }}, {{ group.datecreation|date('h:i:s a') }}</td>
                         <td>{{ group.name }}</td>
                         <td>
                             <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
