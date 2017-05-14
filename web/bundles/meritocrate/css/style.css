@@ -1,0 +1,39 @@
+body{
+    font-family: 'Roboto', sans-serif;
+    background: #e0f7fa;
+}
+
+.col-board{
+    margin-top: 50px;
+    text-align: center;
+}
+
+h2{
+    display: flex;
+    justify-content: center;
+    color: #333;
+    background: #fff;
+    padding: 20px;
+}
+
+/* Specific discussion group table */
+
+td{
+    text-align: center;
+    width: 25%;
+}
+
+td:nth-of-type(3) img{
+    -webkit-border-radius:50px;
+    -moz-border-radius:50px;
+    border-radius:50px;
+    width:80px;
+    height:80px;
+    box-shadow: 1px 1px 3px black;
+}
+
+.merits{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
