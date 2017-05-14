@@ -100,8 +100,14 @@ class DefaultController extends Controller
             $idLastSpeech = $request->request->get('idLastSpeech');
 
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
+            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBefore($idLastSpeech, $discussion);
+            $nbSpeechesBeforeLastId = count($speeches);
 
-            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion);
+            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindAll($discussion);
+            $nbSpeeches = count($speeches);
+
+            $max = $nbSpeeches - $nbSpeechesBeforeLastId;
+            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion, $max);
 
             $encoders = new JsonEncoder();
             $normalizer = new ObjectNormalizer();

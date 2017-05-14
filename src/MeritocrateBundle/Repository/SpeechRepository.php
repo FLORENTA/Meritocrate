@@ -10,12 +10,25 @@ namespace MeritocrateBundle\Repository;
  */
 class SpeechRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function myFindBy($idLastSpeech, $discussion)
+    public function myFindAll($discussion){
+        $qb = $this->createQueryBuilder('s');
+        $qb->where('s.discussion = :discussion')->setParameter('discussion', $discussion);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function myFindBefore($idLastSpeech, $discussion){
+        $qb = $this->createQueryBuilder('s');
+        $qb->where('s.id < :start')->setParameter('start', $idLastSpeech)
+            ->AndWhere('s.discussion = :discussion')->setParameter('discussion', $discussion);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function myFindBy($idLastSpeech, $discussion, $max)
     {
         $qb = $this->createQueryBuilder('s');
-        $qb->where('s.id >= :start')->setParameter('start', $idLastSpeech)
+        $qb->where('s.id > :start')->setParameter('start', $idLastSpeech)
            ->AndWhere('s.discussion = :discussion')->setParameter('discussion', $discussion)
-           ->setMaxResults(5);
+           ->setMaxResults($max);
         return $qb->getQuery()->getResult();
     }
 }

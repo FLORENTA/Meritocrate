@@ -9,6 +9,14 @@
             </div>
             <table class="highlight centered">
                 <thead>
+                    <tr>
+                        <td>Timestamp</td>
+                        <td>Display Name</td>
+                        <td>Picture</td>
+                        <td>Merit</td>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
                     {% if speeches is not empty %}
                         {% for speech in speeches %}
                             <tr>
@@ -25,8 +33,6 @@
                             </tr>
                         {% endfor %}
                     {% endif %}
-                </thead>
-                <tbody id="tbody">
                 </tbody>
             </table>
             <button class="btn waves-effet waves-light" id="speak">
@@ -38,8 +44,13 @@
                 <i class="material-icons left"></i>
             </button>
         </div>
+        <div class="row">
+            <a href="{{ path('meritocrate_join_discussion') }}"><button class="btn waves-effet waves-light right green">
+                Exit Group
+                <i class="material-icons left"></i>
+            </button></a>
+        </div>
     </div>
-    {{ dump(speeches) }}
 {% endblock %}
 {% block javascripts %}
 <script type="text/javascript">
@@ -100,7 +111,8 @@
                 var idLastSpeech = "0";
             }
             else{
-                var idLastSpeech = tBodyTrElts[tBodyTrEltsLength-1].childNodes[3].childNodes[0].childNodes[0].getAttribute('value');
+                var idLastSpeech = tBodyTrElts[tBodyTrEltsLength-1].childNodes[7].childNodes[1].childNodes[1].getAttribute('value');
+                console.log(idLastSpeech);
             }
 
             /* Function executed in case of success of the request */
@@ -221,6 +233,5 @@
                 ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idGroup, idSpeaker, idSpeech, idRator);
             });
         }
-
 </script>
 {% endblock %}
