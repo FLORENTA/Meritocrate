@@ -10,10 +10,21 @@ namespace MeritocrateBundle\Repository;
  */
 class SpeechRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function myFindSpeeches($discussion){
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.discussion = :discussion')
+            ->setParameter('discussion', $discussion)
+            ->orderBy('s.id', 'DESC')
+            ->getQuery();
+        return $qb->getResult();
+    }
+
     public function myFindAll($discussion){
-        $qb = $this->createQueryBuilder('s');
-        $qb->where('s.discussion = :discussion')->setParameter('discussion', $discussion);
-        return $qb->getQuery()->getResult();
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.discussion = :discussion')
+            ->setParameter('discussion', $discussion)
+            ->getQuery();
+        return $qb->getResult();
     }
 
     public function myFindBefore($idLastSpeech, $discussion){
@@ -26,9 +37,17 @@ class SpeechRepository extends \Doctrine\ORM\EntityRepository
     public function myFindBy($idLastSpeech, $discussion, $max)
     {
         $qb = $this->createQueryBuilder('s');
-        $qb->where('s.id > :start')->setParameter('start', $idLastSpeech)
-           ->AndWhere('s.discussion = :discussion')->setParameter('discussion', $discussion)
-           ->setMaxResults($max);
+        $qb->select('s.id, s.timestamp')
+
+            ->join('s.user', 'u')
+            ->addSelect('u.username, u.picture')
+            ->where('s.id > :start')
+            ->andWhere('s.discussion = :discussion')
+            ->setParameters(array(
+                'discussion' => $discussion,
+                'start' => $idLastSpeech
+            ))
+            ->setMaxResults($max);
         return $qb->getQuery()->getResult();
     }
 }

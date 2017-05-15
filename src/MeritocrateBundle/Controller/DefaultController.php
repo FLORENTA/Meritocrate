@@ -55,9 +55,8 @@ class DefaultController extends Controller
     public function discussionGroupAction($id){
         $em = $this->getDoctrine()->getManager();
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
-        $speeches = $em->getRepository('MeritocrateBundle:Speech')->findBy(array(
-            'discussion' => $discussion
-        ));
+        $speeches = $em->getRepository('MeritocrateBundle:Speech')->myfindSpeeches($discussion);
+
         return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(
            'group' => $discussion,
            'speeches' => $speeches,
@@ -100,6 +99,7 @@ class DefaultController extends Controller
     public function getSpeechAction(Request $request){
         if($request->isXmlHttpRequest()){
             $em = $this->getDoctrine()->getManager();
+            dump($request);
             $idGroup = $request->request->get('idDiscussion');
             $idLastSpeech = $request->request->get('idLastSpeech');
 
@@ -112,20 +112,12 @@ class DefaultController extends Controller
             $nbSpeeches = count($speeches);
 
             $max = $nbSpeeches - $nbSpeechesBeforeLastId;
-            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion, $max);
+            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion, $max, array(
+                'id' => 'desc'
+            ));
 
-            $encoders = new JsonEncoder();
-            $normalizer = new ObjectNormalizer();
-            $normalizer->setIgnoredAttributes(array('discussion'));
-            $normalizer->setCircularReferenceHandler(function($speeches){
-               return $speeches->getId();
-            });
-            $serializer = new Serializer(array($normalizer), array($encoders));
-
-            $jsonSpeeches = $serializer->serialize($speeches, "json");
-
-            $response = new Response($jsonSpeeches);
-            $response->headers->set('Content-Type','application/json');
+            $jsonSpeech = json_encode($speeches);
+            $response = new Response($jsonSpeech);
             return $response;
         }
     }

@@ -8,6 +8,14 @@
                 <h4>{{ group.name }} Group </h4>
                 <p id="group-date-creation"> Created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
             </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effet waves-light" id="speak">
+                Press to speak
+                <i class="material-icons left">mic</i>
+            </button>
+        </div>
+        <div class="row">
             <table class="highlight centered">
                 <thead>
                     <tr>
@@ -44,8 +52,11 @@
                                                 <i class="material-icons">stars</i>
                                             </button>
                                         {% else %}
-                                            <p> Already rated </p>
+                                            <button class="merits" style="color: gold;" disabled>
+                                                <i class="material-icons">stars</i>
+                                            </button>
                                         {% endif %}
+
                                     {% endif %}
                                     <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
                                 </td>
@@ -54,15 +65,6 @@
                     {% endif %}
                 </tbody>
             </table>
-        </div>
-        <div class="row">
-            <button class="btn waves-effet waves-light" id="speak">
-                Press to speak
-                <i class="material-icons left">mic</i>
-            </button>
-            <button class="btn waves-effet waves-light" id="refresh">
-                Refresh
-            </button>
         </div>
         <div class="row">
             <a href="{{ path('meritocrate_join_discussion') }}"><button class="btn waves-effet waves-light right green">
@@ -106,12 +108,15 @@
             var idUser = {{ user.id }};
 
             function show(response){
-                buttonSpeakElt.disabled = false;
+                setTimeout(function(){
+                    buttonSpeakElt.disabled = false;
+                }, 3000);
+
             }
             ajaxPost('{{ path('meritocrate_set_speaker') }}', show, idUser, idGroup);
         });
 
-        /***** UPDATES THE SPEAKERS LIST EVERY 7 SECONDS *****/
+        /***** UPDATES THE SPEAKERS LIST EVERY 5 SECONDS *****/
         function ajaxUpdateUsers(url, callback, idLastSpeech, idGroup){
             var req = new XMLHttpRequest();
             req.open('post', url, true);
@@ -138,74 +143,76 @@
             idLastSpeech = 0;
         }
         else{
-            idLastSpeech = tBodyTrElts[tBodyTrEltsLength-1].childNodes[7].lastElementChild.getAttribute('value');
+            idLastSpeech = tBodyTrElts[0].childNodes[7].lastElementChild.getAttribute('value');
         }
+        console.log(idLastSpeech);
 
-        buttonRefreshElt.addEventListener("click", addSpeeches);
-
-        function addSpeeches(){
-            console.log(idLastSpeech);
-            /* Function executed in case of success of the request */
-            function show(response){
-
-                var response = JSON.parse(response);
-                if(response.length > 0) {
-                    idLastSpeech = response[response.length - 1].id;
+        function refresh() {
+            setTimeout(function () {
                     console.log(idLastSpeech);
-                    /* Let's loop over the response results */
-                    for(i=0; i<response.length; i++) {
-                        /* We catch the date & filters it to display the hour only */
-                        var date = '' + new Date(response[i].timestamp['timestamp'] * 1000) + '';
-                        date = date.substr(16, 8).toString("hh:mm tt");
+                    /* Function executed in case of success of the request */
+                    function show(response) {
+                        if (response.length > 0) {
+                            var response = JSON.parse(response);
 
-                        /* Let's create & fill the html elements to put into the table */
-                        var trElt = document.createElement('tr');
+                            idLastSpeech = response[response.length - 1].id;
 
-                        var tdElt1 = document.createElement('td');
-                        var tdElt2 = document.createElement('td');
-                        var tdElt3 = document.createElement('td');
+                            /* Let's loop over the response results */
+                            for (i = 0; i < response.length; i++) {
+                                /* We catch the date & filters it to display the hour only */
+                                var date = response[i].timestamp['date'];
+                                date = date.substr(11, 8);
 
-                        var tdElt4 = document.createElement('td');
+                                /* Let's create & fill the html elements to put into the table */
+                                var trElt = document.createElement('tr');
 
-                        if( ({{ app.user.id }}) !== response[i].user.id){
-                            var buttonTdElt4 = document.createElement('button');
-                            buttonTdElt4.setAttribute('class', 'merits');
-                            buttonTdElt4.style.display = "none";
-                            buttonTdElt4.appendChild(starElt);
-                            tdElt4.appendChild(buttonTdElt4);
+                                var tdElt1 = document.createElement('td');
+                                var tdElt2 = document.createElement('td');
+                                var tdElt3 = document.createElement('td');
+
+                                var tdElt4 = document.createElement('td');
+
+                                var starElt = document.createElement('i');
+                                starElt.setAttribute('class', 'material-icons');
+                                starElt.textContent = "stars";
+
+                                if (({{ app.user.id }}) !== response[i].id) {
+                                    var buttonTdElt4 = document.createElement('button');
+                                    buttonTdElt4.setAttribute('class', 'merits');
+                                    buttonTdElt4.style.display = "none";
+                                    buttonTdElt4.appendChild(starElt);
+                                    tdElt4.appendChild(buttonTdElt4);
+                                }
+
+                                var inputIdSpeechElt = document.createElement('input');
+                                inputIdSpeechElt.setAttribute('type', 'hidden');
+                                inputIdSpeechElt.setAttribute('class', 'idSpeech');
+                                inputIdSpeechElt.setAttribute('value', response[i].id);
+
+                                var imgElt = document.createElement('img');
+                                imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}' + response[i].picture + '');
+
+                                tdElt1.textContent = date;
+                                tdElt2.textContent = response[i].username;
+
+                                tdElt3.appendChild(imgElt);
+                                tdElt4.appendChild(inputIdSpeechElt);
+
+                                trElt.appendChild(tdElt1);
+                                trElt.appendChild(tdElt2);
+                                trElt.appendChild(tdElt3);
+                                trElt.appendChild(tdElt4);
+                                tBodyElt.insertBefore(trElt, tBodyTrElts[0]);
+                            }
+                            /* We enable marking */
+                            addMerits();
                         }
-
-                        var inputIdSpeechElt = document.createElement('input');
-                        inputIdSpeechElt.setAttribute('type', 'hidden');
-                        inputIdSpeechElt.setAttribute('class', 'idSpeech');
-                        inputIdSpeechElt.setAttribute('value', response[i].id);
-
-                        var imgElt = document.createElement('img');
-                        imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}' + response[i].user.picture + '');
-
-                        var starElt = document.createElement('i');
-                        starElt.setAttribute('class', 'material-icons');
-                        starElt.textContent = "stars";
-
-                        tdElt1.textContent = date;
-                        tdElt2.textContent = response[i].user.username;
-
-                        tdElt3.appendChild(imgElt);
-                        tdElt4.appendChild(inputIdSpeechElt);
-
-                        trElt.appendChild(tdElt1);
-                        trElt.appendChild(tdElt2);
-                        trElt.appendChild(tdElt3);
-                        trElt.appendChild(tdElt4);
-                        tBodyElt.appendChild(trElt);
                     }
-                    /* We enable marking */
-                    addMerits();
-                }
-            }
-            ajaxUpdateUsers('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
+                    ajaxUpdateUsers('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
+                refresh();
+            },5000);
         }
-
+        refresh();
         /* Method that enables to give a mark */
 
         function ajaxAddMerit(url, callback, idSpeech, idRator){
