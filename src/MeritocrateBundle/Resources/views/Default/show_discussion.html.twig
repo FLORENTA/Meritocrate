@@ -26,9 +26,26 @@
                                 <td><img src="{{ asset('bundles/meritocrate/images/'~speech.user.picture) }}"/></td>
                                 <td>
                                     {% if app.user.id != speech.user.id %}
-                                    <button class="merits">
-                                        <i class="material-icons">stars</i>
-                                    </button>
+                                        {# Let's define an empty variable #}
+                                        {% set rating = "" %}
+
+                                        {# Let's check if the user
+                                           has already marked the speech
+                                         #}
+
+                                        {% for merit in speech.merits %}
+                                            {% if merit.rator.id == app.user.id %}
+                                                {% set rating = 'true' %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if rating != true %}
+                                            <button class="merits">
+                                                <i class="material-icons">stars</i>
+                                            </button>
+                                        {% else %}
+                                            <p> Already rated </p>
+                                        {% endif %}
                                     {% endif %}
                                     <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
                                 </td>

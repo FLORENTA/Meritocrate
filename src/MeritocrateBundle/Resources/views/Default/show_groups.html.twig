@@ -20,7 +20,7 @@
                         <td>{{ group.name }}</td>
                         <td>{{ group.user.fullname }}</td>
                         <td>
-                            {% if group.ongoing == 0 %}
+                            {% if group.ongoing == 1 %}
                                 <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
                                     <button class="btn waves-effect waves-light">
                                         Join
@@ -28,12 +28,10 @@
                                     </button>
                                 </a>
                             {% else %}
-                                <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
-                                    <button class="btn waves-effect waves-light red">
-                                        Closed
-                                        <i class="material-icons left">lock</i>
-                                    </button>
-                                </a>
+                                <button class="btn waves-effect waves-light disabled">
+                                    Closed
+                                    <i class="material-icons left">lock</i>
+                                </button>
                             {% endif %}
                         </td>
                     </tr>
