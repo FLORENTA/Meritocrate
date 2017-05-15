@@ -98,10 +98,11 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $idGroup = $request->request->get('idDiscussion');
             $idLastSpeech = $request->request->get('idLastSpeech');
-
+            dump($request);
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
-            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBefore($idLastSpeech, $discussion);
-            $nbSpeechesBeforeLastId = count($speeches);
+
+            $speech = $em->getRepository('MeritocrateBundle:Speech')->myFindBefore($idLastSpeech, $discussion);
+            $nbSpeechesBeforeLastId = count($speech);
 
             $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindAll($discussion);
             $nbSpeeches = count($speeches);
@@ -116,9 +117,9 @@ class DefaultController extends Controller
             });
             $serializer = new Serializer(array($normalizer), array($encoders));
 
-            $speeches = $serializer->serialize($speeches, "json");
+            $jsonSpeeches = $serializer->serialize($speeches, "json");
 
-            $response = new Response($speeches);
+            $response = new Response($jsonSpeeches);
             $response->headers->set('Content-Type','application/json');
             return $response;
         }
@@ -130,14 +131,14 @@ class DefaultController extends Controller
 
         if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
-
+            dump($request);
             $idSpeaker = $request->request->get('idSpeaker');
             $idRator = $request->request->get('idRator');
             $idDiscussion = $request->request->get('idDiscussion');
             $idSpeech = $request->request->get('idSpeech');
 
             $speaker = $em->getRepository('MeritocrateBundle:User')->findOneById($idSpeaker);
-            $rator = $em->getRepository('MeritocrateBundle:User')->findOneById($idRator);
+            $rator = $em->getRepository('MeritocrateBundle:Rator')->findOneById($idRator);
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idDiscussion);
             $speech = $em->getRepository('MeritocrateBundle:Speech')->findOneById($idSpeech);
 

@@ -17,11 +17,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
+use MeritocrateBundle\Entity\Rator;
 
 class RegistrationController extends BaseController
 {
     public function registerAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $rator = new Rator();
+
         /** @var $formFactory FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
         /** @var $userManager UserManagerInterface */
@@ -56,6 +60,10 @@ class RegistrationController extends BaseController
                 $user->setPicture($fileName);
 
                 $userManager->updateUser($user);
+                $rator->setUser($user);
+
+                $em->persist($rator);
+                $em->flush();
 
                 if (null === $response = $event->getResponse()) {
                     $url = $this->generateUrl('fos_user_registration_confirmed');

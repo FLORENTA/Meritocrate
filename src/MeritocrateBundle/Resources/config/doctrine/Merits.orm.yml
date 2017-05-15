@@ -16,7 +16,7 @@ MeritocrateBundle\Entity\Merits:
             targetEntity: MeritocrateBundle\Entity\User
             inversedBy: merits
         rator:
-            targetEntity: MeritocrateBundle\Entity\User
+            targetEntity: MeritocrateBundle\Entity\Rator
             inversedBy: merits
         discussion:
             targetEntity: MeritocrateBundle\Entity\Discussion

@@ -35,9 +35,9 @@ MeritocrateBundle\Entity\User:
         merits:
             targetEntity: MeritocrateBundle\Entity\Merits
             mappedBy: user
-        merits:
-            targetEntity: MeritocrateBundle\Entity\Merits
-            mappedBy: rator
         speeches:
             targetEntity: MeritocrateBundle\Entity\Speech
+            mappedBy: user
+        rators:
+            targetEntity: MeritocrateBundle\Entity\Rator
             mappedBy: user

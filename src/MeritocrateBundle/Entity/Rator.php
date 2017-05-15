@@ -3,20 +3,15 @@
 namespace MeritocrateBundle\Entity;
 
 /**
- * Speech
+ * Rator
  */
-class Speech
+class Rator
 {
 
     /**
      * @var integer
      */
     private $id;
-
-    /**
-     * @var \DateTime
-     */
-    private $timestamp;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -29,17 +24,11 @@ class Speech
     private $user;
 
     /**
-     * @var \MeritocrateBundle\Entity\Discussion
-     */
-    private $discussion;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->merits = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->timestamp = new \DateTime();
     }
 
     /**
@@ -53,21 +42,11 @@ class Speech
     }
 
     /**
-     * Get timestamp
-     *
-     * @return \DateTime
-     */
-    public function getTimestamp()
-    {
-        return $this->timestamp;
-    }
-
-    /**
      * Add merit
      *
      * @param \MeritocrateBundle\Entity\Merits $merit
      *
-     * @return Speech
+     * @return Rator
      */
     public function addMerit(\MeritocrateBundle\Entity\Merits $merit)
     {
@@ -101,7 +80,7 @@ class Speech
      *
      * @param \MeritocrateBundle\Entity\User $user
      *
-     * @return Speech
+     * @return Rator
      */
     public function setUser(\MeritocrateBundle\Entity\User $user = null)
     {
@@ -118,29 +97,5 @@ class Speech
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set discussion
-     *
-     * @param \MeritocrateBundle\Entity\Discussion $discussion
-     *
-     * @return Speech
-     */
-    public function setDiscussion(\MeritocrateBundle\Entity\Discussion $discussion = null)
-    {
-        $this->discussion = $discussion;
-
-        return $this;
-    }
-
-    /**
-     * Get discussion
-     *
-     * @return \MeritocrateBundle\Entity\Discussion
-     */
-    public function getDiscussion()
-    {
-        return $this->discussion;
     }
 }

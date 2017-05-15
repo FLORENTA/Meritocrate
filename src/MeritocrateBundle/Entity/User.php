@@ -9,46 +9,46 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class User extends BaseUser
 {
-    /**
-     * @var integer
-     */
-
-    protected $id;
 
     /**
      * @var string
      */
-    protected $fullname;
+    private $fullname;
 
     /**
      * @var \DateTime
      */
-    protected $dateofbirth;
+    private $dateofbirth;
 
     /**
      * @var string
      */
-    protected $gender;
+    private $gender;
 
     /**
      * @var string
      */
-    protected $nationality;
+    private $nationality;
 
     /**
      * @var string
      */
-    protected $ethnicity;
+    private $ethnicity;
 
     /**
      * @var string
      */
-    protected $picture;
+    private $picture;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $merits;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $speeches;
 
 
     /**
@@ -228,11 +228,6 @@ class User extends BaseUser
     {
         return $this->merits;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $speeches;
-
 
     /**
      * Add speech
@@ -266,5 +261,44 @@ class User extends BaseUser
     public function getSpeeches()
     {
         return $this->speeches;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $rators;
+
+
+    /**
+     * Add rator
+     *
+     * @param \MeritocrateBundle\Entity\Rator $rator
+     *
+     * @return User
+     */
+    public function addRator(\MeritocrateBundle\Entity\Rator $rator)
+    {
+        $this->rators[] = $rator;
+
+        return $this;
+    }
+
+    /**
+     * Remove rator
+     *
+     * @param \MeritocrateBundle\Entity\Rator $rator
+     */
+    public function removeRator(\MeritocrateBundle\Entity\Rator $rator)
+    {
+        $this->rators->removeElement($rator);
+    }
+
+    /**
+     * Get rators
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRators()
+    {
+        return $this->rators;
     }
 }

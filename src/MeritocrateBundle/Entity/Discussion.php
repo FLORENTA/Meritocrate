@@ -1,14 +1,17 @@
 <?php
 
 namespace MeritocrateBundle\Entity;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Discussion
  */
 class Discussion
 {
+
     /**
-     * @var int
+     * @var integer
      */
     private $id;
 
@@ -22,11 +25,30 @@ class Discussion
      */
     private $datecreation;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $merits;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $speeches;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->merits = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->speeches = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->datecreation = new \DateTime();
+    }
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -66,19 +88,6 @@ class Discussion
     {
         return $this->datecreation;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $merits;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->merits = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->datecreation = new \DateTime();
-    }
 
     /**
      * Add merit
@@ -113,23 +122,38 @@ class Discussion
     {
         return $this->merits;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $users;
-
 
     /**
-     * Set datecreation
+     * Add speech
      *
-     * @param \DateTime $datecreation
+     * @param \MeritocrateBundle\Entity\Speech $speech
      *
      * @return Discussion
      */
-    public function setDatecreation($datecreation)
+    public function addSpeech(\MeritocrateBundle\Entity\Speech $speech)
     {
-        $this->datecreation = $datecreation;
+        $this->speeches[] = $speech;
 
         return $this;
+    }
+
+    /**
+     * Remove speech
+     *
+     * @param \MeritocrateBundle\Entity\Speech $speech
+     */
+    public function removeSpeech(\MeritocrateBundle\Entity\Speech $speech)
+    {
+        $this->speeches->removeElement($speech);
+    }
+
+    /**
+     * Get speeches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSpeeches()
+    {
+        return $this->speeches;
     }
 }

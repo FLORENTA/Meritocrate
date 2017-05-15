@@ -3,9 +3,9 @@
 namespace MeritocrateBundle\Entity;
 
 /**
- * Speech
+ * Rator
  */
-class Speech
+class Rator
 {
 
 }

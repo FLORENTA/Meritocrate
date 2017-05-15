@@ -24,7 +24,7 @@ class Merits
     private $user;
 
     /**
-     * @var \MeritocrateBundle\Entity\User
+     * @var \MeritocrateBundle\Entity\Rator
      */
     private $rator;
 
@@ -54,9 +54,7 @@ class Merits
      */
     public function __construct()
     {
-        $this->datecreation = new \DateTime();
-
-        return $this;
+       $this->datecreation = new \DateTime();
     }
 
     /**
@@ -96,11 +94,11 @@ class Merits
     /**
      * Set rator
      *
-     * @param \MeritocrateBundle\Entity\User $rator
+     * @param \MeritocrateBundle\Entity\Rator $rator
      *
      * @return Merits
      */
-    public function setRator(\MeritocrateBundle\Entity\User $rator = null)
+    public function setRator(\MeritocrateBundle\Entity\Rator $rator = null)
     {
         $this->rator = $rator;
 
@@ -110,7 +108,7 @@ class Merits
     /**
      * Get rator
      *
-     * @return \MeritocrateBundle\Entity\User
+     * @return \MeritocrateBundle\Entity\Rator
      */
     public function getRator()
     {

@@ -19,7 +19,6 @@ MeritocrateBundle\Entity\Discussion:
         merits:
             targetEntity: MeritocrateBundle\Entity\Merits
             mappedBy: discussion
-    oneToMany:
         speeches:
             targetEntity: MeritocrateBundle\Entity\Speech
             mappedBy: discussion
