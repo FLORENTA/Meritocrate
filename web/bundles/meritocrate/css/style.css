@@ -1,6 +1,6 @@
 body{
     font-family: 'Roboto', sans-serif;
-    background: #e0f7fa;
+    background: #fcfcfc;
 }
 
 .col-board{
@@ -41,4 +41,8 @@ td:nth-of-type(3) img{
 
 #group-date-creation{
     font-size: 1.2em;
+}
+
+#processing{
+    display: none;
 }

@@ -112,13 +112,16 @@ class DefaultController extends Controller
             $nbSpeeches = count($speeches);
 
             $max = $nbSpeeches - $nbSpeechesBeforeLastId;
-            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion, $max, array(
-                'id' => 'desc'
-            ));
+            $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindBy($idLastSpeech, $discussion, $max);
 
-            $jsonSpeech = json_encode($speeches);
-            $response = new Response($jsonSpeech);
-            return $response;
+            if(count($speeches) > 0){
+                $jsonSpeech = json_encode($speeches);
+                $response = new Response($jsonSpeech);
+                return $response;
+            }
+            else{
+                return new Response('NOR');
+            }
         }
     }
 

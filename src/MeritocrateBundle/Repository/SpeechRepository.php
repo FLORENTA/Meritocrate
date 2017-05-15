@@ -30,7 +30,7 @@ class SpeechRepository extends \Doctrine\ORM\EntityRepository
     public function myFindBefore($idLastSpeech, $discussion){
         $qb = $this->createQueryBuilder('s');
         $qb->where('s.id < :start')->setParameter('start', $idLastSpeech)
-            ->AndWhere('s.discussion = :discussion')->setParameter('discussion', $discussion);
+            ->andWhere('s.discussion = :discussion')->setParameter('discussion', $discussion);
         return $qb->getQuery()->getResult();
     }
 
@@ -38,7 +38,6 @@ class SpeechRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->createQueryBuilder('s');
         $qb->select('s.id, s.timestamp')
-
             ->join('s.user', 'u')
             ->addSelect('u.username, u.picture')
             ->where('s.id > :start')
@@ -47,7 +46,9 @@ class SpeechRepository extends \Doctrine\ORM\EntityRepository
                 'discussion' => $discussion,
                 'start' => $idLastSpeech
             ))
+            ->orderBy('s.id', 'DESC')
             ->setMaxResults($max);
+
         return $qb->getQuery()->getResult();
     }
 }

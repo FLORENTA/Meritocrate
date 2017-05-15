@@ -1,6 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <ul class="left hide-on-med-and-down">
+                    <li><a class="waves-effect waves-light btn">Logout <i class="material-icons left">exit</i></a></li>
+                    <li id="speak"><a class="waves-effect waves-light btn">Press to speak <i class="material-icons left">mic</i></a></li>
+                    <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">mic</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
     <div class="container">
         <h2>Meritocrate</h2>
         <div class="row">
@@ -8,12 +20,6 @@
                 <h4>{{ group.name }} Group </h4>
                 <p id="group-date-creation"> Created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
             </div>
-        </div>
-        <div class="row">
-            <button class="btn waves-effet waves-light" id="speak">
-                Press to speak
-                <i class="material-icons left">mic</i>
-            </button>
         </div>
         <div class="row">
             <table class="highlight centered">
@@ -56,7 +62,6 @@
                                                 <i class="material-icons">stars</i>
                                             </button>
                                         {% endif %}
-
                                     {% endif %}
                                     <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
                                 </td>
@@ -80,11 +85,9 @@
         /* Which discussion group are we in ? */
         var idGroup = {{ group.id }};
 
-        /* Button Press to speak */
+        /* Button "Press to speak" */
         var buttonSpeakElt = document.getElementById('speak');
-
-        /* Button Refresh list of speakers */
-        var buttonRefreshElt = document.getElementById('refresh');
+        var buttonProcessElt = document.getElementById('processing');
 
         /* tBody */
         var tBodyElt = document.getElementById('tbody');
@@ -104,14 +107,15 @@
         }
 
         buttonSpeakElt.addEventListener("click", function(){
-            this.disabled = true;
+            this.style.display = "none";
+            buttonProcessElt.style.display = "block";
+
             var idUser = {{ user.id }};
 
             function show(response){
                 setTimeout(function(){
                     buttonSpeakElt.disabled = false;
                 }, 3000);
-
             }
             ajaxPost('{{ path('meritocrate_set_speaker') }}', show, idUser, idGroup);
         });
@@ -137,7 +141,6 @@
         var idLastSpeech;
         var tBodyTrElts = document.querySelectorAll('#tbody tr');
         var tBodyTrEltsLength = tBodyTrElts.length;
-        console.log(tBodyTrEltsLength);
 
         if(tBodyTrEltsLength == 0){
             idLastSpeech = 0;
@@ -145,20 +148,22 @@
         else{
             idLastSpeech = tBodyTrElts[0].childNodes[7].lastElementChild.getAttribute('value');
         }
-        console.log(idLastSpeech);
 
         function refresh() {
             setTimeout(function () {
-                    console.log(idLastSpeech);
                     /* Function executed in case of success of the request */
                     function show(response) {
-                        if (response.length > 0) {
-                            var response = JSON.parse(response);
-
-                            idLastSpeech = response[response.length - 1].id;
+                        if (response !== "NOR") {
+                            buttonProcessElt.style.display = "none";
+                            buttonSpeakElt.style.display = "block";
+                            response = JSON.parse(response);
+                            idLastSpeech = response[0].id;
 
                             /* Let's loop over the response results */
-                            for (i = 0; i < response.length; i++) {
+                            for (i=response.length-1; i>=0; i--) {
+
+                                var tBodyTrElts = document.querySelectorAll('#tbody tr');
+
                                 /* We catch the date & filters it to display the hour only */
                                 var date = response[i].timestamp['date'];
                                 date = date.substr(11, 8);
@@ -169,7 +174,6 @@
                                 var tdElt1 = document.createElement('td');
                                 var tdElt2 = document.createElement('td');
                                 var tdElt3 = document.createElement('td');
-
                                 var tdElt4 = document.createElement('td');
 
                                 var starElt = document.createElement('i');
@@ -202,15 +206,40 @@
                                 trElt.appendChild(tdElt2);
                                 trElt.appendChild(tdElt3);
                                 trElt.appendChild(tdElt4);
+                                trElt.style.opacity = '0';
                                 tBodyElt.insertBefore(trElt, tBodyTrElts[0]);
                             }
+
+                            /* Let's apply a fadeIn effect to the new rows */
+                            tBodyTrElts = document.querySelectorAll('#tbody tr');
+                            for(i=0; i<response.length; i++){
+                                style(tBodyTrElts[i]);
+                            }
+
+                            function style(row) {
+                                var opacity = 0;
+                                var transparency = setInterval(opacityPlus, 50);
+
+                                function opacityPlus() {
+                                    opacity += 0.025;
+                                    if (row.style.opacity <= 1) {
+                                        row.style.opacity = '' + opacity + '';
+                                    }
+                                    else {
+                                        clearInterval(transparency);
+                                        /* Set back to 0 for next rows */
+                                        opacity = 0;
+                                    }
+                                }
+                            }
+
                             /* We enable marking */
                             addMerits();
                         }
                     }
                     ajaxUpdateUsers('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
                 refresh();
-            },5000);
+            }, 7000);
         }
         refresh();
         /* Method that enables to give a mark */
@@ -230,7 +259,7 @@
 
         function addMerits() {
             var meritElts = document.getElementsByClassName('merits');
-            console.log(meritElts.length);
+
             for (i = 0; i < meritElts.length; i++) {
                 meritElts[i].addEventListener("click", function () {
                     this.disabled = true;
@@ -241,11 +270,12 @@
                     function show(response) {
                         console.log(response);
                     }
-
                     ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idSpeech, idRator);
                 });
             }
         }
         addMerits();
+
+        /* By Florent Alemany, Wild Code School Fontainebleau, May 2017 */
 </script>
 {% endblock %}
