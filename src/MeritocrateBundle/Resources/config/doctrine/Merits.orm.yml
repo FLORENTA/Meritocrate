@@ -12,14 +12,8 @@ MeritocrateBundle\Entity\Merits:
         datecreation:
             type: datetimetz
     manyToOne:
-        user:
-            targetEntity: MeritocrateBundle\Entity\User
-            inversedBy: merits
         rator:
-            targetEntity: MeritocrateBundle\Entity\Rator
-            inversedBy: merits
-        discussion:
-            targetEntity: MeritocrateBundle\Entity\Discussion
+            targetEntity: MeritocrateBundle\Entity\User
             inversedBy: merits
         speech:
             targetEntity: MeritocrateBundle\Entity\Speech

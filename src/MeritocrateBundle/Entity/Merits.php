@@ -21,17 +21,7 @@ class Merits
     /**
      * @var \MeritocrateBundle\Entity\User
      */
-    private $user;
-
-    /**
-     * @var \MeritocrateBundle\Entity\Rator
-     */
     private $rator;
-
-    /**
-     * @var \MeritocrateBundle\Entity\Discussion
-     */
-    private $discussion;
 
     /**
      * @var \MeritocrateBundle\Entity\Speech
@@ -54,7 +44,9 @@ class Merits
      */
     public function __construct()
     {
-       $this->datecreation = new \DateTime();
+        $this->datecreation = new \DateTime();
+
+        return $this;
     }
 
     /**
@@ -68,37 +60,13 @@ class Merits
     }
 
     /**
-     * Set user
-     *
-     * @param \MeritocrateBundle\Entity\User $user
-     *
-     * @return Merits
-     */
-    public function setUser(\MeritocrateBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \MeritocrateBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * Set rator
      *
-     * @param \MeritocrateBundle\Entity\Rator $rator
+     * @param \MeritocrateBundle\Entity\User $rator
      *
      * @return Merits
      */
-    public function setRator(\MeritocrateBundle\Entity\Rator $rator = null)
+    public function setRator(\MeritocrateBundle\Entity\User $rator = null)
     {
         $this->rator = $rator;
 
@@ -108,35 +76,11 @@ class Merits
     /**
      * Get rator
      *
-     * @return \MeritocrateBundle\Entity\Rator
+     * @return \MeritocrateBundle\Entity\User
      */
     public function getRator()
     {
         return $this->rator;
-    }
-
-    /**
-     * Set discussion
-     *
-     * @param \MeritocrateBundle\Entity\Discussion $discussion
-     *
-     * @return Merits
-     */
-    public function setDiscussion(\MeritocrateBundle\Entity\Discussion $discussion = null)
-    {
-        $this->discussion = $discussion;
-
-        return $this;
-    }
-
-    /**
-     * Get discussion
-     *
-     * @return \MeritocrateBundle\Entity\Discussion
-     */
-    public function getDiscussion()
-    {
-        return $this->discussion;
     }
 
     /**

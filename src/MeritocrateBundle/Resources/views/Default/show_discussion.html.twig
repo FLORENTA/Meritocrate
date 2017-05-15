@@ -25,11 +25,12 @@
                                 <td>{{ speech.user.username }}</td>
                                 <td><img src="{{ asset('bundles/meritocrate/images/'~speech.user.picture) }}"/></td>
                                 <td>
+                                    {% if app.user.id != speech.user.id %}
                                     <button class="merits">
-                                        <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
-                                        <input type="hidden" class="idSpeaker" value="{{ speech.user.id }}"/>
                                         <i class="material-icons">stars</i>
                                     </button>
+                                    {% endif %}
+                                    <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -56,10 +57,17 @@
 {% endblock %}
 {% block javascripts %}
 <script type="text/javascript">
+
+        /* Which discussion group are we in ? */
         var idGroup = {{ group.id }};
 
+        /* Button Press to speak */
         var buttonSpeakElt = document.getElementById('speak');
+
+        /* Button Refresh list of speakers */
         var buttonRefreshElt = document.getElementById('refresh');
+
+        /* tBody */
         var tBodyElt = document.getElementById('tbody');
 
         /***** SENDS A REQUEST WHEN SOMEONE PRESSES TO SPEAK *****/
@@ -81,7 +89,6 @@
             var idUser = {{ user.id }};
 
             function show(response){
-                alert(response);
                 buttonSpeakElt.disabled = false;
             }
             ajaxPost('{{ path('meritocrate_set_speaker') }}', show, idUser, idGroup);
@@ -114,9 +121,8 @@
             idLastSpeech = 0;
         }
         else{
-            idLastSpeech = tBodyTrElts[tBodyTrEltsLength-1].childNodes[7].childNodes[1].childNodes[1].getAttribute('value');
+            idLastSpeech = tBodyTrElts[tBodyTrEltsLength-1].childNodes[7].lastElementChild.getAttribute('value');
         }
-        console.log(idLastSpeech);
 
         buttonRefreshElt.addEventListener("click", addSpeeches);
 
@@ -143,18 +149,19 @@
                         var tdElt3 = document.createElement('td');
 
                         var tdElt4 = document.createElement('td');
-                        var buttonTdElt4 = document.createElement('button');
-                        buttonTdElt4.setAttribute('class', 'merits');
+
+                        if( ({{ app.user.id }}) !== response[i].user.id){
+                            var buttonTdElt4 = document.createElement('button');
+                            buttonTdElt4.setAttribute('class', 'merits');
+                            buttonTdElt4.style.display = "none";
+                            buttonTdElt4.appendChild(starElt);
+                            tdElt4.appendChild(buttonTdElt4);
+                        }
 
                         var inputIdSpeechElt = document.createElement('input');
                         inputIdSpeechElt.setAttribute('type', 'hidden');
                         inputIdSpeechElt.setAttribute('class', 'idSpeech');
                         inputIdSpeechElt.setAttribute('value', response[i].id);
-
-                        var inputIdSpeakerElt = document.createElement('input');
-                        inputIdSpeakerElt.setAttribute('type', 'hidden');
-                        inputIdSpeakerElt.setAttribute('class', 'idSpeaker');
-                        inputIdSpeakerElt.setAttribute('value', response[i].user.id);
 
                         var imgElt = document.createElement('img');
                         imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}' + response[i].user.picture + '');
@@ -167,10 +174,7 @@
                         tdElt2.textContent = response[i].user.username;
 
                         tdElt3.appendChild(imgElt);
-                        buttonTdElt4.appendChild(inputIdSpeechElt);
-                        buttonTdElt4.appendChild(inputIdSpeakerElt);
-                        buttonTdElt4.appendChild(starElt);
-                        tdElt4.appendChild(buttonTdElt4);
+                        tdElt4.appendChild(inputIdSpeechElt);
 
                         trElt.appendChild(tdElt1);
                         trElt.appendChild(tdElt2);
@@ -178,45 +182,16 @@
                         trElt.appendChild(tdElt4);
                         tBodyElt.appendChild(trElt);
                     }
-                    function ajaxAddMerit(url, callback, idGroup, idSpeaker, idSpeech, idRator){
-                        var req = new XMLHttpRequest();
-                        req.open('post', url, true);
-                        req.addEventListener("load", function(){
-                            if(req.status >=200 && req.status <400){
-                                callback(req.responseText);
-                            }
-                        });
-                        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                        req.send("idSpeaker="+idSpeaker+"&idDiscussion="+idGroup+"&idSpeech="+idSpeech+"&idRator="+idRator+"");
-                    }
-
-                    var meritElts = document.getElementsByClassName('merits');
-                    console.log(meritElts.length);
-                    for(i=0; i<meritElts.length; i++){
-                        meritElts[i].addEventListener("click", function(){
-
-                            this.lastElementChild.style.color = "gold";
-                            var idSpeech = this.childNodes[0].getAttribute('value');
-                            var idSpeaker = this.childNodes[1].getAttribute('value');
-                            this.disabled = true;
-                            var idRator = {{ user.id }};
-                            console.log(idSpeech);
-                            console.log(idSpeaker);
-
-                            function show(response){
-                                console.log(response);
-                            }
-
-                            ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idGroup, idSpeaker, idSpeech, idRator);
-                        });
-                    }
+                    /* We enable marking */
+                    addMerits();
                 }
             }
             ajaxUpdateUsers('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
         }
 
-        function ajaxAddMerit(url, callback, idGroup, idSpeaker, idSpeech, idRator){
+        /* Method that enables to give a mark */
+
+        function ajaxAddMerit(url, callback, idSpeech, idRator){
             var req = new XMLHttpRequest();
             req.open('post', url, true);
             req.addEventListener("load", function(){
@@ -226,25 +201,27 @@
             });
             req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            req.send("idSpeaker="+idSpeaker+"&idDiscussion="+idGroup+"&idSpeech="+idSpeech+"&idRator="+idRator+"");
+            req.send("idSpeech="+idSpeech+"&idRator="+idRator+"");
         }
 
-        var meritElts = document.getElementsByClassName('merits');
-        console.log(meritElts.length);
-        for(i=0; i<meritElts.length; i++){
-            meritElts[i].addEventListener("click", function(){
-                this.disabled = true;
-                this.lastElementChild.style.color = "gold";
-                var idSpeech = this.childNodes[1].getAttribute('value');
-                var idSpeaker = this.childNodes[3].getAttribute('value');
-                var idRator = {{ user.id }};
+        function addMerits() {
+            var meritElts = document.getElementsByClassName('merits');
+            console.log(meritElts.length);
+            for (i = 0; i < meritElts.length; i++) {
+                meritElts[i].addEventListener("click", function () {
+                    this.disabled = true;
+                    this.lastElementChild.style.color = "gold";
+                    var idSpeech = this.nextElementSibling.getAttribute('value');
+                    var idRator = {{ user.id }};
 
-                function show(response){
-                    console.log(response);
-                }
+                    function show(response) {
+                        console.log(response);
+                    }
 
-                ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idGroup, idSpeaker, idSpeech, idRator);
-            });
+                    ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idSpeech, idRator);
+                });
+            }
         }
+        addMerits();
 </script>
 {% endblock %}

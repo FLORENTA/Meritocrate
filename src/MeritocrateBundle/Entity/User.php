@@ -265,40 +265,40 @@ class User extends BaseUser
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $rators;
+    private $discussions;
 
 
     /**
-     * Add rator
+     * Add discussion
      *
-     * @param \MeritocrateBundle\Entity\Rator $rator
+     * @param \MeritocrateBundle\Entity\Discussion $discussion
      *
      * @return User
      */
-    public function addRator(\MeritocrateBundle\Entity\Rator $rator)
+    public function addDiscussion(\MeritocrateBundle\Entity\Discussion $discussion)
     {
-        $this->rators[] = $rator;
+        $this->discussions[] = $discussion;
 
         return $this;
     }
 
     /**
-     * Remove rator
+     * Remove discussion
      *
-     * @param \MeritocrateBundle\Entity\Rator $rator
+     * @param \MeritocrateBundle\Entity\Discussion $discussion
      */
-    public function removeRator(\MeritocrateBundle\Entity\Rator $rator)
+    public function removeDiscussion(\MeritocrateBundle\Entity\Discussion $discussion)
     {
-        $this->rators->removeElement($rator);
+        $this->discussions->removeElement($discussion);
     }
 
     /**
-     * Get rators
+     * Get discussions
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRators()
+    public function getDiscussions()
     {
-        return $this->rators;
+        return $this->discussions;
     }
 }

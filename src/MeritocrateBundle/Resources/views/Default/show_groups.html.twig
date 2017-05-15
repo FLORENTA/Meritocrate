@@ -9,6 +9,7 @@
                     <tr>
                         <th>Date of Creation</th>
                         <th>Group Name</th>
+                        <th>Created By</th>
                         <th>Join</th>
                     </tr>
                 </thead>
@@ -17,13 +18,23 @@
                     <tr>
                         <td>{{ group.datecreation|date('m/d/Y') }}, {{ group.datecreation|date('h:i:s a') }}</td>
                         <td>{{ group.name }}</td>
+                        <td>{{ group.user.fullname }}</td>
                         <td>
-                            <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
-                                <button class="btn waves-effect waves-light">
-                                    Join
-                                <i class="material-icons left">lock_open</i>
-                                </button>
-                            </a>
+                            {% if group.ongoing == 0 %}
+                                <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
+                                    <button class="btn waves-effect waves-light">
+                                        Join
+                                    <i class="material-icons left">lock_open</i>
+                                    </button>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
+                                    <button class="btn waves-effect waves-light red">
+                                        Closed
+                                        <i class="material-icons left">lock</i>
+                                    </button>
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

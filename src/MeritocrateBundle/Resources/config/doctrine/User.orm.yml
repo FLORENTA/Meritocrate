@@ -34,10 +34,10 @@ MeritocrateBundle\Entity\User:
     oneToMany:
         merits:
             targetEntity: MeritocrateBundle\Entity\Merits
-            mappedBy: user
+            mappedBy: rator
         speeches:
             targetEntity: MeritocrateBundle\Entity\Speech
             mappedBy: user
-        rators:
-            targetEntity: MeritocrateBundle\Entity\Rator
+        discussions:
+            targetEntity: MeritocrateBundle\Entity\Discussion
             mappedBy: user

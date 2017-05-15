@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class Discussion
 {
-
     /**
      * @var integer
      */
@@ -28,11 +27,6 @@ class Discussion
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $merits;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $speeches;
 
     /**
@@ -40,9 +34,9 @@ class Discussion
      */
     public function __construct()
     {
-        $this->merits = new \Doctrine\Common\Collections\ArrayCollection();
         $this->speeches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->datecreation = new \DateTime();
+        $this->ongoing = 1;
     }
 
     /**
@@ -90,40 +84,6 @@ class Discussion
     }
 
     /**
-     * Add merit
-     *
-     * @param \MeritocrateBundle\Entity\Merits $merit
-     *
-     * @return Discussion
-     */
-    public function addMerit(\MeritocrateBundle\Entity\Merits $merit)
-    {
-        $this->merits[] = $merit;
-
-        return $this;
-    }
-
-    /**
-     * Remove merit
-     *
-     * @param \MeritocrateBundle\Entity\Merits $merit
-     */
-    public function removeMerit(\MeritocrateBundle\Entity\Merits $merit)
-    {
-        $this->merits->removeElement($merit);
-    }
-
-    /**
-     * Get merits
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMerits()
-    {
-        return $this->merits;
-    }
-
-    /**
      * Add speech
      *
      * @param \MeritocrateBundle\Entity\Speech $speech
@@ -155,5 +115,48 @@ class Discussion
     public function getSpeeches()
     {
         return $this->speeches;
+    }
+    /**
+     * @var \MeritocrateBundle\Entity\User
+     */
+    private $user;
+
+    /**
+     * Set user
+     *
+     * @param \MeritocrateBundle\Entity\User $user
+     *
+     * @return Discussion
+     */
+    public function setUser(\MeritocrateBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \MeritocrateBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @var boolean
+     */
+    private $ongoing;
+
+    /**
+     * Get ongoing
+     *
+     * @return boolean
+     */
+    public function getOngoing()
+    {
+        return $this->ongoing;
     }
 }

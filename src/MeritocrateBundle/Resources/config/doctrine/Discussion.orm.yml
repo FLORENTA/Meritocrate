@@ -15,11 +15,14 @@ MeritocrateBundle\Entity\Discussion:
             unique: true
         datecreation:
             type: datetimetz
+        ongoing:
+            type: boolean
     oneToMany:
-        merits:
-            targetEntity: MeritocrateBundle\Entity\Merits
-            mappedBy: discussion
         speeches:
             targetEntity: MeritocrateBundle\Entity\Speech
             mappedBy: discussion
+    manyToOne:
+        user:
+            targetEntity: MeritocrateBundle\Entity\User
+            inversedBy: discussions
 

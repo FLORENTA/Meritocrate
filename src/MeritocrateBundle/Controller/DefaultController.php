@@ -36,6 +36,8 @@ class DefaultController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $discussion->setUser($this->getUser());
             $em->persist($discussion);
             $em->flush();
 
@@ -86,6 +88,8 @@ class DefaultController extends Controller
             $speech->setUser($user);
             $speech->setDiscussion($discussion);
 
+            $user->addSpeech($speech);
+
             $em->persist($speech);
             $em->flush();
 
@@ -93,12 +97,12 @@ class DefaultController extends Controller
         }
     }
 
-    public function getSpeakerAction(Request $request){
+    public function getSpeechAction(Request $request){
         if($request->isXmlHttpRequest()){
             $em = $this->getDoctrine()->getManager();
             $idGroup = $request->request->get('idDiscussion');
             $idLastSpeech = $request->request->get('idLastSpeech');
-            dump($request);
+
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
 
             $speech = $em->getRepository('MeritocrateBundle:Speech')->myFindBefore($idLastSpeech, $discussion);
@@ -112,8 +116,9 @@ class DefaultController extends Controller
 
             $encoders = new JsonEncoder();
             $normalizer = new ObjectNormalizer();
-            $normalizer->setCircularReferenceHandler(function ($speeches) {
-                return $speeches->getId();
+            $normalizer->setIgnoredAttributes(array('discussion'));
+            $normalizer->setCircularReferenceHandler(function($speeches){
+               return $speeches->getId();
             });
             $serializer = new Serializer(array($normalizer), array($encoders));
 
@@ -132,19 +137,16 @@ class DefaultController extends Controller
         if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
             dump($request);
-            $idSpeaker = $request->request->get('idSpeaker');
             $idRator = $request->request->get('idRator');
-            $idDiscussion = $request->request->get('idDiscussion');
             $idSpeech = $request->request->get('idSpeech');
 
-            $speaker = $em->getRepository('MeritocrateBundle:User')->findOneById($idSpeaker);
-            $rator = $em->getRepository('MeritocrateBundle:Rator')->findOneById($idRator);
-            $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idDiscussion);
+            $rator = $em->getRepository('MeritocrateBundle:User')->findOneById($idRator);
             $speech = $em->getRepository('MeritocrateBundle:Speech')->findOneById($idSpeech);
 
-            $merit->setUser($speaker);
+            $speech->addMerit($merit);
+            $rator->addMerit($merit);
+
             $merit->setRator($rator);
-            $merit->setDiscussion($discussion);
             $merit->setSpeech($speech);
 
             $em->persist($merit);
