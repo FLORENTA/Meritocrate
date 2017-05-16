@@ -10,7 +10,11 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
 </head>
+{% if app.request.get('_route') == "meritocrate_homepage" %}
+<body id="body-homepage">
+{% else %}
 <body>
+{% endif %}
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper nav-custom">

@@ -31,7 +31,7 @@
                             <tr>
                                 <td>{{ speech.timestamp|date('h:i:s a') }}</td>
                                 <td>{{ speech.user.username }}</td>
-                                <td><img src="{{ asset('bundles/meritocrate/images/'~speech.user.picture) }}"/></td>
+                                <td><img src="{{ asset('bundles/images/'~speech.user.picture) }}"/></td>
                                 <td>
                                     {% if app.user.id != speech.user.id %}
                                         {# Let's define an empty variable #}
@@ -182,7 +182,7 @@
                                 inputIdSpeechElt.setAttribute('value', response[i].id);
 
                                 var imgElt = document.createElement('img');
-                                imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}' + response[i].picture + '');
+                                imgElt.setAttribute('src', '{{ asset('bundles/images/') }}' + response[i].picture + '');
 
                                 tdElt1.textContent = date;
                                 tdElt2.textContent = response[i].username;

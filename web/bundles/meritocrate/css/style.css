@@ -1,9 +1,15 @@
 /*
+
 I. BODY
 II. NAVBAR
 III.
 
- */
+*/
+
+#body-homepage{
+    background: url('../images/homepage-background.jpg') fixed no-repeat center;
+    background-size: cover;
+}
 
 body{
     font-family: 'Roboto', sans-serif;
@@ -18,6 +24,14 @@ body{
     .container-custom {
         width: 100%;
     }
+
+    button{
+        width: 100%;
+    }
+}
+
+.col-homepage{
+    margin-top: 50px;
 }
 
 .col-board{
@@ -31,6 +45,7 @@ h2{
     color: #fff;
     background: #26a69a;
     padding: 20px;
+    box-shadow: 0 1px 5px black;
 }
 
 /* Specific discussion group table */

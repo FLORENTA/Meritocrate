@@ -1,3 +1,7 @@
+/**
+ * Created by Florent on 16/05/2017.
+ */
+
 $(document).ready(function() {
     Materialize.updateTextFields();
 
@@ -6,4 +10,3 @@ $(document).ready(function() {
         selectYears: 150
     });
 });
-
