@@ -10,4 +10,21 @@ namespace MeritocrateBundle\Repository;
  */
 class MeritsRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function MyFindMerits($speech){
+        $qb = $this->createQueryBuilder('m');
+
+        $qb->where('m.speech = :speech')
+           ->setParameter('speech', $speech);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function MyFindStatsPerPupil($speech){
+        $qb = $this->createQueryBuilder('m');
+        $qb->join('m.speech', 's')
+            ->join('s.')
+
+            ->where('m.speech = :speech')
+            ->setParameter('speech', $speech);
+        return $qb->getQuery()->getResult();
+    }
 }

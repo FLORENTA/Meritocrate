@@ -20,6 +20,10 @@ body{
     background: black;
 }
 
+.container-statistics-page{
+    margin-top: 50px;
+}
+
 @media all and (max-width: 768px){
     .container-custom {
         width: 100%;

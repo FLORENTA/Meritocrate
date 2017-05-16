@@ -79,5 +79,5 @@ fos_user:
         form:
             type: MeritocrateBundle\Form\RegistrationType
     from_email:
-            address: you@example.com
-            sender_name: You
+            address: florent.alemany@gmail.com
+            sender_name: florent

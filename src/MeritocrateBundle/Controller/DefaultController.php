@@ -37,7 +37,9 @@ class DefaultController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $discussion->setUser($this->getUser());
+            $user = $em->getRepository('MeritocrateBundle:User')->findOneById($this->getUser()->getId());
+
+            $discussion->setUser($user);
             $em->persist($discussion);
             $em->flush();
 
@@ -68,14 +70,23 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
         $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindAll($discussion);
-        $merits = $em->getRepository('MeritocrateBundle:Merits')->findBy(array(
-            'speech' => $speeches
-        ));
+
+        foreach($speeches as $speech) {
+            $merits[] = $em->getRepository('MeritocrateBundle:Merits')->MyFindMerits($speech);
+        }
+
+        foreach($speeches as $speech){
+            foreach($speech->getMerits() as $merit){
+                $users[] = $merit->getSpeech()->getUser()->getUsername();
+            };
+        }
+
+        $statistics = array_count_values($users);
 
         return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
             'group' => $discussion,
             'merits' => $merits,
-            'speeches' => $speeches
+            'statistics' => $statistics
         ));
     }
 
@@ -103,6 +114,7 @@ class DefaultController extends Controller
             $speech->setDiscussion($discussion);
 
             $user->addSpeech($speech);
+            $discussion->addSpeech($speech);
 
             $em->persist($speech);
             $em->flush();
@@ -114,7 +126,7 @@ class DefaultController extends Controller
     public function getSpeechAction(Request $request){
         if($request->isXmlHttpRequest()){
             $em = $this->getDoctrine()->getManager();
-            dump($request);
+
             $idGroup = $request->request->get('idDiscussion');
             $idLastSpeech = $request->request->get('idLastSpeech');
 
@@ -146,7 +158,7 @@ class DefaultController extends Controller
 
         if ($request->isXmlHttpRequest()) {
             $em = $this->getDoctrine()->getManager();
-            dump($request);
+
             $idRator = $request->request->get('idRator');
             $idSpeech = $request->request->get('idSpeech');
 
