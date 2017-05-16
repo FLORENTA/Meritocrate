@@ -1,6 +1,23 @@
+/*
+I. BODY
+II. NAVBAR
+III.
+
+ */
+
 body{
     font-family: 'Roboto', sans-serif;
     background: #fcfcfc;
+}
+
+.nav-custom{
+    background: black;
+}
+
+@media all and (max-width: 768px){
+    .container-custom {
+        width: 100%;
+    }
 }
 
 .col-board{
@@ -11,10 +28,9 @@ body{
 h2{
     display: flex;
     justify-content: center;
-    color: #333;
-    background: #fff;
+    color: #fff;
+    background: #26a69a;
     padding: 20px;
-    border: 1px solid #d8d8d8;
 }
 
 /* Specific discussion group table */

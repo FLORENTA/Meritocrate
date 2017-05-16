@@ -1,0 +1,30 @@
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+             <table class="highligh centered">
+                 <tr>
+                     <td>Timestamp</td>
+                     <td>User giving merit</td>
+                     <td>User given merit</td>
+                 </tr>
+                 <tbody>
+                 {#{% for merit in merits %}
+                         {{ dump(merit.speech) }}
+                     {% endfor %}
+                 #}
+                 {% for speech in speeches %}
+                     {{ dump(speech) }}
+                 {% endfor %}
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                 </tbody>
+             </table>
+        </div>
+    </div>
+{% endblock %}

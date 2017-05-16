@@ -18,10 +18,6 @@ meritocrate_join_discussion:
     path:     /admin/join
     defaults: { _controller: MeritocrateBundle:Default:joinDiscussion }
 
-meritocrate_group_statistics:
-    path:     /admin/statistics
-    defaults: { _controller: MeritocrateBundle:Default:statistics }
-
 meritocrate_discussion_group:
     path:     /admin/discussion/{id}
     defaults: { _controller: MeritocrateBundle:Default:discussionGroup }
@@ -29,8 +25,8 @@ meritocrate_discussion_group:
         id: \d+
 
 meritocrate_group_statistics:
-    path:     /admin/statistics
-    defaults: { _controller: MeritocrateBundle:Default:statistics }
+    path:     /admin/statistics/{id}
+    defaults: { _controller: MeritocrateBundle:Default:groupStatistics }
 
 meritocrate_set_speaker:
     path:     /speaks

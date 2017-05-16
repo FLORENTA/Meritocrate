@@ -11,6 +11,7 @@
                         <th>Group Name</th>
                         <th>Created By</th>
                         <th>Join</th>
+                        <th>Results</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,12 +35,20 @@
                                 </button>
                             {% endif %}
                         </td>
+                        <td>
+                            <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}">
+                                <button class="btn waves-effect waves-light">
+                                    assessment
+                                    <i class="material-icons left">lock_open</i>
+                                </button>
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-            <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light left">
+            <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light left black">
                     Back to Home
                     <i class="material-icons left">replay</i>
                 </button>

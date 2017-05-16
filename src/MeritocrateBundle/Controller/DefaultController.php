@@ -64,6 +64,21 @@ class DefaultController extends Controller
         ));
     }
 
+    public function groupStatisticsAction($id){
+        $em = $this->getDoctrine()->getManager();
+        $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
+        $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindAll($discussion);
+        $merits = $em->getRepository('MeritocrateBundle:Merits')->findBy(array(
+            'speech' => $speeches
+        ));
+
+        return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+            'group' => $discussion,
+            'merits' => $merits,
+            'speeches' => $speeches
+        ));
+    }
+
     public function joinDiscussionAction(){
         $em = $this->getDoctrine()->getManager();
         $groups = $em->getRepository('MeritocrateBundle:Discussion')->findAll();
