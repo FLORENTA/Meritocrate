@@ -36,7 +36,7 @@ class Discussion
     {
         $this->speeches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->datecreation = new \DateTime();
-        $this->ongoing = 1;
+        $this->ongoing = true;
     }
 
     /**
@@ -158,5 +158,17 @@ class Discussion
     public function getOngoing()
     {
         return $this->ongoing;
+    }
+
+    /**
+     * Set ongoing
+     *
+     * @var boolean
+     */
+    public function setOngoing($ongoing)
+    {
+        $this->ongoing = $ongoing;
+
+        return $this;
     }
 }

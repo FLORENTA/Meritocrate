@@ -20,12 +20,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for merit in merits %}
-                        {% for result in merit %}
+                {{ dump(speeches) }}
+                    {% for speech in speeches %}
+                        {% for merit in speech %}
                             <tr>
-                                <td>{{ result.datecreation|date }}</td>
-                                <td>{{ result.rator }}</td>
-                                <td>{{ result.speech.user.username }}</td>
+                                <td>{{ merit.datecreation|date }}</td>
+                                <td>{{ merit.rator }}</td>
+                                <td>{{ merit.speech.user.username }}</td>
                             </tr>
                         {% endfor %}
                     {% endfor %}

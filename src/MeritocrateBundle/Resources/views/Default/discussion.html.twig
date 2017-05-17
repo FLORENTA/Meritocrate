@@ -3,12 +3,18 @@
 {% block content %}
     <div class="container">
         <h2>New discussion group</h2>
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr', {'class' : 'discussion-form'  }} ) }}
         <div class="row">
-            <div class="input-field input-field-custom col s12">
+            <div class="input-field col s12">
                 {{ form_label(form.name, "Discussion group name") }}
                 {{ form_widget(form.name) }}
                 {{ form_errors(form.name) }}
+            </div>
+            <div class="input-field col s12">
+
+                {{ form_widget(form.ongoing) }}
+                {{ form_errors(form.ongoing) }}
+                {{ form_label(form.ongoing, "Discussion group disclosure") }}
             </div>
             <a><button class="btn btn-large waves-effect waves-light left" type="submit" name="action">
                 Submit new group
@@ -21,4 +27,11 @@
             <i class="material-icons left">replay</i>
         </button></a>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+    </script>
 {% endblock %}

@@ -10,11 +10,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
 </head>
-{% if app.request.get('_route') == "meritocrate_homepage" %}
-<body id="body-homepage">
-{% else %}
+
+{% block body %}
 <body>
-{% endif %}
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper nav-custom">
@@ -37,4 +35,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 {% block javascripts %}{% endblock %}
 </body>
+{% endblock %}
 </html>

@@ -39,3 +39,11 @@ meritocrate_get_speakers:
 meritocrate_add_merit:
     path:     /addMerit
     defaults: { _controller: MeritocrateBundle:Default:addMerit }
+
+meritocrate_user_settings:
+    path:     /admin/settings
+    defaults: {_controller: MeritocrateBundle:Default:getUserDiscussionGroup }
+
+meritocrate_discussion_update:
+    path:     /updateDiscussion
+    defaults: {_controller: MeritocrateBundle:Default:getUserDiscussionGroup }

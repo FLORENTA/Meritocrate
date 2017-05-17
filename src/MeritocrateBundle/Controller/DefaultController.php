@@ -54,6 +54,43 @@ class DefaultController extends Controller
         ));
     }
 
+    public function getUserDiscussionGroupAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+
+        $discussions = $em->getRepository('MeritocrateBundle:Discussion')->findBy(array(
+           'user' => $this->getUser()
+        ));
+
+        foreach($discussions as $discussion){
+            $forms[] = $this->createForm('MeritocrateBundle\Form\DiscussionType', $discussion)->createView();
+        }
+
+        if($request->isXmlHttpRequest()){
+            $idDiscussion = $request->request->get('meritocratebundle_discussion')['id'];
+            $ongoing = $request->request->get('meritocratebundle_discussion')['ongoing'];
+            $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idDiscussion);
+            $discussion->setOngoing($ongoing);
+
+            $em->flush();
+
+            if($ongoing == 0){
+                $action = "closed";
+            }
+            else{
+                $action = "open";
+            }
+            $discussionName = $discussion->getName();
+            $response = "The " . $discussionName . " discussion group has been successfully " .$action;
+
+            $response = new Response($response);
+            return $response;
+        }
+
+        return $this->render('MeritocrateBundle:Default:settings.html.twig', array(
+           'discussionForms' => $forms
+        ));
+    }
+
     public function discussionGroupAction($id){
         $em = $this->getDoctrine()->getManager();
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
@@ -71,21 +108,24 @@ class DefaultController extends Controller
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
         $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindAll($discussion);
 
+        /* Go checkout merits linked to each speech of the discussion chosen ($id) */
         foreach($speeches as $speech) {
             $merits[] = $em->getRepository('MeritocrateBundle:Merits')->MyFindMerits($speech);
         }
 
+        /* Get the username of the user that has got the merits */
         foreach($speeches as $speech){
             foreach($speech->getMerits() as $merit){
                 $users[] = $merit->getSpeech()->getUser()->getUsername();
             };
         }
 
+        /* How many merits per username ? */
         $statistics = array_count_values($users);
 
         return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
             'group' => $discussion,
-            'merits' => $merits,
+            'speeches' => $merits,
             'statistics' => $statistics
         ));
     }

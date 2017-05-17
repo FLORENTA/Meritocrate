@@ -9,62 +9,75 @@
                 <p id="group-date-creation"> Created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
             </div>
         </div>
-        <div class="row">
-            <a href="{{ path('meritocrate_join_discussion') }}"><button class="btn waves-effet waves-light right green">
-                    Exit Group
-                    <i class="material-icons left">exit_to_app</i>
-                </button></a>
-        </div>
-        <div class="row">
-            <table class="highlight centered">
-                <thead>
-                    <tr>
-                        <td><i class="material-icons">schedule</i>Timestamp</td>
-                        <td>Display Name</td>
-                        <td><i class="material-icons">face</i>Picture</td>
-                        <td><i class="material-icons">thumb_up</i>Merit</td>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    {% if speeches is not empty %}
-                        {% for speech in speeches %}
-                            <tr>
-                                <td>{{ speech.timestamp|date('h:i:s a') }}</td>
-                                <td>{{ speech.user.username }}</td>
-                                <td><img src="{{ asset('bundles/images/'~speech.user.picture) }}"/></td>
-                                <td>
-                                    {% if app.user.id != speech.user.id %}
-                                        {# Let's define an empty variable #}
-                                        {% set rating = "" %}
+        {% if group.ongoing == "true" %}
+            <div class="row">
+                <a href="{{ path('meritocrate_join_discussion') }}"><button class="btn waves-effet waves-light right green">
+                        Exit Group
+                        <i class="material-icons left">exit_to_app</i>
+                    </button></a>
+            </div>
+            <div class="row">
+                <table class="highlight centered">
+                    <thead>
+                        <tr>
+                            <td><i class="material-icons">schedule</i>Timestamp</td>
+                            <td>Display Name</td>
+                            <td><i class="material-icons">face</i>Picture</td>
+                            <td><i class="material-icons">thumb_up</i>Merit</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        {% if speeches is not empty %}
+                            {% for speech in speeches %}
+                                <tr>
+                                    <td>{{ speech.timestamp|date('h:i:s a') }}</td>
+                                    <td>{{ speech.user.username }}</td>
+                                    <td><img src="{{ asset('bundles/images/'~speech.user.picture) }}"/></td>
+                                    <td>
+                                        {% if app.user.id != speech.user.id %}
+                                            {# Let's define an empty variable #}
+                                            {% set rating = "" %}
 
-                                        {# Let's check if the user
-                                           has already marked the speech
-                                         #}
+                                            {# Let's check if the user
+                                               has already marked the speech
+                                             #}
 
-                                        {% for merit in speech.merits %}
-                                            {% if merit.rator.id == app.user.id %}
-                                                {% set rating = 'true' %}
+                                            {% for merit in speech.merits %}
+                                                {% if merit.rator.id == app.user.id %}
+                                                    {% set rating = 'true' %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if rating != true %}
+                                                <button class="merits">
+                                                    <i class="material-icons">stars</i>
+                                                </button>
+                                            {% else %}
+                                                <button class="merits" style="color: gold;" disabled>
+                                                    <i class="material-icons">stars</i>
+                                                </button>
                                             {% endif %}
-                                        {% endfor %}
-
-                                        {% if rating != true %}
-                                            <button class="merits">
-                                                <i class="material-icons">stars</i>
-                                            </button>
-                                        {% else %}
-                                            <button class="merits" style="color: gold;" disabled>
-                                                <i class="material-icons">stars</i>
-                                            </button>
                                         {% endif %}
-                                    {% endif %}
-                                    <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
+                                        <input type="hidden" class="idSpeech" value="{{ speech.id }}"/>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>
+                This group has been closed by the owner.
+                Get back to home :
+            </p>
+            <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light left black">
+                    Back to Home
+                    <i class="material-icons left">replay</i>
+                </button>
+            </a>
+        {% endif %}
+
     </div>
 {% endblock %}
 {% block javascripts %}

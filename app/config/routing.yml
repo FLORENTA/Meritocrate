@@ -1,6 +1,7 @@
 meritocrate:
     resource: "@MeritocrateBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [http]
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

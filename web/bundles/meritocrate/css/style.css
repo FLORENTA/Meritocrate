@@ -20,7 +20,8 @@ body{
     background: black;
 }
 
-.container-statistics-page{
+.container-statistics-page,
+.container-settings-page{
     margin-top: 50px;
 }
 
@@ -79,5 +80,16 @@ td:nth-of-type(3) img{
 }
 
 #processing{
+    display: none;
+}
+
+/* Formulaire discussion update*/
+.id-discussion{
+    display: none;
+}
+
+.update-success{
+    color: green;
+    font-size: 1.5em;
     display: none;
 }

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container container-settings-page">
+        <h4>My Discussion groups</h4>
+        {% for discussionForm in discussionForms  %}
+            {{ form_start(discussionForm, {'attr': {'class':'update-discussion-form'}}) }}
+            <div class="row">
+                <div class="input-field col s12 id-discussion">
+                    {{ form_row(discussionForm.id) }}
+                </div>
+                <div class="input-field col s12">
+                    {{ form_label(discussionForm.name, "Discussion group name") }}
+                    {{ form_widget(discussionForm.name) }}
+                    {{ form_errors(discussionForm.name) }}
+                </div>
+                <div class="input-field col s12">
+                    {{ form_widget(discussionForm.ongoing) }}
+                    {{ form_errors(discussionForm.ongoing) }}
+                    {{ form_label(discussionForm.ongoing, "Status") }}
+                </div>
+                <div class="col s12 update-success">
+                    <span> Updated ! <i class="material-icons">thumb_up</i></span>
+                </div>
+                <div class="input-field col s12">
+                    <button class="btn waves-effect waves-light right update-discussion" type="submit">
+                        Update
+                    </button>
+                </div>
+            </div>
+            {{ form_end(discussionForm) }}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    'use strict';
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+
+    var formElts = document.getElementsByClassName('update-discussion-form');
+    var successElts = document.getElementsByClassName('update-success');
+
+    function ajaxPost(url, formData, callback){
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.addEventListener('load', function(){
+            if(req.status >=200 && req.status <400){
+                callback(req.responseText);
+            }
+        });
+        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        req.send(formData);
+    }
+
+    function confirmUpdate(response) {
+        alert(response);
+    }
+
+    for(var i=0; i<formElts.length; i++){
+        formElts[i].addEventListener('click', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            ajaxPost('{{ path('meritocrate_discussion_update') }}', formData, confirmUpdate);
+        });
+    }
+
+</script>
+{% endblock %}
