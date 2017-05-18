@@ -7,8 +7,13 @@ III.
 */
 
 #body-homepage{
-    background: url('../images/homepage-background.jpg') fixed no-repeat center;
+    background: url('../images/conference-room.jpg') fixed no-repeat center;
     background-size: cover;
+}
+
+#body-homepage h2{
+    background: rgba(0,0,0,.7);
+    color: #fff;
 }
 
 body{
@@ -36,7 +41,8 @@ body{
 }
 
 .col-homepage{
-    margin-top: 50px;
+    margin-top: 100px;
+    text-align: center;
 }
 
 .col-board{
@@ -51,6 +57,16 @@ h2{
     background: #26a69a;
     padding: 20px;
     box-shadow: 0 1px 5px black;
+}
+
+@media all and (max-width: 768px){
+    h2{
+        font-size: 2.5em;
+    }
+
+    h4{
+        font-size: 2em;
+    }
 }
 
 /* Specific discussion group table */
@@ -84,12 +100,12 @@ td:nth-of-type(3) img{
 }
 
 /* Formulaire discussion update*/
-.id-discussion{
-    display: none;
+
+h4{
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-.update-success{
-    color: green;
-    font-size: 1.5em;
+.id-discussion{
     display: none;
 }

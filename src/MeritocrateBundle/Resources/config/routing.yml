@@ -42,6 +42,10 @@ meritocrate_add_merit:
 
 meritocrate_user_settings:
     path:     /admin/settings
+    defaults: {_controller: MeritocrateBundle:Default:userSettings }
+
+meritocrate_user_discussion_settings:
+    path:     /admin/discussions/settings
     defaults: {_controller: MeritocrateBundle:Default:getUserDiscussionGroup }
 
 meritocrate_discussion_update:

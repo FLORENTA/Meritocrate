@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="container container-settings-page">
+        <h2>Meritocrate</h2>
         <h4>My Discussion groups</h4>
         {% for discussionForm in discussionForms  %}
             {{ form_start(discussionForm, {'attr': {'class':'update-discussion-form'}}) }}
@@ -19,9 +20,6 @@
                     {{ form_errors(discussionForm.ongoing) }}
                     {{ form_label(discussionForm.ongoing, "Status") }}
                 </div>
-                <div class="col s12 update-success">
-                    <span> Updated ! <i class="material-icons">thumb_up</i></span>
-                </div>
                 <div class="input-field col s12">
                     <button class="btn waves-effect waves-light right update-discussion" type="submit">
                         Update
@@ -33,39 +31,40 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-<script>
-    'use strict';
-    $(document).ready(function() {
-        $('select').material_select();
-    });
-
-    var formElts = document.getElementsByClassName('update-discussion-form');
-    var successElts = document.getElementsByClassName('update-success');
-
-    function ajaxPost(url, formData, callback){
-        var req = new XMLHttpRequest();
-        req.open('post', url, true);
-        req.addEventListener('load', function(){
-            if(req.status >=200 && req.status <400){
-                callback(req.responseText);
-            }
+    <script>
+        'use strict';
+        $(document).ready(function() {
+            $('select').material_select();
         });
-        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        req.send(formData);
-    }
 
-    function confirmUpdate(response) {
-        alert(response);
-    }
+        var formElts = document.getElementsByClassName('update-discussion-form');
 
-    for(var i=0; i<formElts.length; i++){
-        formElts[i].addEventListener('click', function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
+        function ajaxPost(url, formData, callback){
+            var req = new XMLHttpRequest();
+            req.open('post', url, true);
+            req.addEventListener('load', function(){
+                if(req.status >=200 && req.status <400){
+                    callback(req.responseText);
+                }
+            });
+            req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            req.send(formData);
+        }
 
-            ajaxPost('{{ path('meritocrate_discussion_update') }}', formData, confirmUpdate);
-        });
-    }
+        /* Function executed in case of success */
+        function confirmUpdate(response) {
+            alert(response);
+        }
 
-</script>
+        /* For each form on the page */
+        for(var i=0; i<formElts.length; i++){
+            formElts[i].addEventListener('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+
+                ajaxPost('{{ path('meritocrate_discussion_update') }}', formData, confirmUpdate);
+            });
+        }
+
+    </script>
 {% endblock %}

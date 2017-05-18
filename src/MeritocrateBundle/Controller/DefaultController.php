@@ -67,9 +67,12 @@ class DefaultController extends Controller
 
         if($request->isXmlHttpRequest()){
             $idDiscussion = $request->request->get('meritocratebundle_discussion')['id'];
+            $name = $request->request->get('meritocratebundle_discussion')['name'];
             $ongoing = $request->request->get('meritocratebundle_discussion')['ongoing'];
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idDiscussion);
             $discussion->setOngoing($ongoing);
+            $discussionName = $discussion->getName();
+            $discussion->setName($name);
 
             $em->flush();
 
@@ -77,16 +80,16 @@ class DefaultController extends Controller
                 $action = "closed";
             }
             else{
-                $action = "open";
+                $action = "opened";
             }
-            $discussionName = $discussion->getName();
-            $response = "The " . $discussionName . " discussion group has been successfully " .$action;
+
+            $response = "The " . $discussionName . " discussion group has been successfully renamed " . $name . " and " .$action;
 
             $response = new Response($response);
             return $response;
         }
 
-        return $this->render('MeritocrateBundle:Default:settings.html.twig', array(
+        return $this->render('MeritocrateBundle:Default:user_discussion_settings.html.twig', array(
            'discussionForms' => $forms
         ));
     }
@@ -216,5 +219,9 @@ class DefaultController extends Controller
 
             return new Response('ok');
         }
+    }
+
+    public function userSettingsAction(){
+        return $this->render('MeritocrateBundle:Default:user_board_settings.html.twig');
     }
 }

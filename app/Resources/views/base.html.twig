@@ -13,6 +13,7 @@
 
 {% block body %}
 <body>
+{% if is_granted('ROLE_USER') %}
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper nav-custom">
@@ -20,14 +21,18 @@
                     <li><a href="{{ path('meritocrate_homepage')}}logout">Logout</a></li>
                 </ul>
                 {% if app.request.get('_route') == "meritocrate_discussion_group" %}
-                <ul class="right">
-                    <li id="speak"><a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-                    <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">mic</i></a></li>
-                </ul>
+                    <ul class="right">
+                        <li id="speak"><a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
+                        <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">mic</i></a></li>
+                    </ul>
+
+
+                    <a href="{{ path('meritocrate_user_settings') }}"><i class="material-icons right">settings_application</i></a>
                 {% endif %}
             </div>
         </nav>
     </div>
+{% endif %}
     {% block content %}
     {% endblock %}
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">

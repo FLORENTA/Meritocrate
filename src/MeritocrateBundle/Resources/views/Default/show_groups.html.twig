@@ -19,7 +19,9 @@
                     <tr>
                         <td>{{ group.datecreation|date('m/d/Y') }}, {{ group.datecreation|date('h:i:s a') }}</td>
                         <td>{{ group.name }}</td>
-                        <td>{{ group.user.fullname }}</td>
+                        {% if group.user.fullname is not empty %}
+                            <td>{{ group.user.fullname }}</td>
+                        {% endif %}
                         <td>
                             {% if group.ongoing == 1 %}
                                 <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}">
