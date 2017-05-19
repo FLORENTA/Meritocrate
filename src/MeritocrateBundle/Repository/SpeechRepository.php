@@ -39,7 +39,7 @@ class SpeechRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('s');
         $qb->select('s.id, s.timestamp')
             ->join('s.user', 'u')
-            ->addSelect('u.username, u.picture')
+            ->addSelect('u.id as userId, u.username, u.picture')
             ->where('s.id > :start')
             ->andWhere('s.discussion = :discussion')
             ->setParameters(array(

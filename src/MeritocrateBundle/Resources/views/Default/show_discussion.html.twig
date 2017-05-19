@@ -187,10 +187,10 @@
                                 starElt.setAttribute('class', 'material-icons');
                                 starElt.textContent = "stars";
 
-                                if (({{ app.user.id }}) !== response[i].id) {
+                                console.log(response[i]);
+                                if (({{ app.user.id }}) !== response[i].userId) {
                                     var buttonTdElt4 = document.createElement('button');
                                     buttonTdElt4.setAttribute('class', 'merits');
-                                    buttonTdElt4.style.display = "none";
                                     buttonTdElt4.appendChild(starElt);
                                     tdElt4.appendChild(buttonTdElt4);
                                 }

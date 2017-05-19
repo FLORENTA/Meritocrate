@@ -46,7 +46,7 @@ meritocrate_user_settings:
 
 meritocrate_user_discussion_settings:
     path:     /admin/discussions/settings
-    defaults: {_controller: MeritocrateBundle:Default:getUserDiscussionGroup }
+    defaults: {_controller: MeritocrateBundle:Default:userSettings }
 
 meritocrate_discussion_update:
     path:     /updateDiscussion
