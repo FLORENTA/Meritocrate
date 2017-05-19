@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <div class="container container-custom">
+    <div class="container">
         <h2>Meritocrate</h2>
         <div class="row">
             <div class="col s12">
@@ -9,21 +9,27 @@
                 <p id="group-date-creation"> Created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
             </div>
         </div>
+        <ul>
+        <li id="speak"><a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
+        <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+        </ul>
         {% if group.ongoing == "true" %}
             <div class="row">
-                <a href="{{ path('meritocrate_join_discussion') }}"><button class="btn waves-effet waves-light right green">
+                <a href="{{ path('meritocrate_join_discussion') }}">
+                    <button class="btn waves-effet waves-light right green">
                         Exit Group
                         <i class="material-icons left">exit_to_app</i>
-                    </button></a>
+                    </button>
+                </a>
             </div>
             <div class="row">
                 <table class="highlight centered">
                     <thead>
                         <tr>
-                            <td><i class="material-icons">schedule</i>Timestamp</td>
+                            <td>Timestamp</td>
                             <td>Display Name</td>
-                            <td><i class="material-icons">face</i>Picture</td>
-                            <td><i class="material-icons">thumb_up</i>Merit</td>
+                            <td>Picture</td>
+                            <td>Merit</td>
                         </tr>
                     </thead>
                     <tbody id="tbody">
@@ -32,7 +38,7 @@
                                 <tr>
                                     <td>{{ speech.timestamp|date('h:i:s a') }}</td>
                                     <td>{{ speech.user.username }}</td>
-                                    <td><img src="{{ asset('bundles/images/'~speech.user.picture) }}"/></td>
+                                    <td><img src="{{ asset('bundles/meritocrate/images/'~speech.user.picture) }}"/></td>
                                     <td>
                                         {% if app.user.id != speech.user.id %}
                                             {# Let's define an empty variable #}
@@ -195,7 +201,7 @@
                                 inputIdSpeechElt.setAttribute('value', response[i].id);
 
                                 var imgElt = document.createElement('img');
-                                imgElt.setAttribute('src', '{{ asset('bundles/images/') }}' + response[i].picture + '');
+                                imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}' + response[i].picture + '');
 
                                 tdElt1.textContent = date;
                                 tdElt2.textContent = response[i].username;

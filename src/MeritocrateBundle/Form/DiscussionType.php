@@ -3,6 +3,7 @@
 namespace MeritocrateBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,9 @@ class DiscussionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id')
+            ->add('id', IntegerType::class, array(
+                'required' => false
+            ))
             ->add('name')
             ->add('ongoing', ChoiceType::class, array(
                 'choices'  => array(
@@ -23,7 +26,8 @@ class DiscussionType extends AbstractType
                     'Close' => false,
                 ),
                 'multiple' => false,
-                'expanded' => false
+                'expanded' => false,
+                'required' => false
             ));
     }
     

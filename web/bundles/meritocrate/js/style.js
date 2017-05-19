@@ -7,6 +7,11 @@
 $(document).ready(function() {
     $('select').material_select();
     Materialize.updateTextFields();
+
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 150 // Creates a dropdown of 15 years to control year
+    });
 });
 
 var inputFileElt = document.querySelectorAll('form #fos_user_registration_form_picture');

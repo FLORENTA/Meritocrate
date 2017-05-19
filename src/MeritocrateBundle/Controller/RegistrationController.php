@@ -44,6 +44,7 @@ class RegistrationController extends BaseController
         $form->setData($user);
 
         $form->handleRequest($request);
+        // dump($request);die();
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {

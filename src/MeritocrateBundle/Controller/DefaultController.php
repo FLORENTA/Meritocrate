@@ -111,26 +111,31 @@ class DefaultController extends Controller
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
         $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindAll($discussion);
 
-        /* Go checkout merits linked to each speech of the discussion chosen ($id) */
-        foreach($speeches as $speech) {
-            $merits[] = $em->getRepository('MeritocrateBundle:Merits')->MyFindMerits($speech);
+        if(!empty($speeches)) {
+            /* Go checkout merits linked to each speech of the discussion chosen ($id) */
+            foreach ($speeches as $speech) {
+                $merits[] = $em->getRepository('MeritocrateBundle:Merits')->MyFindMerits($speech);
+            }
+
+            /* Get the username of the user that has got the merits */
+            foreach ($speeches as $speech) {
+                foreach ($speech->getMerits() as $merit) {
+                    $users[] = $merit->getSpeech()->getUser()->getUsername();
+                };
+            }
+
+            /* How many merits per username ? */
+            $statistics = array_count_values($users);
+
+            return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                'group' => $discussion,
+                'speeches' => $merits,
+                'statistics' => $statistics
+            ));
         }
-
-        /* Get the username of the user that has got the merits */
-        foreach($speeches as $speech){
-            foreach($speech->getMerits() as $merit){
-                $users[] = $merit->getSpeech()->getUser()->getUsername();
-            };
+        else{
+            return new Response('No results yet');
         }
-
-        /* How many merits per username ? */
-        $statistics = array_count_values($users);
-
-        return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
-            'group' => $discussion,
-            'speeches' => $merits,
-            'statistics' => $statistics
-        ));
     }
 
     public function joinDiscussionAction(){

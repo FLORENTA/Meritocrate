@@ -76,6 +76,13 @@ td{
     width: 25%;
 }
 
+@media all and (max-width: 768px){
+    td button{
+        font-size: .9em;
+        width: 100%;
+    }
+}
+
 td:nth-of-type(3) img{
     -webkit-border-radius:50px;
     -moz-border-radius:50px;
@@ -99,7 +106,13 @@ td:nth-of-type(3) img{
     display: none;
 }
 
-/* Formulaire discussion update*/
+/* Form discussion creation */
+
+.hide-field{
+    display: none;
+}
+
+/* Form discussion update*/
 
 h4{
     text-align: center;

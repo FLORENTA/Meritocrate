@@ -1,7 +1,8 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <div class="container">
-{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register', 'class' : 'col s12'}}) }}
+    <h2> Registration </h2>
+    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register', 'class' : 'col s12'}}) }}
     <div class="row">
         <div class="input-field col s12">
             {{ form_label(form.full_name, "Full Name") }}
@@ -34,11 +35,7 @@
             {{ form_label(form.gender, "Gender") }}
         </div>
         <div class="col s12">
-            {{ form_label(form.dateofbirth, "Birthdate") }}
-        </div>
-        <div class="input-field col s12">
-            {{ form_errors(form.dateofbirth) }}
-            {{ form_widget(form.dateofbirth) }}
+            {{ form_row(form.dateofbirth) }}
         </div>
         <div class="input-field col s12">
             {{ form_errors(form.nationality) }}
@@ -75,5 +72,5 @@
             </button>
         </div>
     </div>
-{{ form_end(form) }}
+    {{ form_end(form) }}
 </div>

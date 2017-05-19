@@ -4,7 +4,10 @@
 
 namespace MeritocrateBundle\Form;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -23,7 +26,7 @@ class RegistrationType extends AbstractType
                 ))
                 ->add('dateofbirth', DateType::class)
                 ->add('nationality',CountryType::class, array(
-                    'multiple'=>true
+                    'multiple'=> false,
                 ))
                 ->add('ethnicity')
                 ->add('picture', FileType::class);
