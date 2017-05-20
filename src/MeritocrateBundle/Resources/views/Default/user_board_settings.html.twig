@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container container-settings-page">
     <div class="row">
-        <a class="btn waves-light waves-effect">
+        <a href="{{ path('fos_user_profile_edit') }}" class="btn waves-light waves-effect">
             My profile
             <i class="material-icons left">account_box</i>
         </a>
@@ -11,7 +11,7 @@
             My discussion groups
             <i class="material-icons left">account_box</i>
         </a>
-        <a class="btn waves-light waves-effect">
+        <a href="{{ path('fos_user_change_password') }}" class="btn waves-light waves-effect">
             My password
             <i class="material-icons left">group_work</i>
         </a>

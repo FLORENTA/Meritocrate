@@ -23,10 +23,6 @@ MeritocrateBundle\Entity\User:
             type: string
             length: 255
             nullable: true
-        ethnicity:
-            type: string
-            length: 255
-            nullable: true
         picture:
             type: string
             length: 255

@@ -24,12 +24,16 @@ class RegistrationType extends AbstractType
                         'M' => 'Male'
                     )
                 ))
-                ->add('dateofbirth', DateType::class)
+                ->add('dateofbirth', DateType::class, array(
+                    'required' => false
+                ))
                 ->add('nationality',CountryType::class, array(
                     'multiple'=> false,
+                    'required' => false
                 ))
-                ->add('ethnicity')
-                ->add('picture', FileType::class);
+                ->add('picture', FileType::class, array(
+                    'required' => false
+                ));
     }
 
     public function getParent()

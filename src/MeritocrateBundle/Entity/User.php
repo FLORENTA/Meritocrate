@@ -9,6 +9,10 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class User extends BaseUser
 {
+    /**
+     * @var integer
+     */
+    protected $id;
 
     /**
      * @var string
@@ -29,11 +33,6 @@ class User extends BaseUser
      * @var string
      */
     private $nationality;
-
-    /**
-     * @var string
-     */
-    private $ethnicity;
 
     /**
      * @var string
@@ -145,30 +144,6 @@ class User extends BaseUser
     public function getNationality()
     {
         return $this->nationality;
-    }
-
-    /**
-     * Set ethnicity
-     *
-     * @param string $ethnicity
-     *
-     * @return User
-     */
-    public function setEthnicity($ethnicity)
-    {
-        $this->ethnicity = $ethnicity;
-
-        return $this;
-    }
-
-    /**
-     * Get ethnicity
-     *
-     * @return string
-     */
-    public function getEthnicity()
-    {
-        return $this->ethnicity;
     }
 
     /**

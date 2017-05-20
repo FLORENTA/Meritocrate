@@ -25,6 +25,7 @@ body{
     background: black;
 }
 
+.container-password,
 .container-statistics-page,
 .container-settings-page{
     margin-top: 50px;
@@ -121,4 +122,8 @@ h4{
 
 .id-discussion{
     display: none;
+}
+
+.nav-icons{
+    width: 100%;
 }

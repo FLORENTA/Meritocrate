@@ -23,6 +23,7 @@
                 <div class="input-field col s12">
                     <button class="btn waves-effect waves-light right update-discussion" type="submit">
                         Update
+                        <i class="material-icons left">save</i>
                     </button>
                 </div>
             </div>
@@ -61,7 +62,6 @@
             formElts[i].addEventListener('submit', function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
-
                 ajaxPost('{{ path('meritocrate_discussion_update') }}', formData, confirmUpdate);
             });
         }

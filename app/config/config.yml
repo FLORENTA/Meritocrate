@@ -76,6 +76,9 @@ fos_user:
     registration:
         form:
             type: MeritocrateBundle\Form\RegistrationType
+    profile:
+        form:
+            type: MeritocrateBundle\Form\ProfileType
     #    confirmation:
      #       enabled: true
     from_email:
