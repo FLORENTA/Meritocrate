@@ -87,183 +87,138 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+
+<script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 <script type="text/javascript">
+
+    /* If route matches /discussion/ */
+    if(discussion.test(window.location.href)) {
 
         /* Which discussion group are we in ? */
         var idGroup = {{ group.id }};
-
-        /* Button "Press to speak" */
+        var idLastSpeech;
         var buttonSpeakElt = document.getElementById('speak');
         var buttonProcessElt = document.getElementById('processing');
-
-        /* tBody */
         var tBodyElt = document.getElementById('tbody');
 
         /***** SENDS A REQUEST WHEN SOMEONE PRESSES TO SPEAK *****/
-        function ajaxPost(url, callback, idUser, idGroup){
-            var req = new XMLHttpRequest();
-            req.open('post', url, true);
-            req.addEventListener("load", function(){
-                if(req.status >=200 && req.status <400){
-                    callback(req.responseText);
-                }
-            });
-            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
-        }
-
-        buttonSpeakElt.addEventListener("click", function(){
+        buttonSpeakElt.addEventListener("click", function () {
             this.style.display = "none";
             buttonProcessElt.style.display = "block";
 
             var idUser = {{ user.id }};
 
-            function show(response){
-                setTimeout(function(){
-                    buttonSpeakElt.disabled = false;
-                }, 3000);
-            }
-            ajaxPost('{{ path('meritocrate_set_speaker') }}', show, idUser, idGroup);
+            /* File style.js */
+            namespaces.speak('{{ path('meritocrate_set_speaker') }}', idUser, idGroup);
         });
 
-        /***** UPDATES THE SPEAKERS LIST EVERY 5 SECONDS *****/
-        function ajaxUpdateUsers(url, callback, idLastSpeech, idGroup){
-            var req = new XMLHttpRequest();
-            req.open('post', url, true);
-            req.addEventListener("load", function(){
-                if(req.status >=200 && req.status <400){
-                    callback(req.responseText);
-                }
-            });
-            req.addEventListener("error", function(){
-                console.log("erreur");
-            });
-            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            req.send("idLastSpeech="+idLastSpeech+"&idDiscussion="+idGroup+"");
-        }
-
         /* How many rows in the table body ? */
-        var idLastSpeech;
         var tBodyTrElts = document.querySelectorAll('#tbody tr');
         var tBodyTrEltsLength = tBodyTrElts.length;
 
-        if(tBodyTrEltsLength == 0){
+        if (tBodyTrEltsLength == 0) {
             idLastSpeech = 0;
         }
-        else{
+        else {
             idLastSpeech = tBodyTrElts[0].childNodes[7].lastElementChild.getAttribute('value');
         }
 
+        /***** UPDATES THE SPEAKERS LIST EVERY 5 SECONDS *****/
         function refresh() {
             setTimeout(function () {
-                    /* Function executed in case of success of the request */
-                    function show(response) {
-                        if (response !== "NOR") {
-                            buttonProcessElt.style.display = "none";
-                            buttonSpeakElt.style.display = "block";
-                            response = JSON.parse(response);
-                            idLastSpeech = response[0].id;
+                /* Function executed in case of success of the request */
+                function show(response) {
+                    if (response !== "NOR") {
+                        buttonProcessElt.style.display = "none";
+                        buttonSpeakElt.style.display = "block";
+                        response = JSON.parse(response);
+                        idLastSpeech = response[0].id;
 
-                            /* Let's loop over the response results */
-                            for (i=response.length-1; i>=0; i--) {
+                        /* Let's loop over the response results */
+                        for (i = response.length - 1; i >= 0; i--) {
 
-                                var tBodyTrElts = document.querySelectorAll('#tbody tr');
+                            var tBodyTrElts = document.querySelectorAll('#tbody tr');
 
-                                /* We catch the date & filters it to display the hour only */
-                                var date = response[i].timestamp['date'];
-                                date = date.substr(11, 8);
+                            /* We catch the date & filters it to display the hour only */
+                            var date = response[i].timestamp['date'];
+                            date = date.substr(11, 8);
 
-                                /* Let's create & fill the html elements to put into the table */
-                                var trElt = document.createElement('tr');
+                            /* Let's create & fill the html elements to put into the table */
+                            var trElt = document.createElement('tr');
 
-                                var tdElt1 = document.createElement('td');
-                                var tdElt2 = document.createElement('td');
-                                var tdElt3 = document.createElement('td');
-                                var tdElt4 = document.createElement('td');
+                            var tdElt1 = document.createElement('td');
+                            var tdElt2 = document.createElement('td');
+                            var tdElt3 = document.createElement('td');
+                            var tdElt4 = document.createElement('td');
 
-                                var starElt = document.createElement('i');
-                                starElt.setAttribute('class', 'material-icons');
-                                starElt.textContent = "stars";
+                            var starElt = document.createElement('i');
+                            starElt.setAttribute('class', 'material-icons');
+                            starElt.textContent = "stars";
 
-                                console.log(response[i]);
-                                if (({{ app.user.id }}) !== response[i].userId) {
-                                    var buttonTdElt4 = document.createElement('button');
-                                    buttonTdElt4.setAttribute('class', 'merits');
-                                    buttonTdElt4.appendChild(starElt);
-                                    tdElt4.appendChild(buttonTdElt4);
-                                }
-
-                                var inputIdSpeechElt = document.createElement('input');
-                                inputIdSpeechElt.setAttribute('type', 'hidden');
-                                inputIdSpeechElt.setAttribute('class', 'idSpeech');
-                                inputIdSpeechElt.setAttribute('value', response[i].id);
-
-                                var imgElt = document.createElement('img');
-                                imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}' + response[i].picture + '');
-
-                                tdElt1.textContent = date;
-                                tdElt2.textContent = response[i].username;
-
-                                tdElt3.appendChild(imgElt);
-                                tdElt4.appendChild(inputIdSpeechElt);
-
-                                trElt.appendChild(tdElt1);
-                                trElt.appendChild(tdElt2);
-                                trElt.appendChild(tdElt3);
-                                trElt.appendChild(tdElt4);
-                                trElt.style.opacity = '0';
-                                tBodyElt.insertBefore(trElt, tBodyTrElts[0]);
+                            console.log(response[i]);
+                            if (({{ app.user.id }}) !== response[i].userId) {
+                                var buttonTdElt4 = document.createElement('button');
+                                buttonTdElt4.setAttribute('class', 'merits');
+                                buttonTdElt4.appendChild(starElt);
+                                tdElt4.appendChild(buttonTdElt4);
                             }
 
-                            /* Let's apply a fadeIn effect to the new rows */
-                            tBodyTrElts = document.querySelectorAll('#tbody tr');
-                            for(i=0; i<response.length; i++){
-                                style(tBodyTrElts[i]);
-                            }
+                            var inputIdSpeechElt = document.createElement('input');
+                            inputIdSpeechElt.setAttribute('type', 'hidden');
+                            inputIdSpeechElt.setAttribute('class', 'idSpeech');
+                            inputIdSpeechElt.setAttribute('value', response[i].id);
 
-                            function style(row) {
-                                var opacity = 0;
-                                var transparency = setInterval(opacityPlus, 50);
+                            var imgElt = document.createElement('img');
+                            imgElt.setAttribute('src', '{{ asset('bundles/meritocrate/images/') }}' + response[i].picture + '');
 
-                                function opacityPlus() {
-                                    opacity += 0.025;
-                                    if (row.style.opacity <= 1) {
-                                        row.style.opacity = '' + opacity + '';
-                                    }
-                                    else {
-                                        clearInterval(transparency);
-                                        /* Set back to 0 for next rows */
-                                        opacity = 0;
-                                    }
-                                }
-                            }
+                            tdElt1.textContent = date;
+                            tdElt2.textContent = response[i].username;
 
-                            /* We enable marking */
-                            addMerits();
+                            tdElt3.appendChild(imgElt);
+                            tdElt4.appendChild(inputIdSpeechElt);
+
+                            trElt.appendChild(tdElt1);
+                            trElt.appendChild(tdElt2);
+                            trElt.appendChild(tdElt3);
+                            trElt.appendChild(tdElt4);
+                            trElt.style.opacity = '0';
+                            tBodyElt.insertBefore(trElt, tBodyTrElts[0]);
                         }
+
+                        /* Let's apply a fadeIn effect to the new rows */
+                        tBodyTrElts = document.querySelectorAll('#tbody tr');
+                        for (i = 0; i < response.length; i++) {
+                            style(tBodyTrElts[i]);
+                        }
+
+                        function style(row) {
+                            var opacity = 0;
+                            var transparency = setInterval(opacityPlus, 50);
+
+                            function opacityPlus() {
+                                opacity += 0.025;
+                                if (row.style.opacity <= 1) {
+                                    row.style.opacity = '' + opacity + '';
+                                }
+                                else {
+                                    clearInterval(transparency);
+                                    /* Set back to 0 for next rows */
+                                    opacity = 0;
+                                }
+                            }
+                        }
+                        /* We enable marking */
+                        addMerits();
                     }
-                    ajaxUpdateUsers('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
+                }
+                /* File style.js */
+                namespaces.users('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
                 refresh();
             }, 7000);
         }
         refresh();
-        /* Method that enables to give a mark */
 
-        function ajaxAddMerit(url, callback, idSpeech, idRator){
-            var req = new XMLHttpRequest();
-            req.open('post', url, true);
-            req.addEventListener("load", function(){
-                if(req.status >=200 && req.status <400){
-                    callback(req.responseText);
-                }
-            });
-            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            req.send("idSpeech="+idSpeech+"&idRator="+idRator+"");
-        }
-
+        /***** SENDS A REQUEST WHEN SOMEONE PRESSES THE STAR *****/
         function addMerits() {
             var meritElts = document.getElementsByClassName('merits');
 
@@ -274,15 +229,15 @@
                     var idSpeech = this.nextElementSibling.getAttribute('value');
                     var idRator = {{ user.id }};
 
-                    function show(response) {
-                        console.log(response);
-                    }
-                    ajaxAddMerit("{{ path('meritocrate_add_merit') }}", show, idSpeech, idRator);
+                    namespaces.merits("{{ path('meritocrate_add_merit') }}", idSpeech, idRator);
                 });
             }
         }
         addMerits();
+    }
 
-        /* By Florent Alemany, Wild Code School Fontainebleau, May 2017 */
+/* By Florent Alemany, Wild Code School Fontainebleau, May 2017 */
+
 </script>
+
 {% endblock %}

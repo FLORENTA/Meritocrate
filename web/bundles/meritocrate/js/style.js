@@ -14,13 +14,43 @@ $(document).ready(function() {
     });
 });
 
-/***** LIST OF ROUTES TO TEST *****/
+/***** LIST OF ROUTES TO CHECK *****/
 var register = /\/register/;
-var profileEdit = /profile\/edit/;
+var profileEdit = /\/profile\/edit/;
+var discussion = /\/discussion/;
 
-/* NAMESPACES */
+/***** NAMESPACES *****/
 var namespaces = {
-    register: function(){
+    ajaxEdit: function ajaxPost(url, formData) {
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.addEventListener('load', function () {
+            if (req.status >= 200 && req.status < 400) {
+                confirmEdit(req.responseText);
+            }
+        });
+        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        req.send(formData);
+
+        function confirmEdit(response) {
+            alert(response);
+        }
+    },
+
+    ajaxDiscussion : function ajaxPost(url, callback, idUser, idGroup){
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.addEventListener("load", function(){
+            if(req.status >=200 && req.status <400){
+                callback(req.responseText);
+            }
+        });
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
+    },
+
+    register : function(){
         console.log('yes');
         var inputFileElt = document.querySelectorAll('form #fos_user_registration_form_picture');
         var checkPictureElt = document.getElementById('check-picture');
@@ -47,7 +77,7 @@ var namespaces = {
             checkPictureElt.appendChild(deleteElt);
 
             deleteElt.addEventListener('click', function (e) {
-                e.preventDefault()
+                e.preventDefault();
                 this.previousElementSibling.remove();
                 this.remove();
                 reset();
@@ -64,29 +94,68 @@ var namespaces = {
             pictureElt.style.display = "block";
         });
 
-        function ajaxPost(url, confirmEdit, formData) {
-            var req = new XMLHttpRequest();
-            req.open('post', url, true);
-            req.addEventListener('load', function () {
-                if (req.status >= 200 && req.status < 400) {
-                    confirmEdit(req.responseText);
-                }
-            });
-            req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            req.send(formData);
-        }
-
-        function confirmEdit(response) {
-            alert(response);
-        }
-
         var formElt = document.getElementsByTagName('form');
 
         formElt[0].addEventListener('submit', function (e) {
             e.preventDefault();
             var formData = new FormData(this);
-            ajaxPost(window.location.href, confirmEdit, formData);
+            namespaces.ajaxEdit(window.location.href, formData);
         });
+    },
+
+    /***** SENDS A REQUEST WHEN SOMEONE PRESSES TO SPEAK *****/
+    speak: function ajaxPost(url, idUser, idGroup){
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.addEventListener("load", function(){
+            if(req.status >=200 && req.status <400){
+                show(req.responseText);
+            }
+        });
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
+
+        function show(response) {
+            setTimeout(function () {
+                buttonSpeakElt.disabled = false;
+            }, 3000);
+        }
+    },
+
+    /***** UPDATES THE SPEAKERS LIST EVERY 5 SECONDS *****/
+    users : function ajaxUpdateUsers(url, callback, idLastSpeech, idGroup) {
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.addEventListener("load", function () {
+            if (req.status >= 200 && req.status < 400) {
+                callback(req.responseText);
+            }
+        });
+        req.addEventListener("error", function () {
+            console.log("erreur");
+        });
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        req.send("idLastSpeech=" + idLastSpeech + "&idDiscussion=" + idGroup + "");
+    },
+
+    /***** SENDS A REQUEST WHEN SOMEONE PRESSES THE STAR *****/
+    merits : function ajaxAddMerit(url, idSpeech, idRator) {
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.addEventListener("load", function () {
+            if (req.status >= 200 && req.status < 400) {
+                show(req.responseText);
+            }
+        });
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        req.send("idSpeech=" + idSpeech + "&idRator=" + idRator + "");
+
+        function show(response) {
+            console.log(response);
+        }
     }
 };
 
@@ -99,6 +168,8 @@ if(register.test(window.location.href)){
 if(profileEdit.test(window.location.href)) {
     namespaces.profileEdit();
 }
+
+
 
 
 
