@@ -1,23 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{% if app.request.get('_route') == "meritocrate_homepage" %}
-<body id="body-homepage">
-    {% block content %}
-    <div class="container">
-        <div class="row">
-            <h2>Meritocrate</h2>
-            <div class="col s12 col-homepage">
-                <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light">
-                    Sign in
-                </button></a>
-                <a href="{{ path('meritocrate_register') }}"><button class="btn btn-large waves-effect waves-light">
-                    Sign up
-                </button></a>
+    {% if app.request.get('_route') == "meritocrate_homepage" %}
+    <body id="body-homepage">
+        <h2>Meritocrate</h2>
+        {% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="col s12 col-homepage">
+                    <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light" id="sign-in">
+                        Sign in
+                    </button></a>
+                    <a href="{{ path('meritocrate_register') }}"><button class="btn btn-large waves-effect waves-light" id="sign-up">
+                        Sign up
+                    </button></a>
+                </div>
             </div>
         </div>
-    </div>
-    {% endblock %}
-</body>
-{% endif %}
+        {% endblock %}
+        {% block javascripts %}
+            {{ parent() }}
+            <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
+            <script>
+
+                var colElt = document.getElementsByClassName('col-homepage');
+                var colHeight = parseFloat(getComputedStyle(colElt[0]).height);
+                var colWidth = parseFloat(getComputedStyle(colElt[0]).width);
+                colElt[0].style.top = (window.innerHeight - colHeight) / 3 + 'px';
+                colElt[0].style.left = (window.innerWidth - colWidth) / 2 + 'px';
+
+            </script>
+        {% endblock %}
+    </body>
+    {% endif %}
 {% endblock %}
+

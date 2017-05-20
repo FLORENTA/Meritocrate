@@ -5,6 +5,7 @@
 namespace MeritocrateBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MimeType;
@@ -16,16 +17,23 @@ class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('full_name')
+        $builder->add('fullname')
             ->add('gender', ChoiceType::class, array(
                 'choices' => array(
-                    'F' => 'Female',
-                    'M' => 'Male'
-                )
+                    'Female-identifying' => 'F',
+                    'Male-identifying' => 'M',
+                    'Non-Binary / Genderfluid' => 'N',
+                    'Other' => 'O',
+                    'Prefer Not to say' => 'P'
+                ),
+                'required' => false
             ))
-            ->add('dateofbirth', DateType::class)
+            ->add('dateofbirth', BirthdayType::class, array(
+                'required' => false
+            ))
             ->add('nationality',CountryType::class, array(
-                'multiple'=> false,
+                'multiple' => false,
+                'required' => false
             ))
             ->add('picture', FileType::class, array(
                 'required' => false,

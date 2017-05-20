@@ -9,6 +9,10 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class User extends BaseUser
 {
+    /**
+     * @var integer
+     */
+    protected $id;
 
     /**
      * @var string
@@ -29,11 +33,6 @@ class User extends BaseUser
      * @var string
      */
     private $nationality;
-
-    /**
-     * @var string
-     */
-    private $ethnicity;
 
     /**
      * @var string
@@ -148,30 +147,6 @@ class User extends BaseUser
     }
 
     /**
-     * Set ethnicity
-     *
-     * @param string $ethnicity
-     *
-     * @return User
-     */
-    public function setEthnicity($ethnicity)
-    {
-        $this->ethnicity = $ethnicity;
-
-        return $this;
-    }
-
-    /**
-     * Get ethnicity
-     *
-     * @return string
-     */
-    public function getEthnicity()
-    {
-        return $this->ethnicity;
-    }
-
-    /**
      * Set picture
      *
      * @param string $picture
@@ -261,5 +236,44 @@ class User extends BaseUser
     public function getSpeeches()
     {
         return $this->speeches;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $discussions;
+
+
+    /**
+     * Add discussion
+     *
+     * @param \MeritocrateBundle\Entity\Discussion $discussion
+     *
+     * @return User
+     */
+    public function addDiscussion(\MeritocrateBundle\Entity\Discussion $discussion)
+    {
+        $this->discussions[] = $discussion;
+
+        return $this;
+    }
+
+    /**
+     * Remove discussion
+     *
+     * @param \MeritocrateBundle\Entity\Discussion $discussion
+     */
+    public function removeDiscussion(\MeritocrateBundle\Entity\Discussion $discussion)
+    {
+        $this->discussions->removeElement($discussion);
+    }
+
+    /**
+     * Get discussions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDiscussions()
+    {
+        return $this->discussions;
     }
 }

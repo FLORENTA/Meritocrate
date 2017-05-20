@@ -15,19 +15,17 @@
 {% block body %}
 <body>
 {% if is_granted('ROLE_USER') %}
-    <div class="navbar-fixed">
-        <nav>
-            <div class="nav-wrapper nav-custom">
-                <ul class="nav-icons">
-                    <li><a href="{{ path('meritocrate_homepage')}}logout">Logout <i class="material-icons left">exit_to_app</i></a></li>
-                    <li><a href="{{ path('meritocrate_admin')}}">Home<i class="material-icons left">home</i></a></li>
-                    {% if is_granted('ROLE_USER') %}
-                    <li><a href="{{ path('meritocrate_user_settings')}}"><i class="material-icons left">settings</i></a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </nav>
-    </div>
+    <nav id="sup768">
+         <ul id="sup768List">
+              <li><a href="{{ path('fos_user_security_logout') }}"><i class="material-icons left">exit_to_app</i></a></li>
+              <li><a href="{{ path('meritocrate_admin')}}">Home<i class="material-icons left">home</i></a></li>
+              {% if is_granted('ROLE_USER') %}
+                  <li><a href="{{ path('meritocrate_user_settings')}}"><i class="material-icons left">settings</i></a></li>
+              {% endif %}
+              <li id="speak"><a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
+              <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+         </ul>
+    </nav>
 {% endif %}
     {% block content %}
     {% endblock %}

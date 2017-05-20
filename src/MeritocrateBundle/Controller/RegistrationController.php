@@ -50,11 +50,16 @@ class RegistrationController extends BaseController
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
-                $file = $request->files->get('fos_user_registration_form')['picture'];
-                $fileName = uniqid().'.'. $file->guessExtension();
-                $file->move($this->getParameter('image_directory'), $fileName);
+                if($request->files->get('fos_user_registration_form')['picture'] !== null){
+                    $file = $request->files->get('fos_user_registration_form')['picture'];
+                    $fileName = uniqid().'.'. $file->guessExtension();
+                    $file->move($this->getParameter('image_directory'), $fileName);
+                    $user->setPicture($fileName);
+                }
+                else{
+                    $user->setPicture('avatar.png');
+                }
 
-                $user->setPicture($fileName);
 
                 $userManager->updateUser($user);
 

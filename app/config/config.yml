@@ -76,11 +76,12 @@ fos_user:
     registration:
         form:
             type: MeritocrateBundle\Form\RegistrationType
+    #    confirmation:
+                    #enabled: true
     profile:
         form:
             type: MeritocrateBundle\Form\ProfileType
-    #    confirmation:
-     #       enabled: true
+
     from_email:
         address: meritocrate@yahoo.com
         sender_name: meritocrate

@@ -60,7 +60,7 @@ class ProfileController extends BaseController
             $userManager = $this->get('fos_user.user_manager');
 
             $file = $request->files->get('fos_user_profile_form')['picture'];
-            dump($file);
+
             if ($file !== null) {
                 if ($picture !== null) {
                     $currentFileName = $picture;

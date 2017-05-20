@@ -1,26 +1,33 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
+<h2> Meritocrate </h2>
 <div class="container">
     <div class="row">
-        <h2> Meritocrate </h2>
+
         <h3>My profile</h3>
         {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
 
             {{ form_row(form.username) }}
             {{ form_row(form.email) }}
             {{ form_row(form.current_password) }}
-            {{ form_row(form.full_name) }}
+            {{ form_row(form.fullname) }}
             {{ form_row(form.gender) }}
             {{ form_row(form.dateofbirth) }}
             {{ form_row(form.nationality) }}
 
-            <div class="col s12">
-                <img src="{{ asset('bundles/meritocrate/images/'~user.picture) }}"/>
+            <div class="col s12 avatar">
+                <p>
+                {% if user.picture == 'avatar.png' %}
+                    <img src="{{ asset('images/'~user.picture) }}"/>
+                {% else %}
+                    <img src="{{ asset('bundles/meritocrate/images/'~user.picture) }}"/>
+                {% endif %}
+                </p>
+                <b><i>My picture</i></b>
             </div>
-            <div class="col s12">
+            <div class="col s12" id="new-picture">
                 <button class="btn waves-effet waves-light blue" id="new-picture">
                     New picture
-                    <i class="material-icons left">face</i>
                 </button>
             </div>
 

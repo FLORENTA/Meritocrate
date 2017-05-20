@@ -1,34 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+    <h2>Meritocrate</h2>
     <div class="container container-settings-page">
-        <h2>Meritocrate</h2>
         <h4>My Discussion groups</h4>
-        {% for discussionForm in discussionForms  %}
-            {{ form_start(discussionForm, {'attr': {'class':'update-discussion-form'}}) }}
+        {% if discussionForm is defined %}
+            {% for discussionForm in discussionForms  %}
+                <div class="row">
+                {{ form_start(discussionForm, {'attr': {'class':'update-discussion-form'}}) }}
+                    <div class="input-field col s12 id-discussion">
+                        {{ form_row(discussionForm.id) }}
+                    </div>
+                    <div class="input-field col s12">
+                        {{ form_label(discussionForm.name, "Discussion group name") }}
+                        {{ form_widget(discussionForm.name) }}
+                        {{ form_errors(discussionForm.name) }}
+                    </div>
+                    <div class="input-field col s12">
+                        {{ form_widget(discussionForm.ongoing) }}
+                        {{ form_errors(discussionForm.ongoing) }}
+                        {{ form_label(discussionForm.ongoing, "Status") }}
+                    </div>
+                    <div class="input-field col s12">
+                        <button class="btn waves-effect waves-light right update-discussion" type="submit">
+                            Update
+                            <i class="material-icons left">save</i>
+                        </button>
+                    </div>
+                {{ form_end(discussionForm) }}
+                </div>
+            {% endfor %}
+        {% else %}
             <div class="row">
-                <div class="input-field col s12 id-discussion">
-                    {{ form_row(discussionForm.id) }}
-                </div>
-                <div class="input-field col s12">
-                    {{ form_label(discussionForm.name, "Discussion group name") }}
-                    {{ form_widget(discussionForm.name) }}
-                    {{ form_errors(discussionForm.name) }}
-                </div>
-                <div class="input-field col s12">
-                    {{ form_widget(discussionForm.ongoing) }}
-                    {{ form_errors(discussionForm.ongoing) }}
-                    {{ form_label(discussionForm.ongoing, "Status") }}
-                </div>
-                <div class="input-field col s12">
-                    <button class="btn waves-effect waves-light right update-discussion" type="submit">
-                        Update
-                        <i class="material-icons left">save</i>
-                    </button>
+                <div class="col s12">
+                    <p> You have not created any discussion group yet. Go ahead !</p>
+                    <a href="{{ path('meritocrate_new_discussion') }}">
+                        <button class="btn waves-effect waves-light">
+                            Start a group
+                            <i class="material-icons material-custom left">group_work</i>
+                        </button>
+                    </a>
                 </div>
             </div>
-            {{ form_end(discussionForm) }}
-        {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}
 {% block javascripts %}

@@ -89,9 +89,15 @@ class DefaultController extends Controller
             return $response;
         }
 
-        return $this->render('MeritocrateBundle:Default:user_discussion_settings.html.twig', array(
-           'discussionForms' => $forms
-        ));
+        if(!empty($forms)){
+            return $this->render('MeritocrateBundle:Default:user_discussion_settings.html.twig', array(
+                'discussionForms' => $forms
+            ));
+        }
+
+        else{
+            return $this->render('MeritocrateBundle:Default:user_discussion_settings.html.twig');
+        }
     }
 
     public function discussionGroupAction($id){

@@ -1,13 +1,14 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <div class="container">
-    <h2> Registration </h2>
+    <h2> Meritocrate </h2>
+    <h4> Registration </h4>
     {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register', 'class' : 'col s12'}}) }}
     <div class="row">
         <div class="input-field col s12">
-            {{ form_label(form.full_name, "Full Name") }}
-            {{ form_errors(form.full_name) }}
-            {{ form_widget(form.full_name) }}
+            {{ form_label(form.fullname, "Full Name") }}
+            {{ form_errors(form.fullname) }}
+            {{ form_widget(form.fullname) }}
         </div>
         <div class="input-field col s12">
             {{ form_label(form.username, "Username") }}

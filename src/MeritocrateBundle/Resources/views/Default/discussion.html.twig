@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+<h2>Meritocrate</h2>
     <div class="container">
-        <h2>New discussion group</h2>
-        {{ form_start(form, {'attr': {'class' : 'discussion-form'  }} ) }}
+        <h4>New group</h4>
         <div class="row">
+        {{ form_start(form, {'attr': {'class' : 'discussion-form'  }} ) }}
             <div class="input-field col s12 hide-field">
                 {{ form_row(form.id) }}
             </div>
@@ -16,16 +17,20 @@
             <div class="input-field col s12 hide-field">
                 {{ form_row(form.ongoing) }}
             </div>
-            <a><button class="btn btn-large waves-effect waves-light left" type="submit" name="action">
-                Submit new group
-                <i class="material-icons left">done</i>
-            </button></a>
-        </div>
+            <div class="col s12">
+                <button class="btn btn-large waves-effect waves-light left" type="submit" name="action">
+                    Submit new group
+                    <i class="material-icons material-custom left">done</i>
+                </button>
+            </div>
         {{ form_end(form) }}
-        <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light right black">
-            Back to home
-            <i class="material-icons left">replay</i>
-        </button></a>
+        </div>
+        <a href="{{ path('meritocrate_admin') }}">
+            <button class="btn btn-large waves-effect waves-light right black">
+                Back to home
+                <i class="material-icons material-custom left">replay</i>
+            </button>
+        </a>
     </div>
 {% endblock %}
 {% block javascripts %}

@@ -1,5 +1,5 @@
 /**
- * Created by Florent on 16/05/2017.
+ * Created by Florent Alemany on 16/05/2017.
  */
 
 'use strict';
@@ -13,6 +13,7 @@ $(document).ready(function() {
         selectYears: 150 // Creates a dropdown of 15 years to control year
     });
 });
+
 
 /***** LIST OF ROUTES TO CHECK *****/
 var register = /\/register/;
@@ -51,7 +52,6 @@ var namespaces = {
     },
 
     register : function(){
-        console.log('yes');
         var inputFileElt = document.querySelectorAll('form #fos_user_registration_form_picture');
         var checkPictureElt = document.getElementById('check-picture');
         inputFileElt[0].addEventListener('change', function () {
@@ -60,8 +60,6 @@ var namespaces = {
             var imgElt = document.createElement('img');
             var deleteElt = document.createElement('button');
             var iElt = document.createElement('i');
-
-            console.log(file);
 
             deleteElt.setAttribute('class', 'btn waves-effect waves-light red');
             deleteElt.textContent = "delete";
@@ -160,12 +158,12 @@ var namespaces = {
 };
 
 /* if the route matches /register */
-if(register.test(window.location.href)){
+if(register.test(location.href)){
     namespaces.register();
 }
 
 /* if the route matches /profile/edit */
-if(profileEdit.test(window.location.href)) {
+if(profileEdit.test(location.href)) {
     namespaces.profileEdit();
 }
 

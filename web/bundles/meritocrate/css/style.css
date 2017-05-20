@@ -6,14 +6,22 @@ III.
 
 */
 
+/* Homepage */
+
 #body-homepage{
-    background: url('../images/conference-room.jpg') fixed no-repeat center;
+    background: url('../../../images/conference-room.jpg') fixed no-repeat center;
     background-size: cover;
 }
 
 #body-homepage h2{
     background: rgba(0,0,0,.7);
+    font-size: 3em;
     color: #fff;
+    margin: 0;
+}
+
+#new-picture{
+    margin: 10px 0 10px 0;
 }
 
 body{
@@ -21,8 +29,20 @@ body{
     background: #fcfcfc;
 }
 
-.nav-custom{
+#sup768{
     background: black;
+    position: fixed;
+    top: 0;
+}
+
+#sup768List{
+    position: relative;
+}
+
+#speak,
+#processing{
+    position: absolute;
+    right: 5px;
 }
 
 .container-password,
@@ -38,12 +58,26 @@ body{
 
     button{
         width: 100%;
+        margin: 15px 0 15px 0;
+    }
+
+    .material-custom{
+        display: none;
     }
 }
 
 .col-homepage{
-    margin-top: 100px;
     text-align: center;
+    position: absolute;
+    background: rgba(255,255,255, .6);
+    height: 100px;
+    line-height: 100px;
+}
+
+@media all and (max-width: 768px){
+    .col-homepage{
+        background: none;
+    }
 }
 
 .col-board{
@@ -54,15 +88,19 @@ body{
 h2{
     display: flex;
     justify-content: center;
+    height: 150px;
+    line-height: 150px;
     color: #fff;
     background: #26a69a;
-    padding: 20px;
-    box-shadow: 0 1px 5px black;
+    margin-top: 55px;
+    font-size: 4em;
 }
 
 @media all and (max-width: 768px){
     h2{
         font-size: 2.5em;
+        height: 75px;
+        line-height: 75px;
     }
 
     h4{
@@ -72,9 +110,14 @@ h2{
 
 /* Specific discussion group table */
 
+.table-custom{
+    border: 1px solid #d8d8d8;
+}
+
 td{
     text-align: center;
     width: 25%;
+    border-bottom: 1px solid #d8d8d8;
 }
 
 @media all and (max-width: 768px){
@@ -116,7 +159,6 @@ td:nth-of-type(3) img{
 /* Form discussion update*/
 
 h4{
-    text-align: center;
     margin-bottom: 10px;
 }
 
@@ -127,3 +169,17 @@ h4{
 .nav-icons{
     width: 100%;
 }
+
+/* login page */
+#home,
+.submit{
+    margin-top: 50px;
+}
+
+/* Edit Profile page */
+.avatar img{
+    width: 20%;
+}
+
+
+

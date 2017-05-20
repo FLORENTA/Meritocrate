@@ -1,20 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+<h2>Meritocrate</h2>
 <div class="container container-settings-page">
     <div class="row">
-        <a href="{{ path('fos_user_profile_edit') }}" class="btn waves-light waves-effect">
-            My profile
-            <i class="material-icons left">account_box</i>
-        </a>
-        <a href="{{ path('meritocrate_discussion_update')  }}" class="btn waves-light waves-effect">
-            My discussion groups
-            <i class="material-icons left">account_box</i>
-        </a>
-        <a href="{{ path('fos_user_change_password') }}" class="btn waves-light waves-effect">
-            My password
-            <i class="material-icons left">group_work</i>
-        </a>
+        <div class="col s12">
+            <h4> My Settings </h4>
+        </div>
+        <div class="col s12">
+            <a href="{{ path('fos_user_profile_edit') }}">
+                <button class="btn waves-light waves-effect">
+                    My profile
+                    <i class="material-icons material-custom left">account_box</i>
+                </button>
+            </a>
+            <a href="{{ path('meritocrate_discussion_update')  }}">
+                <button class="btn waves-light waves-effect">
+                    My discussion groups
+                    <i class="material-icons material-custom left">account_box</i>
+                </button>
+            </a>
+            <a href="{{ path('fos_user_change_password') }}">
+                <button class="btn waves-light waves-effect">
+                    My password
+                    <i class="material-icons material-custom left">group_work</i>
+                </button>
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}

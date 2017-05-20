@@ -1,29 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+    <h2>Meritocrate</h2>
     <div class="container">
-        <h2>Meritocrate</h2>
         <div class="row">
             <div class="col s12">
                 <h4>{{ group.name }} Group </h4>
                 <p id="group-date-creation"> Created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
             </div>
         </div>
-        <ul>
-        <li id="speak"><a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-        <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
-        </ul>
         {% if group.ongoing == "true" %}
             <div class="row">
-                <a href="{{ path('meritocrate_join_discussion') }}">
-                    <button class="btn waves-effet waves-light right green">
-                        Exit Group
-                        <i class="material-icons left">exit_to_app</i>
-                    </button>
-                </a>
+                <div class="col s12">
+                    <a href="{{ path('meritocrate_join_discussion') }}">
+                        <button class="btn waves-effet waves-light right green">
+                            Exit Group
+                            <i class="material-icons material-custom left">exit_to_app</i>
+                        </button>
+                    </a>
+                </div>
             </div>
             <div class="row">
-                <table class="highlight centered">
+                <table class="highlight centered table-custom">
                     <thead>
                         <tr>
                             <td>Timestamp</td>
@@ -79,7 +77,7 @@
             </p>
             <a href="{{ path('meritocrate_admin') }}"><button class="btn btn-large waves-effect waves-light left black">
                     Back to Home
-                    <i class="material-icons left">replay</i>
+                    <i class="material-icons material-custom left">replay</i>
                 </button>
             </a>
         {% endif %}

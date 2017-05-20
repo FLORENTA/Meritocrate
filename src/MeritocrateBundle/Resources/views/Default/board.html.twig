@@ -1,19 +1,20 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
+<h2>Meritocrate</h2>
 <div class="container">
     <div class="row">
         <a href="{{ path('meritocrate_new_discussion') }}">
-        <h2>Meritocrate</h2>
+
         <div class="col s12 col-board">
             <a href="{{ path('meritocrate_new_discussion') }}"><button class="btn btn-large waves-effect waves-light">
                     Start a group
-                    <i class="material-icons left">group_work</i>
+                    <i class="material-icons material-custom left">group_work</i>
                 </button>
             </a>
             <a href="{{ path('meritocrate_join_discussion') }}"><button class="btn btn-large waves-effect waves-light">
                     Access groups & results
-                    <i class="material-icons left">assessment</i>
+                    <i class="material-icons material-custom left">assessment</i>
                 </button>
             </a>
         </div>
