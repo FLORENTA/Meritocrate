@@ -108,12 +108,16 @@ body{
     position: absolute;
     top: 0;
     right: 5px;
+    width: 50%;
 }
 
-#speak,
-#processing{
+#speak1,
+#speak2,
+#processing1,
+#processing2{
     position: absolute;
     right: 5px;
+    z-index: 2;
 }
 
 .container-custom{
@@ -231,7 +235,8 @@ td:nth-of-type(3) img{
     font-size: 1.2em;
 }
 
-#processing{
+#processing1,
+#processing2{
     display: none;
 }
 

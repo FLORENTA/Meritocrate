@@ -26,8 +26,8 @@
                  </a>
              {% endif %}
              {% if app.request.get('_route') == 'meritocrate_discussion_group' %}
-                 <li class="speak">Speak<a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-                 <li class="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+                 <li id="speak1">Speak<a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
+                 <li id="processing1"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
              {% endif %}
          </ul>
     </nav>
@@ -36,8 +36,8 @@
         <div id="cross"><img src="{{ asset('images/cross.png') }}"/></div>
         {% if app.request.get('_route') == 'meritocrate_discussion_group' %}
         <ul class="right right-custom">
-            <li class="speak">Speak<a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-            <li class="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+            <li id="speak2">Speak<a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
+            <li id="processing2"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
         </ul>
         {% endif %}
         <ul id="inf768List">

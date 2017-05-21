@@ -160,18 +160,12 @@ var namespaces = {
         req.open('post', url, true);
         req.addEventListener("load", function(){
             if(req.status >=200 && req.status <400){
-                show(req.responseText);
+                alert(req.responseText);
             }
         });
         req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
-
-        function show(response) {
-            setTimeout(function () {
-                buttonSpeakElt.disabled = false;
-            }, 3000);
-        }
     },
 
     /***** UPDATES THE SPEAKERS LIST EVERY 5 SECONDS *****/

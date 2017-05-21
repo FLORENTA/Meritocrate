@@ -98,14 +98,27 @@
 
         /* Which discussion group are we in ? */
         var idGroup = {{ group.id }};
-        var buttonSpeakElt = document.getElementById('speak');
-        var buttonProcessElt = document.getElementById('processing');
+        var buttonSpeakElt1 = document.getElementById('speak1');
+        var buttonSpeakElt2 = document.getElementById('speak2');
+        var buttonProcessElt1 = document.getElementById('processing1');
+        var buttonProcessElt2 = document.getElementById('processing2');
         var tBodyElt = document.getElementById('tbody');
 
         /***** SENDS A REQUEST WHEN SOMEONE PRESSES TO SPEAK *****/
-        buttonSpeakElt.addEventListener("click", function () {
+        buttonSpeakElt1.addEventListener("click", function () {
             this.style.display = "none";
-            buttonProcessElt.style.display = "block";
+            this.nextElementSibling.style.display = "block";
+            window.scrollTo(0,0);
+
+            var idUser = {{ user.id }};
+
+            /* File style.js */
+            namespaces.speak('{{ path('meritocrate_set_speaker') }}', idUser, idGroup);
+        });
+
+        buttonSpeakElt2.addEventListener("click", function () {
+            this.style.display = "none";
+            this.nextElementSibling.style.display = "block";
             window.scrollTo(0,0);
 
             var idUser = {{ user.id }};
@@ -131,8 +144,15 @@
                 /* Function executed in case of success of the request */
                 function show(response) {
                     if (response !== "NOR") {
-                        buttonProcessElt.style.display = "none";
-                        buttonSpeakElt.style.display = "block";
+                        if(window.innerWidth > 768){
+                            buttonProcessElt1.style.display = "none";
+                            buttonSpeakElt1.style.display = "block";
+                        }
+                        else{
+                            buttonSpeakElt2.style.display = "block";
+                            buttonProcessElt2.style.display = "none";
+                        }
+
                         response = JSON.parse(response);
                         idLastSpeech = response[0].id;
 
