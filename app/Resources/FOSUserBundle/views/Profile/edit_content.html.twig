@@ -17,12 +17,18 @@
             <div class="col s12 avatar">
                 <p>
                 {% if user.picture == 'avatar.png' %}
-                    <img src="{{ asset('images/'~user.picture) }}"/>
+                    <img src="{{ asset('images/'~user.picture) }}" id="avatar"/>
                 {% else %}
-                    <img src="{{ asset('bundles/meritocrate/images/'~user.picture) }}"/>
+                    <img src="{{ asset('bundles/meritocrate/images/'~user.picture) }}" id="avatar"/>
                 {% endif %}
                 </p>
                 <b><i>My picture</i></b>
+                <p>
+                    <button class="btn waves-effect waves-light red" id="delete">
+                        Delete
+                        <i class="material-icons material-custom left">delete</i>
+                    </button>
+                </p>
             </div>
             <div class="col s12" id="new-picture">
                 <button class="btn waves-effet waves-light blue" id="new-picture">
@@ -30,13 +36,27 @@
                 </button>
             </div>
 
-            <div id="edit-picture" style="display: none;">
-                {{ form_row(form.picture) }}
+            <div class="col s12" id="edit-picture" style="display: none;">
+                <div class="file-field input-field">
+                    <div class="btn waves-effet waves-light">
+                        <span>Choose a picture</span>
+                        <i class="material-icons material-custom right">face</i>
+                        <input type="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        {{ form_row(form.picture) }}
+                    </div>
+                </div>
             </div>
 
             <div class="col s12">
-                <button class="btn waves-effect waves-ligth right" type="submit">
+                <button class="btn waves-effect waves-ligth right" type="submit" id="submit">
                     Submit
+                </button>
+            </div>
+            <div class="col s12">
+                <button class="btn waves-effect waves-ligth right" id="processing">
+                    Please wait
                 </button>
             </div>
         {{ form_end(form) }}

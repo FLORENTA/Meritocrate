@@ -60,7 +60,6 @@ class RegistrationController extends BaseController
                     $user->setPicture('avatar.png');
                 }
 
-
                 $userManager->updateUser($user);
 
                 if (null === $response = $event->getResponse()) {

@@ -4,9 +4,6 @@
 
 'use strict';
 
-
-
-
 /***** LIST OF ROUTES TO CHECK *****/
 var register = /\/register/;
 var profileEdit = /\/profile\/edit/;
@@ -28,23 +25,26 @@ var namespaces = {
                 liElts[i].style.display = "none";
             }
 
-            var interval = setInterval(height, 200);
+            var interval = setInterval(height, 100);
             var height = 0;
 
             function height(){
-                if(height >= 300){
+                if(height >= 400){
                     clearInterval(interval);
                 }
                 else{
                     height += 100;
-                    if(height == 100){
+                    if(height === 100){
                         liElts[0].style.display = "block";
                     }
-                    if(height == 200){
+                    if(height === 200){
                         liElts[1].style.display = "block";
                     }
-                    if(height == 300){
+                    if(height === 300){
                         liElts[2].style.display = "block";
+                    }
+                    if(height === 400){
+                        liElts[3].style.display = "block";
                     }
 
                     inf768ListElt.style.height = height + '%';
@@ -83,7 +83,7 @@ var namespaces = {
         req.send(formData);
 
         function confirmEdit(response) {
-            alert(response);
+            location.reload();
         }
     },
 
@@ -129,7 +129,7 @@ var namespaces = {
                 e.preventDefault();
                 this.previousElementSibling.remove();
                 this.remove();
-                reset();
+                inputFileElt[0].value = '';
             });
         });
     },
@@ -137,17 +137,28 @@ var namespaces = {
     profileEdit : function(){
         namespaces.jQuery();
 
+        var submitElt = document.getElementById('submit');
+        var processingElt = document.getElementById('processing');
         var pictureElt = document.getElementById('edit-picture');
         var newPictureElt = document.getElementById('new-picture');
+        var deleteElt = document.getElementById('delete');
+        var imgElt = document.getElementById('avatar');
 
         newPictureElt.addEventListener('click', function (e) {
             e.preventDefault();
             pictureElt.style.display = "block";
         });
 
+        deleteElt.addEventListener('click', function (e) {
+            e.preventDefault();
+            imgElt.remove();
+        });
+
         var formElt = document.getElementsByTagName('form');
 
         formElt[0].addEventListener('submit', function (e) {
+            submitElt.disabled = true;
+            processingElt.style.display = 'block';
             e.preventDefault();
             var formData = new FormData(this);
             namespaces.ajaxEdit(window.location.href, formData);

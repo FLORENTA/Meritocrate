@@ -5,21 +5,21 @@
         <div class="row">
                 <div class="col s12">
                     <h5> TOP-RANKED STUDENTS </h5>
+                    <div id="podium">
                     {% for key, statistic in statistics|sort|reverse %}
-                        <div id="podium">
                         {% if loop.index == 1 %}
-                            <p><img src="{{ asset('images/cup.png') }}"/> 1st : {{ key }}, with {{ statistic }} merit(s) </p>
+                            <p><img src="{{ asset('images/1st.png') }}"/> 1st : {{ key }}, with {{ statistic }} merit(s) </p>
                         {% endif %}
                             <div id="2and3">
                                 {% if loop.index == 2 %}
                                     <p><img src="{{ asset('images/2nd.png') }}"/> 2nd : {{ key }}, with {{ statistic }} merit(s) </p>
                                 {% endif %}
                                 {% if loop.index == 3 %}
-                                    <p><img src="{{ asset('images/3rd.png') }}"/> 3rd : {{ key }} : {{ statistic }} </p>
+                                    <p><img src="{{ asset('images/3rd.png') }}"/> 3rd : {{ key }}, with {{ statistic }} merit(s) </p>
                                 {% endif %}
                             </div>
-                        </div>
                     {% endfor %}
+                    </div>
                 </div>
             <table class="highlight centered">
                 <thead>

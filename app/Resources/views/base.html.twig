@@ -19,6 +19,7 @@
              {% if is_granted('ROLE_USER') %}
                  <li><a href="{{ path('fos_user_security_logout') }}">Logout<i class="material-icons left">exit_to_app</i></a></li>
                  <li><a href="{{ path('meritocrate_admin')}}">Home<i class="material-icons left">home</i></a></li>
+                 <li><a href="{{ path('meritocrate_join_discussion') }}">Groups<i class="material-icons left">people</i></a></li>
                  <li><a href="{{ path('meritocrate_user_settings')}}">Settings<i class="material-icons left">settings</i></a></li>
              {% else %}
                  <a href="{{ path('meritocrate_homepage') }}">
@@ -27,7 +28,7 @@
              {% endif %}
              {% if app.request.get('_route') == 'meritocrate_discussion_group' %}
                  <li id="speak1">Speak<a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-                 <li id="processing1"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+                 <li id="processing1"><a class="waves-effect waves-light btn red darken-1">Please wait <i class="material-icons left">query_builder</i></a></li>
              {% endif %}
          </ul>
     </nav>
@@ -37,13 +38,14 @@
         {% if app.request.get('_route') == 'meritocrate_discussion_group' %}
         <ul class="right right-custom">
             <li id="speak2">Speak<a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-            <li id="processing2"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+            <li id="processing2"><a class="waves-effect waves-light btn red darken-1">Please wait <i class="material-icons left">query_builder</i></a></li>
         </ul>
         {% endif %}
         <ul id="inf768List">
             {% if is_granted('ROLE_USER') %}
                 <li><a href="{{ path('fos_user_security_logout') }}">Logout<i class="material-icons left">exit_to_app</i></a></li>
                 <li><a href="{{ path('meritocrate_admin')}}">Home<i class="material-icons left">home</i></a></li>
+                <li><a href="{{ path('meritocrate_join_discussion') }}">Groups<i class="material-icons left">people</i></a></li>
                 <li><a href="{{ path('meritocrate_user_settings')}}">Settings<i class="material-icons left">settings</i></a></li>
             {% else %}
                 <a href="{{ path('meritocrate_homepage') }}">

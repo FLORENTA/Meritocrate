@@ -3,9 +3,9 @@
 {% block content %}
     <div class="container container-custom">
         <h4>My Discussion groups</h4>
-        {% if discussionForm is defined %}
+        {% if discussionForms is defined %}
             {% for discussionForm in discussionForms  %}
-                <div class="row">
+                <div class="row row-custom">
                 {{ form_start(discussionForm, {'attr': {'class':'update-discussion-form'}}) }}
                     <div class="input-field col s12 id-discussion">
                         {{ form_row(discussionForm.id) }}

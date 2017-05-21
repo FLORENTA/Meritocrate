@@ -10,7 +10,7 @@
             {{ form_widget(form.fullname) }}
         </div>
         <div class="input-field col s12">
-            {{ form_label(form.username, "Username") }}
+            {{ form_label(form.username, "Display Name") }}
             {{ form_errors(form.username) }}
             {{ form_widget(form.username) }}
         </div>
@@ -46,7 +46,7 @@
             <div class="file-field input-field">
                 <div class="btn waves-effet waves-light">
                     <span>Choose a picture</span>
-                    <i class="material-icons material-custom right">face</i>
+                    <i class="material-icons material-custom left">face</i>
                     <input type="file">
                 </div>
                 <div class="file-path-wrapper">
@@ -59,7 +59,6 @@
         <div class="col s12">
             <button class="btn waves-effect waves-light right green" type="submit" name="action">
                 Submit
-                <i class="material-icons material-custom left">done</i>
             </button>
         </div>
     </div>

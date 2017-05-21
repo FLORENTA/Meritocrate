@@ -235,6 +235,7 @@ td:nth-of-type(3) img{
     font-size: 1.2em;
 }
 
+#processing,
 #processing1,
 #processing2{
     display: none;
@@ -267,7 +268,19 @@ h4{
     width: 20%;
 }
 
+@media all and (max-width: 768px){
+    .avatar img{
+        width: 75%;
+    }
+}
+
 /* results page */
+#podium{
+    border: 1px solid #d8d8d8;
+    background: #eee;
+    margin: 15px 0 15px 0;
+}
+
 #podium p{
     text-align: center;
 }
@@ -282,6 +295,21 @@ h4{
     background: red;
 }
 
+/* Board page */
+#board-background{
+    background: url('../../../images/ideas.png') repeat-x bottom;
+    background-size: 20%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
 
-
+@media all and (max-width: 640px){
+    #board-background{
+        background-size: 50%;
+    }
+}
 

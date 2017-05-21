@@ -76,11 +76,23 @@ class ProfileController extends BaseController
                 $user->setPicture($fileName);
             }
             else{
-                $user->setPicture($picture);
+                if($picture == 'avatar.png'){
+                    $user->setPicture($picture);
+                }
+                else{
+                    $user->setPicture('avatar.png');
+                }
             }
 
             $userManager->updateUser($user);
-            return new Response('ok');
+            if(isset($fileName)){
+                $response = json_encode($fileName);
+            }
+            else{
+                $response = 'Your profile has been updated !';
+            }
+
+            return new Response($response);
 
         }
         return $this->render('@FOSUser/Profile/edit.html.twig', array(
