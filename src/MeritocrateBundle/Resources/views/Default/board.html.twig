@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container container-custom">
-    <div class="row">
+    <div class="row row-custom">
         <div class="col s12 col-board">
             <a href="{{ path('meritocrate_new_discussion') }}"><button class="btn btn-large waves-effect waves-light">
                     Start a group
@@ -17,4 +17,7 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}

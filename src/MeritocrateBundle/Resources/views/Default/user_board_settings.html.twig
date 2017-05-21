@@ -2,11 +2,9 @@
 
 {% block content %}
 <div class="container container-custom">
-    <div class="row">
-        <div class="col s12">
-            <h4> My Settings </h4>
-        </div>
-        <div class="col s12">
+    <h4> My Settings </h4>
+    <div class="row row-custom">
+        <div class="col s12 col-settings">
             <a href="{{ path('fos_user_profile_edit') }}">
                 <button class="btn waves-light waves-effect">
                     My profile
@@ -16,16 +14,18 @@
             <a href="{{ path('meritocrate_discussion_update')  }}">
                 <button class="btn waves-light waves-effect">
                     My discussion groups
-                    <i class="material-icons material-custom left">account_box</i>
+                    <i class="material-icons material-custom left">group_work</i>
                 </button>
             </a>
             <a href="{{ path('fos_user_change_password') }}">
                 <button class="btn waves-light waves-effect">
                     My password
-                    <i class="material-icons material-custom left">group_work</i>
                 </button>
             </a>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}

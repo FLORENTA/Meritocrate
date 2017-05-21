@@ -5,14 +5,14 @@
         <div class="row">
             <div class="col s12">
                 <h4>{{ group.name }} Group </h4>
-                <p id="group-date-creation"> Created on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
+                <p id="group-date-creation"> Created by <span style="color: #26a69a;"> {{ group.user.username }} </span> on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
             </div>
         </div>
         {% if group.ongoing == "true" %}
             <div class="row">
                 <div class="col s12">
                     <a href="{{ path('meritocrate_join_discussion') }}">
-                        <button class="btn waves-effet waves-light right green">
+                        <button class="btn waves-effet waves-light">
                             Exit Group
                             <i class="material-icons material-custom left">exit_to_app</i>
                         </button>
@@ -98,7 +98,6 @@
 
         /* Which discussion group are we in ? */
         var idGroup = {{ group.id }};
-        var idLastSpeech;
         var buttonSpeakElt = document.getElementById('speak');
         var buttonProcessElt = document.getElementById('processing');
         var tBodyElt = document.getElementById('tbody');
@@ -107,6 +106,7 @@
         buttonSpeakElt.addEventListener("click", function () {
             this.style.display = "none";
             buttonProcessElt.style.display = "block";
+            window.scrollTo(0,0);
 
             var idUser = {{ user.id }};
 
@@ -117,12 +117,12 @@
         /* How many rows in the table body ? */
         var tBodyTrElts = document.querySelectorAll('#tbody tr');
         var tBodyTrEltsLength = tBodyTrElts.length;
-
+        var idLastSpeech;
         if (tBodyTrEltsLength == 0) {
             idLastSpeech = 0;
         }
         else {
-            idLastSpeech = tBodyTrElts[0].childNodes[7].lastElementChild.getAttribute('value');
+            idLastSpeech = tBodyTrElts[0].childNodes[6].lastElementChild.getAttribute('value');
         }
 
         /***** UPDATES THE SPEAKERS LIST EVERY 5 SECONDS *****/

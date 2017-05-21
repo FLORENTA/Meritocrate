@@ -14,6 +14,56 @@ var discussion = /\/discussion/;
 
 /***** NAMESPACES *****/
 var namespaces = {
+    /***** DISPLAY BURGER MENU WITH SOME EFFECT *****/
+    burger: function(){
+        var burgerElt = document.getElementById('burger');
+        var crossElt = document.getElementById('cross');
+        var inf768ListElt = document.getElementById('inf768List');
+        var liElts = document.querySelectorAll("#inf768List > li");
+
+        burgerElt.addEventListener('click', function() {
+            inf768ListElt.style.display = 'flex';
+
+            for(var i=0; i<liElts.length; i++){
+                liElts[i].style.display = "none";
+            }
+
+            var interval = setInterval(height, 200);
+            var height = 0;
+
+            function height(){
+                if(height >= 300){
+                    clearInterval(interval);
+                }
+                else{
+                    height += 100;
+                    if(height == 100){
+                        liElts[0].style.display = "block";
+                    }
+                    if(height == 200){
+                        liElts[1].style.display = "block";
+                    }
+                    if(height == 300){
+                        liElts[2].style.display = "block";
+                    }
+
+                    inf768ListElt.style.height = height + '%';
+                }
+            }
+            this.style.display = 'none';
+            this.nextElementSibling.style.display = 'block';
+        });
+
+        crossElt.addEventListener('click', function(){
+            inf768ListElt.style.display = 'none';
+            this.style.display = 'none';
+            this.previousElementSibling.style.display = 'block';
+
+            /* Put the height back to 0 for following clicks */
+            inf768ListElt.style.height = '0';
+        });
+    },
+
     jQuery: function(){
         $(document).ready(function() {
             $('select').material_select();
@@ -170,6 +220,9 @@ if(profileEdit.test(location.href)) {
     namespaces.profileEdit();
 }
 
+if(window.innerWidth <= 768){
+    namespaces.burger();
+}
 
 
 

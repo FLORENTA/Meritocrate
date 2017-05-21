@@ -3,7 +3,7 @@ meritocrate_homepage:
     defaults: { _controller: MeritocrateBundle:Default:index }
 
 meritocrate_admin:
-    path:     /admin
+    path:     /home
     defaults: { _controller: MeritocrateBundle:Default:board }
 
 meritocrate_register:
@@ -11,21 +11,21 @@ meritocrate_register:
     defaults: { _controller: MeritocrateBundle:Registration:register }
 
 meritocrate_new_discussion:
-    path:     /admin/new
+    path:     /home/new
     defaults: { _controller: MeritocrateBundle:Default:newDiscussion }
 
 meritocrate_join_discussion:
-    path:     /admin/join
+    path:     /home/join
     defaults: { _controller: MeritocrateBundle:Default:joinDiscussion }
 
 meritocrate_discussion_group:
-    path:     /admin/discussion/{id}
+    path:     /home/discussion/{id}
     defaults: { _controller: MeritocrateBundle:Default:discussionGroup }
     requirements:
         id: \d+
 
 meritocrate_group_statistics:
-    path:     /admin/statistics/{id}
+    path:     /home/statistics/{id}
     defaults: { _controller: MeritocrateBundle:Default:groupStatistics }
 
 meritocrate_set_speaker:
@@ -41,11 +41,11 @@ meritocrate_add_merit:
     defaults: { _controller: MeritocrateBundle:Default:addMerit }
 
 meritocrate_user_settings:
-    path:     /admin/settings
+    path:     /home/settings
     defaults: {_controller: MeritocrateBundle:Default:userSettings }
 
 meritocrate_user_discussion_settings:
-    path:     /admin/discussions/settings
+    path:     /home/discussions/settings
     defaults: {_controller: MeritocrateBundle:Default:userSettings }
 
 meritocrate_discussion_update:

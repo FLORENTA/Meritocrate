@@ -46,7 +46,7 @@
         <div class="row">
             <div class="col s12">
                 <a href="{{ path('meritocrate_admin') }}">
-                    <button class="btn btn-large waves-effect waves-light left black">
+                    <button class="btn btn-large waves-effect waves-light left">
                         Back to Home
                         <i class="material-icons material-custom left">replay</i>
                     </button>
@@ -54,4 +54,7 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}

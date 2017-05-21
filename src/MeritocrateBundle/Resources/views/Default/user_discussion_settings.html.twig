@@ -45,8 +45,10 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
     <script>
         'use strict';
+
         $(document).ready(function() {
             $('select').material_select();
         });
