@@ -4,15 +4,7 @@
 
 'use strict';
 
-$(document).ready(function() {
-    $('select').material_select();
-    Materialize.updateTextFields();
 
-    $('.datepicker').pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 150 // Creates a dropdown of 15 years to control year
-    });
-});
 
 
 /***** LIST OF ROUTES TO CHECK *****/
@@ -22,6 +14,13 @@ var discussion = /\/discussion/;
 
 /***** NAMESPACES *****/
 var namespaces = {
+    jQuery: function(){
+        $(document).ready(function() {
+            $('select').material_select();
+            Materialize.updateTextFields();
+        });
+    },
+
     ajaxEdit: function ajaxPost(url, formData) {
         var req = new XMLHttpRequest();
         req.open('post', url, true);
@@ -52,6 +51,8 @@ var namespaces = {
     },
 
     register : function(){
+        namespaces.jQuery();
+
         var inputFileElt = document.querySelectorAll('form #fos_user_registration_form_picture');
         var checkPictureElt = document.getElementById('check-picture');
         inputFileElt[0].addEventListener('change', function () {
@@ -84,6 +85,8 @@ var namespaces = {
     },
 
     profileEdit : function(){
+        namespaces.jQuery();
+
         var pictureElt = document.getElementById('edit-picture');
         var newPictureElt = document.getElementById('new-picture');
 

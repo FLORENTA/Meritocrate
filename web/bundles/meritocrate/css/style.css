@@ -15,9 +15,23 @@ III.
 
 #body-homepage h2{
     background: rgba(0,0,0,.7);
-    font-size: 3em;
+    font-size: 4em;
     color: #fff;
     margin: 0;
+    padding: 0;
+}
+
+footer{
+    height: 7vh;
+    line-height: 7vh;
+    width: 100%;
+    background: black;
+    text-align: center;
+    margin-top: 0;
+}
+
+footer a{
+    color: white;
 }
 
 #new-picture{
@@ -27,12 +41,19 @@ III.
 body{
     font-family: 'Roboto', sans-serif;
     background: #fcfcfc;
+    padding: 0;
+    margin: 0;
 }
 
 #sup768{
+    display: flex;
+    align-items: center;
     background: black;
+    z-index: 1;
     position: fixed;
     top: 0;
+    height: 10vh;
+    margin: 0;
 }
 
 #sup768List{
@@ -45,17 +66,16 @@ body{
     right: 5px;
 }
 
-.container-password,
-.container-statistics-page,
-.container-settings-page{
-    margin-top: 50px;
+.container-custom{
+    min-height: 63vh;
+    padding: 0;
+}
+
+.row-custom{
+    margin: 0;
 }
 
 @media all and (max-width: 768px){
-    .container-custom {
-        width: 100%;
-    }
-
     button{
         width: 100%;
         margin: 15px 0 15px 0;
@@ -88,19 +108,19 @@ body{
 h2{
     display: flex;
     justify-content: center;
-    height: 150px;
-    line-height: 150px;
+    height: 20vh;
+    line-height: 20vh;
     color: #fff;
     background: #26a69a;
-    margin-top: 55px;
+    margin-top: 10vh;
     font-size: 4em;
 }
 
 @media all and (max-width: 768px){
     h2{
         font-size: 2.5em;
-        height: 75px;
-        line-height: 75px;
+        height: 15vh;
+        line-height: 15vh;
     }
 
     h4{
@@ -171,7 +191,6 @@ h4{
 }
 
 /* login page */
-#home,
 .submit{
     margin-top: 50px;
 }
@@ -179,6 +198,21 @@ h4{
 /* Edit Profile page */
 .avatar img{
     width: 20%;
+}
+
+/* results page */
+#podium p{
+    text-align: center;
+}
+
+#podium img{
+    width: 20px;
+}
+
+#2and3{
+    display: flex;
+    justify-content: center;
+    background: red;
 }
 
 

@@ -14,25 +14,31 @@
 
 {% block body %}
 <body>
-{% if is_granted('ROLE_USER') %}
     <nav id="sup768">
          <ul id="sup768List">
-              <li><a href="{{ path('fos_user_security_logout') }}"><i class="material-icons left">exit_to_app</i></a></li>
-              <li><a href="{{ path('meritocrate_admin')}}">Home<i class="material-icons left">home</i></a></li>
-              {% if is_granted('ROLE_USER') %}
-                  <li><a href="{{ path('meritocrate_user_settings')}}"><i class="material-icons left">settings</i></a></li>
-              {% endif %}
-              <li id="speak"><a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-              <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+             {% if is_granted('ROLE_USER') %}
+                 <li><a href="{{ path('fos_user_security_logout') }}"><i class="material-icons left">exit_to_app</i></a></li>
+                 <li><a href="{{ path('meritocrate_admin')}}">Home<i class="material-icons left">home</i></a></li>
+                 <li><a href="{{ path('meritocrate_user_settings')}}"><i class="material-icons left">settings</i></a></li>
+             {% else %}
+                 <a href="{{ path('meritocrate_homepage') }}">
+                     <i class="material-icons left">home</i>
+                 </a>
+             {% endif %}
+             {% if app.request.get('_route') == 'meritocrate_discussion_group' %}
+                 <li id="speak"><a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
+                 <li id="processing"><a class="waves-effect waves-light btn red darken-1">Processing <i class="material-icons left">query_builder</i></a></li>
+             {% endif %}
          </ul>
     </nav>
-{% endif %}
+    <h2> Meritocrate </h2>
     {% block content %}
     {% endblock %}
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
-{% block javascripts %}{% endblock %}
+    <footer><a href="#"> Copyrights </a></footer>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    {% block javascripts %}{% endblock %}
 </body>
 {% endblock %}
 </html>

@@ -4,12 +4,10 @@
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
-<div class="container">
-    <h2>Meritocrate</h2>
+<div class="container container-custom">
     <h4>Login</h4>
-    <div class="row">
+    <div class="row row-custom">
         <form action="{{ path("fos_user_security_check") }}" method="post">
-
             {% if csrf_token %}
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
             {% endif %}
@@ -32,12 +30,5 @@
                     <button class="btn waves-effect waves-light right" type="submit" id="_submit" name="_submit">Submit</button>
                 </div>
         </form>
-    </div>
-    <div id="home">
-        <a href="{{ path('meritocrate_homepage') }}">
-            <button class="btn waves-effect waves-light black">
-            Homepage
-            </button>
-        </a>
     </div>
 </div>
