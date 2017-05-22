@@ -12,45 +12,46 @@ var discussion = /\/discussion/;
 /***** NAMESPACES *****/
 var namespaces = {
     /***** DISPLAY BURGER MENU WITH SOME EFFECT *****/
-    burger: function(){
+    burger: function () {
         var burgerElt = document.getElementById('burger');
         var crossElt = document.getElementById('cross');
         var inf768ListElt = document.getElementById('inf768List');
         var liElts = document.querySelectorAll("#inf768List > li");
 
-        burgerElt.addEventListener('click', function() {
+        burgerElt.addEventListener('click', function () {
             inf768ListElt.style.display = 'flex';
 
             var interval = setInterval(height, 100);
             var height = 0;
 
-            function height(){
-                if(height >= 400){
+            function height() {
+                if (height >= 400) {
                     clearInterval(interval);
                 }
-                else{
+                else {
                     height += 100;
-                    if(height === 100){
+                    if (height === 100) {
                         liElts[0].style.display = "block";
                     }
-                    if(height === 200){
+                    if (height === 200) {
                         liElts[1].style.display = "block";
                     }
-                    if(height === 300){
+                    if (height === 300) {
                         liElts[2].style.display = "block";
                     }
-                    if(height === 400){
+                    if (height === 400) {
                         liElts[3].style.display = "block";
                     }
 
                     inf768ListElt.style.height = height + '%';
                 }
             }
+
             this.style.display = 'none';
             this.nextElementSibling.style.display = 'block';
         });
 
-        crossElt.addEventListener('click', function(){
+        crossElt.addEventListener('click', function () {
             inf768ListElt.style.display = 'none';
             this.style.display = 'none';
             this.previousElementSibling.style.display = 'block';
@@ -60,35 +61,43 @@ var namespaces = {
         });
     },
 
-    menu: function(){
+    menu: function () {
         var liElts = document.querySelectorAll("#sup768List > li");
 
-        for(var i=0; i<liElts.length; i++){
-            liElts[i].addEventListener('mouseover', function(){
+        for (var i = 0; i < liElts.length - 2; i++) {
+            liElts[i].addEventListener('mouseover', function () {
                 this.style.backgroundColor = "#26a69a";
             });
-            liElts[i].addEventListener('mouseleave', function(){
+            liElts[i].addEventListener('mouseleave', function () {
                 this.style.backgroundColor = "black";
             });
         }
     },
 
-    jQuery: function(){
-        $(document).ready(function() {
+    jQuery: function () {
+        $(document).ready(function () {
             $('select').material_select();
             Materialize.updateTextFields();
         });
     },
 
+    req : function(url){
+        var req = new XMLHttpRequest(url);
+        req.open('post', url, true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        return req;
+    },
+
     ajaxEdit: function ajaxPost(url, formData) {
-        var req = new XMLHttpRequest();
+        var req = new XMLHttpRequest(url);
         req.open('post', url, true);
         req.addEventListener('load', function () {
             if (req.status >= 200 && req.status < 400) {
                 confirmEdit(req.responseText);
             }
         });
-        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         req.send(formData);
 
         function confirmEdit(response) {
@@ -138,16 +147,48 @@ var namespaces = {
         var pictureElt = document.getElementById('edit-picture');
         var newPictureElt = document.getElementById('new-picture');
         var deleteElt = document.getElementById('delete');
+        var hiddenInputElt = document.getElementById('isDeleted');
         var imgElt = document.getElementById('avatar');
+        var inputFileElt = document.querySelector('form #fos_user_profile_form_picture');
+        var checkImageElt = document.getElementById('image-checking');
+
+        inputFileElt.addEventListener('change', function(){
+            deleteElt.style.display = 'none';
+            var fileElt = this.files[0];
+            var cancelOperationElt = document.createElement('button');
+            var newImgElt = document.createElement('img');
+
+            imgElt.style.display = 'none';
+            cancelOperationElt.setAttribute('class', 'btn waves-effect waves-light red')
+            cancelOperationElt.style.display = 'block';
+            cancelOperationElt.textContent = 'Cancel operation';
+            newImgElt.setAttribute('src', window.URL.createObjectURL(fileElt));
+
+            checkImageElt.appendChild(newImgElt);
+            checkImageElt.appendChild(cancelOperationElt);
+
+            cancelOperationElt.addEventListener('click', function(){
+                checkImageElt.removeChild(newImgElt);
+                checkImageElt.removeChild(cancelOperationElt);
+                inputFileElt.value = '';
+                imgElt.style.display = 'block';
+                newPictureElt.style.display = 'block';
+                pictureElt.style.display = 'none';
+                deleteElt.style.display = 'block';
+            });
+        });
 
         newPictureElt.addEventListener('click', function (e) {
             e.preventDefault();
-            pictureElt.style.display = "block";
+            pictureElt.style.display = 'block';
+            this.style.display = 'none';
         });
 
         deleteElt.addEventListener('click', function (e) {
             e.preventDefault();
+            this.style.display = 'none';
             imgElt.remove();
+            isDeleted.value = "true";
         });
 
         var formElt = document.getElementsByTagName('form');
@@ -162,47 +203,35 @@ var namespaces = {
     },
 
     /***** SENDS A REQUEST WHEN SOMEONE PRESSES TO SPEAK *****/
-    speak: function ajaxPost(url, idUser, idGroup){
-        var req = new XMLHttpRequest();
-        req.open('post', url, true);
+    speak : function ajaxPost(url, idUser, idGroup){
+        var req = namespaces.req(url);
         req.addEventListener("load", function(){
             if(req.status >=200 && req.status <400){
-                console.l(req.responseText);
+                console.log(req.responseText);
             }
         });
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
     },
 
     /***** UPDATES THE SPEAKERS LIST EVERY 5 SECONDS *****/
     users : function ajaxUpdateUsers(url, callback, idLastSpeech, idGroup) {
-        var req = new XMLHttpRequest();
-        req.open('post', url, true);
+        var req = namespaces.req(url);
         req.addEventListener("load", function () {
             if (req.status >= 200 && req.status < 400) {
                 callback(req.responseText);
             }
         });
-        req.addEventListener("error", function () {
-            console.log("erreur");
-        });
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         req.send("idLastSpeech=" + idLastSpeech + "&idDiscussion=" + idGroup + "");
     },
 
     /***** SENDS A REQUEST WHEN SOMEONE PRESSES THE STAR *****/
     merits : function ajaxAddMerit(url, idSpeech, idRator) {
-        var req = new XMLHttpRequest();
-        req.open('post', url, true);
+        var req = namespaces.req(url);
         req.addEventListener("load", function () {
             if (req.status >= 200 && req.status < 400) {
                 show(req.responseText);
             }
         });
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         req.send("idSpeech=" + idSpeech + "&idRator=" + idRator + "");
 
         function show(response) {

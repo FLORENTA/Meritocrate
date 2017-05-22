@@ -58,7 +58,7 @@ class ProfileController extends BaseController
 
         if ($request->isXmlHttpRequest()) {
             $userManager = $this->get('fos_user.user_manager');
-
+            $isDeleted = $request->request->get('isDeleted');
             $file = $request->files->get('fos_user_profile_form')['picture'];
 
             if ($file !== null) {
@@ -76,23 +76,17 @@ class ProfileController extends BaseController
                 $user->setPicture($fileName);
             }
             else{
-                if($picture == 'avatar.png'){
-                    $user->setPicture($picture);
+                if($isDeleted == 'true'){
+                    $user->setPicture('avatar.png');
                 }
                 else{
-                    $user->setPicture('avatar.png');
+                    $user->setPicture($picture);
                 }
             }
 
             $userManager->updateUser($user);
-            if(isset($fileName)){
-                $response = json_encode($fileName);
-            }
-            else{
-                $response = 'Your profile has been updated !';
-            }
 
-            return new Response($response);
+            return new Response('Your profile has been updated !');
 
         }
         return $this->render('@FOSUser/Profile/edit.html.twig', array(

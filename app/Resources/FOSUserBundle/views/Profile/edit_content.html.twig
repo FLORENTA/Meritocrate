@@ -14,6 +14,8 @@
             {{ form_row(form.dateofbirth) }}
             {{ form_row(form.nationality) }}
 
+            <input type="hidden" name="isDeleted" id="isDeleted" value="false"/>
+
             <div class="col s12 avatar">
                 <p>
                 {% if user.picture == 'avatar.png' %}
@@ -30,6 +32,11 @@
                     </button>
                 </p>
             </div>
+
+            <div class="col s12 avatar" id="image-checking">
+
+            </div>
+
             <div class="col s12" id="new-picture">
                 <button class="btn waves-effet waves-light blue" id="new-picture">
                     New picture
