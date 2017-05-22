@@ -125,19 +125,27 @@ class DefaultController extends Controller
 
             /* Get the username of the user that has got the merits */
             foreach ($speeches as $speech) {
-                foreach ($speech->getMerits() as $merit) {
-                    $users[] = $merit->getSpeech()->getUser()->getUsername();
-                };
+                if(count($speech->getMerits()) != 0){
+                    foreach ($speech->getMerits() as $merit){
+                        dump($merit);die();
+                        $users[] = $merit->getSpeech()->getUser()->getUsername();
+                    }
+                }
             }
 
             /* How many merits per username ? */
-            $statistics = array_count_values($users);
+            if(isset($users) && $users != null) {
+                $statistics = array_count_values($users);
 
-            return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
-                'group' => $discussion,
-                'speeches' => $merits,
-                'statistics' => $statistics
-            ));
+                return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                    'group' => $discussion,
+                    'speeches' => $merits,
+                    'statistics' => $statistics
+                ));
+            }
+            else{
+                return new Response('No results yet');
+            }
         }
         else{
             return new Response('No results yet');

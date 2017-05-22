@@ -92,7 +92,7 @@ var namespaces = {
         req.open('post', url, true);
         req.addEventListener("load", function(){
             if(req.status >=200 && req.status <400){
-                callback(req.responseText);
+                console.log(req.responseText);
             }
         });
         req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
