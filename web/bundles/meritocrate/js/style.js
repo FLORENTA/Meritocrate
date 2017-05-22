@@ -20,7 +20,7 @@ var namespaces = {
 
         burgerElt.addEventListener('click', function() {
             inf768ListElt.style.display = 'flex';
-            
+
             var interval = setInterval(height, 100);
             var height = 0;
 
@@ -96,19 +96,6 @@ var namespaces = {
         }
     },
 
-    ajaxDiscussion : function ajaxPost(url, callback, idUser, idGroup){
-        var req = new XMLHttpRequest();
-        req.open('post', url, true);
-        req.addEventListener("load", function(){
-            if(req.status >=200 && req.status <400){
-                console.log(req.responseText);
-            }
-        });
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        req.send("idUser="+idUser+"&idDiscussion="+idGroup+"");
-    },
-
     register : function(){
         namespaces.jQuery();
 
@@ -180,7 +167,7 @@ var namespaces = {
         req.open('post', url, true);
         req.addEventListener("load", function(){
             if(req.status >=200 && req.status <400){
-                alert(req.responseText);
+                console.l(req.responseText);
             }
         });
         req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

@@ -127,7 +127,6 @@ class DefaultController extends Controller
             foreach ($speeches as $speech) {
                 if(count($speech->getMerits()) != 0){
                     foreach ($speech->getMerits() as $merit){
-                        dump($merit);die();
                         $users[] = $merit->getSpeech()->getUser()->getUsername();
                     }
                 }
@@ -150,7 +149,9 @@ class DefaultController extends Controller
             }
         }
         else{
-            return new Response('No results yet');
+            return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                'group' => $discussion
+            ));
         }
     }
 
