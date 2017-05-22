@@ -20,17 +20,7 @@ var namespaces = {
 
         burgerElt.addEventListener('click', function() {
             inf768ListElt.style.display = 'flex';
-
-            for(var i=0; i<liElts.length; i++){
-                liElts[i].style.display = "none";
-                liElts[i].addEventListener('mouseover', function(){
-                   this.style.backgroundColor = "#26a69a";
-                });
-                liElts[i].addEventListener('mouseleave', function(){
-                    this.style.backgroundColor = "black";
-                });
-            }
-
+            
             var interval = setInterval(height, 100);
             var height = 0;
 
@@ -68,6 +58,19 @@ var namespaces = {
             /* Put the height back to 0 for following clicks */
             inf768ListElt.style.height = '0';
         });
+    },
+
+    menu: function(){
+        var liElts = document.querySelectorAll("#sup768List > li");
+
+        for(var i=0; i<liElts.length; i++){
+            liElts[i].addEventListener('mouseover', function(){
+                this.style.backgroundColor = "#26a69a";
+            });
+            liElts[i].addEventListener('mouseleave', function(){
+                this.style.backgroundColor = "black";
+            });
+        }
     },
 
     jQuery: function(){
@@ -233,6 +236,9 @@ if(profileEdit.test(location.href)) {
 
 if(window.innerWidth <= 768){
     namespaces.burger();
+}
+else{
+    namespaces.menu();
 }
 
 
