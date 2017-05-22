@@ -4,6 +4,7 @@ namespace MeritocrateBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,11 +32,14 @@ class DiscussionType extends AbstractType
             ))
             ->add('privacy', ChoiceType::class, array(
                 'choices' => array(
-                    'private' => true,
-                    'public' => false
+                    'public' => false,
+                    'private' => true
                 ),
                 'multiple' => false,
                 'expanded' => false,
+                'required' => true
+            ))
+            ->add('password', TextType::class, array(
                 'required' => false
             ));
     }

@@ -36,11 +36,11 @@ class DefaultController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            dump($request);
+
             $privacy = $request->request->get('meritocratebundle_discussion')['privacy'];
+            $password = $request->request->get('meritocratebundle_discussion')['password'];
 
             if($privacy == 1){
-                $password = md5(uniqId());
                 $discussion->setPassword($password);
             }
 
@@ -78,6 +78,7 @@ class DefaultController extends Controller
             $name = $request->request->get('meritocratebundle_discussion')['name'];
             $ongoing = $request->request->get('meritocratebundle_discussion')['ongoing'];
             $privacy = $request->request->get('meritocratebundle_discussion')['privacy'];
+            $password = $request->request->get('meritocratebundle_discussion')['password'];
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idDiscussion);
 
             $discussion->setOngoing($ongoing);
@@ -90,10 +91,8 @@ class DefaultController extends Controller
                 $discussion->setPrivacy(false);
             }
             else{
-                if($discussion->getPassword() == NULL){
-                    $discussion->setPassword(md5(uniqid()));
-                    $discussion->setPrivacy(true);
-                }
+                $discussion->setPassword($password);
+                $discussion->setPrivacy(true);
             }
 
             $em->flush();
@@ -129,7 +128,7 @@ class DefaultController extends Controller
         $speeches = $em->getRepository('MeritocrateBundle:Speech')->myfindSpeeches($discussion);
 
         if($discussion->getPrivacy() === true){
-            if($request) {
+            if($request->isMethod('post')) {
                 $password = $request->request->get('password');
                 if ($password == $discussion->getPassword()) {
                     return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(

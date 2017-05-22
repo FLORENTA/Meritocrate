@@ -8,6 +8,7 @@
 var register = /\/register/;
 var profileEdit = /\/profile\/edit/;
 var discussion = /\/discussion/;
+var newGroup = /\/new/;
 
 /***** NAMESPACES *****/
 var namespaces = {
@@ -92,7 +93,7 @@ var namespaces = {
     },
 
     ajaxEdit: function ajaxPost(url, formData) {
-        var req = new XMLHttpRequest(url);
+        var req = new XMLHttpRequest();
         req.open('post', url, true);
         req.addEventListener('load', function () {
             if (req.status >= 200 && req.status < 400) {
@@ -239,6 +240,20 @@ var namespaces = {
         function show(response) {
             console.log(response);
         }
+    },
+
+    newGroup: function(){
+        namespaces.jQuery();
+        var $privacyElt = $('#meritocratebundle_discussion_privacy');
+        var $passwordInputElt = $('#password');
+        $privacyElt.change(function(){
+            if($(this).val() == 1){
+                $passwordInputElt.fadeIn(1000);
+            }
+            else{
+                $passwordInputElt.fadeOut(1000);
+            }
+        });
     }
 };
 
@@ -250,6 +265,10 @@ if(register.test(location.href)){
 /* if the route matches /profile/edit */
 if(profileEdit.test(location.href)) {
     namespaces.profileEdit();
+}
+
+if(newGroup.test(location.href)){
+    namespaces.newGroup();
 }
 
 if(window.innerWidth <= 768){

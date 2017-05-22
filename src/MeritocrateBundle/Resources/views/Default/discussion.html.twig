@@ -13,11 +13,17 @@
                 {{ form_widget(form.name) }}
                 {{ form_errors(form.name) }}
             </div>
+            <div class="input-field col s12">
+                {{ form_widget(form.privacy) }}
+                {{ form_errors(form.privacy) }}
+                {{ form_label(form.privacy) }}
+            </div>
             <div class="input-field col s12 hide-field">
                 {{ form_row(form.ongoing) }}
             </div>
-            <div class="input-field col s12">
-                {{ form_row(form.privacy) }}
+
+            <div class="input-field col s12 hide-field" id="password">
+                {{ form_row(form.password) }}
             </div>
             <div class="col s12">
                 <button class="btn btn-large waves-effect waves-light left" type="submit" name="action">
@@ -34,10 +40,5 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script>
-    $(document).ready(function() {
-        $('select').material_select();
-    });
-    </script>
     <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}

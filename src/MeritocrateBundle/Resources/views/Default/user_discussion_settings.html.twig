@@ -4,7 +4,6 @@
     <div class="container container-custom">
         <h4>My Discussion groups</h4>
         {% if discussionForms is defined %}
-            {% set loopIndex = 1 %}
             {% for discussionForm in discussionForms  %}
                 <div class="row row-custom">
                 {{ form_start(discussionForm, {'attr': {'class':'update-discussion-form'}}) }}
@@ -21,17 +20,15 @@
                         {{ form_errors(discussionForm.ongoing) }}
                         {{ form_label(discussionForm.ongoing, "Status") }}
                     </div>
-                    <div class="input-field col s12">
+                    <div class="input-field col s12 privacy">
                         {{ form_widget(discussionForm.privacy) }}
                         {{ form_errors(discussionForm.privacy) }}
                         {{ form_label(discussionForm.privacy, "Privacy") }}
                     </div>
                     <div class="input-field col s12">
-                        {% for discussion in discussions %}
-                            {% if loop.index == loopIndex and discussion.password != null %}
-                                <span><b>Share private access : </b></span><input type="text" value="{{ discussion.password }}"/>
-                            {% endif %}
-                        {% endfor %}
+                        {{ form_widget(discussionForm.password) }}
+                        {{ form_errors(discussionForm.password) }}
+                        {{ form_label(discussionForm.password, "Password if private") }}
                     </div>
                     <div class="input-field col s12">
                         <button class="btn waves-effect waves-light right update-discussion" type="submit">
@@ -41,7 +38,6 @@
                     </div>
                 {{ form_end(discussionForm) }}
                 </div>
-                {% set loopIndex = loopIndex + 1 %}
             {% endfor %}
         {% else %}
             <div class="row">
@@ -59,7 +55,6 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
     <script>
         'use strict';
 
@@ -94,6 +89,6 @@
                 ajaxPost('{{ path('meritocrate_discussion_update') }}', formData, confirmUpdate);
             });
         }
-
     </script>
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}
