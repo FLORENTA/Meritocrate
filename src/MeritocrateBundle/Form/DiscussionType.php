@@ -28,6 +28,15 @@ class DiscussionType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false
+            ))
+            ->add('privacy', ChoiceType::class, array(
+                'choices' => array(
+                    'private' => true,
+                    'public' => false
+                ),
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false
             ));
     }
     

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container container-custom">
+        <div class="row row-custom">
+            <form method="post" action="{{ path('meritocrate_discussion_group', {id : discussion.id} ) }}">
+                <label for="password" id="password"> Enter password </label>
+                <input type="text" name="password" id="password"/>
+
+                <button class="btn waves-effect waves-light right" type="submit"> Submit </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

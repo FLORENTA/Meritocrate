@@ -30,12 +30,23 @@ class Discussion
     private $speeches;
 
     /**
+     * @var boolean
+     */
+    private $privacy;
+
+    /**
+     * @var integer
+     */
+    private $password;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->speeches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->datecreation = new \DateTime();
+        $this->ongoing = true;
     }
 
     /**
@@ -143,11 +154,33 @@ class Discussion
     {
         return $this->user;
     }
+
     /**
      * @var boolean
      */
     private $ongoing;
 
+    /**
+     * Get ongoing
+     *
+     * @return boolean
+     */
+    public function getOngoing()
+    {
+        return $this->ongoing;
+    }
+
+    /**
+     * Set ongoing
+     *
+     * @var boolean
+     */
+    public function setOngoing($ongoing)
+    {
+        $this->ongoing = $ongoing;
+
+        return $this;
+    }
 
     /**
      * Set datecreation
@@ -164,26 +197,27 @@ class Discussion
     }
 
     /**
-     * Set ongoing
+     * Set privacy
      *
-     * @param boolean $ongoing
+     * @param boolean $privacy
      *
      * @return Discussion
      */
-    public function setOngoing($ongoing)
+    public function setPrivacy($privacy)
     {
-        $this->ongoing = $ongoing;
+        $this->privacy = $privacy;
 
         return $this;
     }
 
     /**
-     * Get ongoing
+     * Get privacy
      *
      * @return boolean
      */
-    public function getOngoing()
+    public function getPrivacy()
     {
-        return $this->ongoing;
+        return $this->privacy;
     }
+    
 }

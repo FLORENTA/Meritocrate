@@ -30,6 +30,16 @@ class Discussion
     private $speeches;
 
     /**
+     * @var boolean
+     */
+    private $privacy;
+
+    /**
+     * @var integer
+     */
+    private $password;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -170,5 +180,68 @@ class Discussion
         $this->ongoing = $ongoing;
 
         return $this;
+    }
+
+    /**
+     * Set datecreation
+     *
+     * @param \DateTime $datecreation
+     *
+     * @return Discussion
+     */
+    public function setDatecreation($datecreation)
+    {
+        $this->datecreation = $datecreation;
+
+        return $this;
+    }
+
+    /**
+     * Set privacy
+     *
+     * @param boolean $privacy
+     *
+     * @return Discussion
+     */
+    public function setPrivacy($privacy)
+    {
+        $this->privacy = $privacy;
+
+        return $this;
+    }
+
+    /**
+     * Get privacy
+     *
+     * @return boolean
+     */
+    public function getPrivacy()
+    {
+        return $this->privacy;
+    }
+    
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Discussion
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }

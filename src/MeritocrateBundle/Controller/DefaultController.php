@@ -36,6 +36,13 @@ class DefaultController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            dump($request);
+            $privacy = $request->request->get('meritocratebundle_discussion')['privacy'];
+
+            if($privacy == 1){
+                $password = md5(uniqId());
+                $discussion->setPassword($password);
+            }
 
             $user = $em->getRepository('MeritocrateBundle:User')->findOneById($this->getUser()->getId());
 
@@ -66,13 +73,28 @@ class DefaultController extends Controller
         }
 
         if($request->isXmlHttpRequest()){
+
             $idDiscussion = $request->request->get('meritocratebundle_discussion')['id'];
             $name = $request->request->get('meritocratebundle_discussion')['name'];
             $ongoing = $request->request->get('meritocratebundle_discussion')['ongoing'];
+            $privacy = $request->request->get('meritocratebundle_discussion')['privacy'];
             $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idDiscussion);
+
             $discussion->setOngoing($ongoing);
             $discussionName = $discussion->getName();
             $discussion->setName($name);
+
+            /* If the user decides to make the group go public */
+            if($privacy == 0){
+                $discussion->setPassword(NULL);
+                $discussion->setPrivacy(false);
+            }
+            else{
+                if($discussion->getPassword() == NULL){
+                    $discussion->setPassword(md5(uniqid()));
+                    $discussion->setPrivacy(true);
+                }
+            }
 
             $em->flush();
 
@@ -91,7 +113,8 @@ class DefaultController extends Controller
 
         if(!empty($forms)){
             return $this->render('MeritocrateBundle:Default:user_discussion_settings.html.twig', array(
-                'discussionForms' => $forms
+                'discussionForms' => $forms,
+                'discussions' => $discussions
             ));
         }
 
@@ -100,16 +123,41 @@ class DefaultController extends Controller
         }
     }
 
-    public function discussionGroupAction($id){
+    public function discussionGroupAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
         $speeches = $em->getRepository('MeritocrateBundle:Speech')->myfindSpeeches($discussion);
 
-        return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(
-           'group' => $discussion,
-           'speeches' => $speeches,
-           'user' => $this->getUser()
-        ));
+        if($discussion->getPrivacy() === true){
+            if($request) {
+                $password = $request->request->get('password');
+                if ($password == $discussion->getPassword()) {
+                    return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(
+                        'group' => $discussion,
+                        'speeches' => $speeches,
+                        'user' => $this->getUser()
+                    ));
+                }
+                else{
+                    return $this->render('MeritocrateBundle:Default:verify.html.twig', array(
+                        'discussion' => $discussion
+                    ));
+                }
+            }
+            else{
+                return $this->render('MeritocrateBundle:Default:verify.html.twig', array(
+                    'discussion' => $discussion
+                ));
+            }
+
+        }
+        else{
+            return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(
+                'group' => $discussion,
+                'speeches' => $speeches,
+                'user' => $this->getUser()
+            ));
+        }
     }
 
     public function groupStatisticsAction($id){

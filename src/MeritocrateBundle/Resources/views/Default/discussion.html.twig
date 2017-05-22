@@ -16,10 +16,12 @@
             <div class="input-field col s12 hide-field">
                 {{ form_row(form.ongoing) }}
             </div>
+            <div class="input-field col s12">
+                {{ form_row(form.privacy) }}
+            </div>
             <div class="col s12">
                 <button class="btn btn-large waves-effect waves-light left" type="submit" name="action">
                     Submit new group
-                    <i class="material-icons material-custom left">done</i>
                 </button>
             </div>
         {{ form_end(form) }}
@@ -27,7 +29,6 @@
         <a href="{{ path('meritocrate_admin') }}">
             <button class="btn btn-large waves-effect waves-light right black">
                 Back to home
-                <i class="material-icons material-custom left">replay</i>
             </button>
         </a>
     </div>

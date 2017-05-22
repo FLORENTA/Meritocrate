@@ -20,7 +20,9 @@ var namespaces = {
 
         burgerElt.addEventListener('click', function () {
             inf768ListElt.style.display = 'flex';
-
+            for(var i=0; i<4; i++){
+                liElts[i].style.display = 'none';
+            }
             var interval = setInterval(height, 100);
             var height = 0;
 
@@ -64,7 +66,7 @@ var namespaces = {
     menu: function () {
         var liElts = document.querySelectorAll("#sup768List > li");
 
-        for (var i = 0; i < liElts.length - 2; i++) {
+        for (var i = 0; i < 4; i++) {
             liElts[i].addEventListener('mouseover', function () {
                 this.style.backgroundColor = "#26a69a";
             });

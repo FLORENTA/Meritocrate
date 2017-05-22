@@ -15,6 +15,12 @@ MeritocrateBundle\Entity\Discussion:
             unique: true
         datecreation:
             type: datetimetz
+        privacy:
+            type: boolean
+        password:
+            type: string
+            length: 255
+            nullable: true
         ongoing:
             type: boolean
     oneToMany:
