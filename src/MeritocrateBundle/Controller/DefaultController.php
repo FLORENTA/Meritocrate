@@ -144,7 +144,9 @@ class DefaultController extends Controller
                 ));
             }
             else{
-                return new Response('No results yet');
+                return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                    'group' => $discussion
+                ));
             }
         }
         else{

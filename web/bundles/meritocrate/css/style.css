@@ -88,6 +88,9 @@ body{
 #inf768{
     background: black;
     display: none;
+    position: fixed;
+    top: 0;
+    z-index: 2;
 }
 
 #inf768List{
@@ -96,12 +99,6 @@ body{
     background: black;
     display: none;
     height: 0;
-}
-
-#inf768{
-    position: fixed;
-    top: 0;
-    z-index: 1;
 }
 
 .right-custom{
@@ -297,7 +294,7 @@ h4{
 
 /* Board page */
 #board-background{
-    background: url('../../../images/ideas.png') repeat-x bottom;
+    background: url('../../../images/ideas.png') no-repeat bottom;
     background-size: 20%;
     position: absolute;
     top: 0;

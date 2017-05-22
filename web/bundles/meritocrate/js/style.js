@@ -23,6 +23,12 @@ var namespaces = {
 
             for(var i=0; i<liElts.length; i++){
                 liElts[i].style.display = "none";
+                liElts[i].addEventListener('mouseover', function(){
+                   this.style.backgroundColor = "#26a69a";
+                });
+                liElts[i].addEventListener('mouseleave', function(){
+                    this.style.backgroundColor = "black";
+                });
             }
 
             var interval = setInterval(height, 100);
