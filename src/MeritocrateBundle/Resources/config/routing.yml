@@ -32,6 +32,10 @@ meritocrate_group_livechat:
     path: /home/discussion/livechat/{id}
     defaults: { _controller: MeritocrateBundle:Default:groupLivechat }
 
+meritocrate_group_new_messages:
+    path: /newMessages
+    defaults: { _controller: MeritocrateBundle:Default:getNewMessages }
+
 meritocrate_set_speaker:
     path:     /speaks
     defaults: { _controller: MeritocrateBundle:Default:setSpeaker }

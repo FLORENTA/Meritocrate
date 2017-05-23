@@ -321,9 +321,7 @@ class DefaultController extends Controller
     public function groupLivechatAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
-        $assemblies = $em->getRepository('MeritocrateBundle:Assembly')->findBy(array(
-            'discussion' => $discussion
-        ));
+        $assemblies = $em->getRepository('MeritocrateBundle:Assembly')->myFindByDiscussion($discussion, 0);
 
         if($request->isMethod('post')){
             $assembly = new Assembly();
@@ -359,6 +357,18 @@ class DefaultController extends Controller
             'discussion' => $discussion,
             'assemblies' => $assemblies
         ));
+    }
+
+    public function getNewMessagesAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        if($request->isXmlHttpRequest()){
+
+            $idLastMessage = $request->request->get('idLastMessage');
+            $idDiscussion = $request->request->get('idDiscussion');
+            $assemblies = $em->getRepository('MeritocrateBundle:Assembly')->myFindByDiscussion($idDiscussion, $idLastMessage);
+
+            return new Response(json_encode($assemblies));
+        }
     }
 
     public function addMeritAction(Request $request)

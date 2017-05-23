@@ -5,6 +5,18 @@
         <div class="row row-custom">
             <h5 id="chat-h5"> {{ discussion.name }} Livechat </h5>
             <div class="col s12" id="chat-window">
+                {% for assembly in assemblies %}
+                    <div class="divMessages">
+                        <b><i>{{ assembly.username }}</i></b>
+                        <span> on {{ assembly.date|date('m-d-Y') }} at {{ assembly.date|date('h:i:s a') }}</span>
+                        <div class="messages">{{ assembly.text }}</div>
+                        {% if assembly.attachment != null %}
+                            <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"/></a>
+                        {% endif %}
+                        <input type="hidden" name="idDiscussion" value="{{ assembly.discussionId }}"/>
+                        <input type="hidden" name="idElt" value="{{ assembly.id }}"/>
+                    </div>
+                {% endfor %}
             </div>
             <div class="col s12" id="textarea-box">
                 <form name="message">
@@ -28,59 +40,111 @@
     function show(response){
         var response = JSON.parse(response);
         var chatWindowElt = document.getElementById('chat-window');
-        if(response.attachment){
-            var attachment = response.attachment.split('.');
-            var extension = attachment[1];
+        if(response.length>0) {
+            for (var i = 0; i < response.length; i++) {
+                console.log(response[i]);
+                if (response[i].attachment) {
+                    var attachment = response[i].attachment.split('.');
+                    var extension = attachment[1];
 
-            if(extension == 'jpg' || extension == 'jpeg' || extension == 'gif' || extension == 'png' || extension == 'bmp' || extension == 'tiff'){
-                var imgElt = document.createElement('img');
-                var linkElt = document.createElement('a');
-            }
-            else{
-                var linkElt = document.createElement('a');
-                linkElt.href = "{{ asset('bundles/meritocrate/images/') }}"+ response.attachment + "";
-                var fileElt = document.createElement('img');
-                fileElt.setAttribute('src', "{{ asset('images/trombone.png') }}" );
-                linkElt.appendChild(fileElt);
+                    /* Let's check the file extensions. If different from images, let's create a fake image for a file */
+                    if (extension == 'jpg' || extension == 'jpeg' || extension == 'gif' || extension == 'png' || extension == 'bmp' || extension == 'tiff') {
+                        var imgElt = document.createElement('img');
+                        var linkImgElt = document.createElement('a');
+                        linkImgElt.href = "{{ asset('bundles/meritocrate/images/') }}" + response[i].attachment + "";
+                        imgElt.setAttribute('src', "{{ asset('bundles/meritocrate/images/') }}" + response[i].attachment + "");
+                        linkImgElt.appendChild(imgElt);
+                    }
+                    else {
+                        var linkElt = document.createElement('a');
+                        linkElt.href = "{{ asset('bundles/meritocrate/images/') }}" + response[i].attachment + "";
+                        var fileElt = document.createElement('img');
+                        fileElt.setAttribute('src', "{{ asset('images/trombone.png') }}");
+                        linkElt.appendChild(fileElt);
+                    }
+                }
+
+                var date = response[i].date.date;
+                date = date.substr(0, 19);
+
+                /* Let's get the hour */
+                var dateHour = date.substr(11, 2);
+
+                /* if hour > 12 -> afternoon */
+                if (dateHour > 12) {
+                    /* pm format */
+                    dateHour = dateHour - 12;
+
+                    if (dateHour > 9) {
+                        /* We get the elements we need to make a "pm date" */
+                        date = date.substr(0, 11) + ' at ' + dateHour + date.substr(13, 7) + ' pm';
+                    }
+                    else {
+                        /* We get the elements we need to make a "pm date" */
+                        date = date.substr(0, 11) + ' at 0' + dateHour + date.substr(13, 7) + ' pm';
+                    }
+                }
+
+                var inputElt1 = document.createElement('input');
+                inputElt1.setAttribute('name', 'idElt');
+                inputElt1.setAttribute('type', 'hidden');
+                inputElt1.setAttribute('value', response[i].discussionId);
+
+                var inputElt2 = document.createElement('input');
+                inputElt2.setAttribute('name', 'idElt');
+                inputElt2.setAttribute('type', 'hidden');
+                inputElt2.setAttribute('value', response[i].id);
+
+                var iElt = document.createElement('i');
+                iElt.textContent = "" + response[i].username + "";
+
+                var bElt = document.createElement('b');
+                bElt.appendChild(iElt);
+
+                var spanElt = document.createElement('span');
+                spanElt.textContent = " on " + date + " : ";
+
+                var textElt = document.createElement('div');
+                textElt.setAttribute('class', 'messages');
+
+                textElt.textContent = response[i].text;
+                var divElt = document.createElement('div');
+                divElt.setAttribute('class', 'divMessages');
+                divElt.appendChild(bElt);
+                divElt.appendChild(spanElt);
+                divElt.appendChild(textElt);
+
+                if (linkImgElt) {
+                    divElt.appendChild(linkImgElt);
+                }
+                if (linkElt) {
+                    divElt.appendChild(linkElt);
+                }
+
+                divElt.appendChild(inputElt1);
+                divElt.appendChild(inputElt2);
+                chatWindowElt.appendChild(divElt);
             }
         }
-        console.log(response);
-        var date = response.date.date;
-        date = date.substr(0, 19);
-
-        /* Let's get the hour */
-        var dateHour = date.substr(11, 2);
-
-        /* if hour > 12 -> afternoon */
-        if(dateHour>12){
-            /* pm format */
-            dateHour = dateHour - 12;
-
-            /* We get the elements we need to make a "pm date" */
-            date = date.substr(0, 11) + ' at ' + dateHour + date.substr(13, 7) + ' pm';
-        }
-
-        var iElt = document.createElement('i');
-        iElt.textContent = "" + response.username + "";
-
-        var bElt = document.createElement('b');
-        bElt.appendChild(iElt);
-;
-        var spanElt = document.createElement('span');
-        spanElt.textContent = " on " + date + " : ";
-
-        var textElt = document.createElement('p');
-        textElt.setAttribute('class', 'messages')
-        textElt.textContent = "" + response.text + "";
-
-        var divElt = document.createElement('div');
-        divElt.setAttribute('class', 'divMessages');
-        divElt.appendChild(bElt);
-        divElt.appendChild(spanElt);
-        divElt.appendChild(textElt);
-        divElt.appendChild(linkElt);
-        chatWindowElt.appendChild(divElt);
     }
+
+    function refresh(){
+        setTimeout(function(){
+            var idDiscussion = document.getElementById('chat-window').lastElementChild.lastElementChild.previousElementSibling.getAttribute('value');
+            var idLastMessage = document.getElementById('chat-window').lastElementChild.lastElementChild.getAttribute('value');
+
+            function show(){
+
+            }
+
+            namespaces.ajaxGetMessages("{{ path('meritocrate_group_new_messages') }}", idLastMessage, idDiscussion);
+            refresh();
+        }, 7000);
+    }
+
+    setTimeout(function(){
+        refresh();
+    }, 2000);
 
     </script>
 {% endblock %}

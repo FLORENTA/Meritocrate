@@ -260,13 +260,21 @@ var namespaces = {
     ajaxChat : function(url, formData){
         var req = new XMLHttpRequest();
         req.open('post', url, true);
+        req.setRequestHeader('X-requested-With', 'XMLHttpRequest');
+        req.send(formData);
+    },
+
+    ajaxGetMessages : function(url, idLastMessage, idDiscussion){
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
         req.addEventListener('load', function(){
             if(req.status >= 200 && req.status < 400){
                 show(req.responseText);
             }
         });
-        req.setRequestHeader('X-requested-With', 'XMLHttpRequest');
-        req.send(formData);
+        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        req.send('idLastMessage='+idLastMessage+'&idDiscussion='+idDiscussion+'');
     },
 
     chat : function(){

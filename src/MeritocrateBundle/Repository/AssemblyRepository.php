@@ -12,12 +12,31 @@ class AssemblyRepository extends \Doctrine\ORM\EntityRepository
 {
     public function myFindBy($user){
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('a.date, a.text, a.attachment')
+        $qb->select('a.id, a.date, a.text, a.attachment')
             ->from('MeritocrateBundle:Assembly', 'a')
             ->join('a.user', 'u')
             ->addSelect('u.id as userId, u.username')
+            ->join('a.discussion', 'd')
+            ->addSelect('d.id as discussionId')
             ->where('a.user = :user')
             ->setParameter('user', $user);
+        return $qb->getquery()->getResult();
+    }
+
+    public function myFindByDiscussion($discussion, $id){
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('a.id, a.date, a.text, a.attachment')
+            ->from('MeritocrateBundle:Assembly', 'a')
+            ->join('a.user', 'u')
+            ->addSelect('u.id as userId, u.username')
+            ->join('a.discussion', 'd')
+            ->addSelect('d.id as discussionId')
+            ->where('a.discussion = :discussion')
+            ->andWhere('a.id > :id')
+            ->setParameters(array(
+                'discussion' => $discussion,
+                'id' => $id
+            ));
         return $qb->getquery()->getResult();
     }
 }
