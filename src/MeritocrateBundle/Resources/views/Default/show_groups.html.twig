@@ -6,25 +6,33 @@
             <table class="highlight centered responsive-table">
                 <thead>
                     <tr>
-                        <th>Date of Creation</th>
                         <th>Group Name</th>
                         <th>Created By</th>
+                        <th>Date of Creation</th>
                         <th>Status</th>
                         <th>Results</th>
+                        <th>Livechat</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for group in groups %}
                         <tr>
-                            <td>{{ group.datecreation|date('m/d/Y') }}, {{ group.datecreation|date('h:i:s a') }}</td>
                             <td>{{ group.name }}</td>
                             <td>{{ group.user.fullname }}</td>
+                            <td>{{ group.datecreation|date('m/d/Y') }}, {{ group.datecreation|date('h:i:s a') }}</td>
                             <td>
                                 {% if group.ongoing == 1 %}
-                                    <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}" class="btn waves-effect waves-light">
-                                            Open
-                                        <i class="material-icons left">lock_open</i>
-                                    </a>
+                                    {% if group.privacy == 0 %}
+                                        <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}" class="btn waves-effect waves-light">
+                                                Public
+                                            <i class="material-icons left">lock_open</i>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ path('meritocrate_discussion_group', {id : group.id}) }}" class="btn waves-effect waves-light black">
+                                            Private
+                                            <i class="material-icons left">lock_open</i>
+                                        </a>
+                                    {% endif %}
                                 {% else %}
                                     <a class="btn waves-effect waves-light disabled">
                                         Closed
@@ -33,10 +41,30 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}" class="btn waves-effect waves-light">
-                                    Results
-                                    <i class="material-icons left">assessment</i>
-                                </a>
+                                {% if group.privacy == 0 %}
+                                    <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}" class="btn waves-effect waves-light">
+                                        Results
+                                        <i class="material-icons left">assessment</i>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}" class="btn waves-effect waves-light black">
+                                        Results
+                                        <i class="material-icons left">assessment</i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if group.privacy == 0 %}
+                                    <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}" class="btn waves-effect waves-light">
+                                        Results
+                                        <i class="material-icons left">assessment</i>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}" class="btn waves-effect waves-light black">
+                                        Results
+                                        <i class="material-icons left">assessment</i>
+                                    </a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

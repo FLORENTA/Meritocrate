@@ -203,9 +203,11 @@ h2{
 }
 
 td{
-    text-align: center;
-    width: 25%;
     border-bottom: 1px solid #d8d8d8;
+}
+
+th{
+    vertical-align: middle;
 }
 
 @media all and (max-width: 768px){
