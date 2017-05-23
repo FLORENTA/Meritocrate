@@ -11,7 +11,12 @@
                         <span> on {{ assembly.date|date('m-d-Y') }} at {{ assembly.date|date('h:i:s a') }}</span>
                         <div class="messages">{{ assembly.text }}</div>
                         {% if assembly.attachment != null %}
-                            <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"/></a>
+                            {% set extension = assembly.attachment|split('.')|last %}
+                            {% if (extension == 'jpg') or (extension == 'jpeg') or (extension == 'gif') or (extension == 'png') or (extension == 'tiff') %}
+                                <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"/></a>
+                            {% else %}
+                                <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('images/trombone.png') }}"/></a>
+                            {% endif %}
                         {% endif %}
                         <input type="hidden" name="idDiscussion" value="{{ assembly.discussionId }}"/>
                         <input type="hidden" name="idElt" value="{{ assembly.id }}"/>
