@@ -37,12 +37,20 @@
 {% block javascripts %}
     <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
     <script>
+
+    var chatWindowElt = document.getElementById('chat-window');
+    var divMessagesElts = document.getElementsByClassName('divMessages');
+
+    if(divMessagesElts.length>0){
+        var lastChildElt = divMessagesElts[divMessagesElts.length-1];
+        chatWindowElt.scrollTop = lastChildElt.offsetTop;
+    }
+
     function show(response){
         var response = JSON.parse(response);
-        var chatWindowElt = document.getElementById('chat-window');
+
         if(response.length>0) {
             for (var i = 0; i < response.length; i++) {
-                console.log(response[i]);
                 if (response[i].attachment) {
                     var attachment = response[i].attachment.split('.');
                     var extension = attachment[1];
@@ -125,18 +133,24 @@
                 divElt.appendChild(inputElt2);
                 chatWindowElt.appendChild(divElt);
             }
+            setTimeout(function(){
+                var divMessagesElts = document.getElementsByClassName('divMessages');
+                var lastChildElt = divMessagesElts[divMessagesElts.length-1];
+                chatWindowElt.scrollTop = lastChildElt.offsetTop;
+            }, 200);
         }
     }
 
     function refresh(){
         setTimeout(function(){
-            var idDiscussion = document.getElementById('chat-window').lastElementChild.lastElementChild.previousElementSibling.getAttribute('value');
-            var idLastMessage = document.getElementById('chat-window').lastElementChild.lastElementChild.getAttribute('value');
-
-            function show(){
-
+            if(divMessagesElts.length>0) {
+                var idDiscussion = document.getElementById('chat-window').lastElementChild.lastElementChild.previousElementSibling.getAttribute('value');
+                var idLastMessage = document.getElementById('chat-window').lastElementChild.lastElementChild.getAttribute('value');
             }
-
+            else{
+                idDiscussion = {{ discussion.id }};
+                idLastMessage = 0;
+            }
             namespaces.ajaxGetMessages("{{ path('meritocrate_group_new_messages') }}", idLastMessage, idDiscussion);
             refresh();
         }, 7000);
