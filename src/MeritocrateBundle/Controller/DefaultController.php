@@ -139,7 +139,8 @@ class DefaultController extends Controller
                 }
                 else{
                     return $this->render('MeritocrateBundle:Default:verify.html.twig', array(
-                        'discussion' => $discussion
+                        'discussion' => $discussion,
+                        'message' => 'Wrong password. Try again'
                     ));
                 }
             }

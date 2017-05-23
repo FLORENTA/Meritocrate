@@ -3,13 +3,25 @@
 {% block content %}
     <div class="container container-custom">
         <div class="row row-custom">
-            <h4>Enter the password to access discussion</h4>
-            <form method="post" action="{{ path('meritocrate_discussion_group', {id : discussion.id} ) }}">
-                <label for="password" id="password"> Enter password </label>
-                <input type="text" name="password" id="password"/>
+            <div class="col s12">
+                <h4> {{ discussion.name }} group </h4>
+                <p> Created by <b style="color: #26a69a;">{{ discussion.user.username }}</b> on {{ discussion.datecreation|date('m/d/Y') }} at {{ discussion.datecreation|date('h:i:s a') }}</p>
+                <h5>Enter the password to access the discussion </h5>
+                <form method="post" action="{{ path('meritocrate_discussion_group', {id : discussion.id} ) }}">
+                    <label for="password" id="password"> Password </label>
+                    <input type="text" name="password" id="password"/>
 
-                <button class="btn waves-effect waves-light right" type="submit"> Submit </button>
-            </form>
+                    <button class="btn waves-effect waves-light right" type="submit"> Submit </button>
+                </form>
+            </div>
+            {% if message is defined %}
+                <div class="col s12" id="pass-error">
+                    {{ message }}
+                </div>
+            {% endif %}
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}
