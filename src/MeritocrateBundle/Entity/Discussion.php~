@@ -220,4 +220,28 @@ class Discussion
         return $this->privacy;
     }
     
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Discussion
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
 }

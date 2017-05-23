@@ -2,11 +2,13 @@
 
 namespace MeritocrateBundle\Controller;
 
+use MeritocrateBundle\Entity\Assembly;
 use MeritocrateBundle\Entity\Speech;
 use MeritocrateBundle\Entity\User;
 use MeritocrateBundle\Entity\Merits;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MeritocrateBundle\Entity\Discussion;
+use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -314,6 +316,49 @@ class DefaultController extends Controller
                 return new Response('NOR');
             }
         }
+    }
+
+    public function groupLivechatAction($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
+        $assemblies = $em->getRepository('MeritocrateBundle:Assembly')->findBy(array(
+            'discussion' => $discussion
+        ));
+
+        if($request->isMethod('post')){
+            $assembly = new Assembly();
+            $message = $request->request->get('message');
+            $file = $request->files->get('attachment');
+
+            $assembly->setText($message);
+            $assembly->setDiscussion($discussion);
+            $assembly->setUser($this->getUser());
+
+            if(isset($file) && !empty($file)){
+                $fileName = uniqId() . '.' . $file->guessExtension();
+                $file->move($this->getParameter('image_directory'), $fileName);
+                $assembly->setAttachment($fileName);
+            }
+            else{
+                $assembly->setAttachment(NULL);
+            }
+
+            $em->persist($assembly);
+            $em->flush();
+
+            $userAssemblies = $em->getRepository('MeritocrateBundle:Assembly')->myFindBy($this->getUser());
+            $userAssembly = $userAssemblies[count($userAssemblies)-1];
+
+            $response = new Response(json_encode($userAssembly));
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        }
+
+        return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
+            'discussion' => $discussion,
+            'assemblies' => $assemblies
+        ));
     }
 
     public function addMeritAction(Request $request)

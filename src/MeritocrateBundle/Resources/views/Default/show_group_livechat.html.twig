@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container container-custom">
+        <div class="row row-custom">
+            <h5 id="chat-h5"> {{ discussion.name }} Livechat </h5>
+            <div class="col s12" id="chat-window">
+            </div>
+            <div class="col s12" id="textarea-box">
+                <form name="message">
+                    <textarea name="message" id="message" placeholder="Write your message here..."/></textarea>
+                    <div class="file-field input-field" id="attach">
+                        <span><i class="material-icons" >attach_file</i> Attach a file <input type="file" name="attachment"></span>
+                        <div class="file-path-wrapper" id="file-path">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light right">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
+    <script>
+    function show(response){
+        var response = JSON.parse(response);
+        var chatWindowElt = document.getElementById('chat-window');
+        if(response.attachment){
+            var attachment = response.attachment.split('.');
+            var extension = attachment[1];
+
+            if(extension == 'jpg' || extension == 'jpeg' || extension == 'gif' || extension == 'png' || extension == 'bmp' || extension == 'tiff'){
+                var imgElt = document.createElement('img');
+                var linkElt = document.createElement('a');
+            }
+            else{
+                var linkElt = document.createElement('a');
+                linkElt.href = "{{ asset('bundles/meritocrate/images/') }}"+ response.attachment + "";
+                var fileElt = document.createElement('img');
+                fileElt.setAttribute('src', "{{ asset('images/trombone.png') }}" );
+                linkElt.appendChild(fileElt);
+            }
+        }
+        console.log(response);
+        var date = response.date.date;
+        date = date.substr(0, 19);
+
+        /* Let's get the hour */
+        var dateHour = date.substr(11, 2);
+
+        /* if hour > 12 -> afternoon */
+        if(dateHour>12){
+            /* pm format */
+            dateHour = dateHour - 12;
+
+            /* We get the elements we need to make a "pm date" */
+            date = date.substr(0, 11) + ' at ' + dateHour + date.substr(13, 7) + ' pm';
+        }
+
+        var iElt = document.createElement('i');
+        iElt.textContent = "" + response.username + "";
+
+        var bElt = document.createElement('b');
+        bElt.appendChild(iElt);
+;
+        var spanElt = document.createElement('span');
+        spanElt.textContent = " on " + date + " : ";
+
+        var textElt = document.createElement('p');
+        textElt.setAttribute('class', 'messages')
+        textElt.textContent = "" + response.text + "";
+
+        var divElt = document.createElement('div');
+        divElt.setAttribute('class', 'divMessages');
+        divElt.appendChild(bElt);
+        divElt.appendChild(spanElt);
+        divElt.appendChild(textElt);
+        divElt.appendChild(linkElt);
+        chatWindowElt.appendChild(divElt);
+    }
+
+    </script>
+{% endblock %}

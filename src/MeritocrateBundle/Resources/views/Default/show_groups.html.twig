@@ -55,12 +55,12 @@
                             </td>
                             <td>
                                 {% if group.privacy == 0 %}
-                                    <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}" class="btn waves-effect waves-light">
+                                    <a href="{{ path('meritocrate_group_livechat', {id : group.id}) }}" class="btn waves-effect waves-light">
                                         Enter
                                         <i class="material-icons left">share</i>
                                     </a>
                                 {% else %}
-                                    <a href="{{ path('meritocrate_group_statistics', {id : group.id}) }}" class="btn waves-effect waves-light black">
+                                    <a href="{{ path('meritocrate_group_livechat', {id : group.id}) }}" class="btn waves-effect waves-light black">
                                         Enter
                                         <i class="material-icons left">share</i>
                                     </a>

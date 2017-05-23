@@ -327,3 +327,54 @@ h5{
     margin-top: 50px;
 }
 
+/* Livechat page */
+
+#chat-window{
+    height: 40vh;
+    border: 1px solid #d8d8d8;
+}
+
+#chat-h5{
+    margin: 0 0 10px 0;
+}
+
+#textarea-box{
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+
+textarea{
+    height: 100%;
+    width: 100%;
+    resize: none;
+}
+
+#attachment{
+    margin: 0;
+    padding: 0;
+}
+
+#attachment:hover{
+    cursor: pointer;
+}
+
+#file-path{
+    margin: 0;
+    padding: 0;
+}
+
+.divMessages{
+    margin: 7px 0 7px 0;
+    width: 100%;
+}
+
+.divMessages img{
+    width: 75px;
+    margin-top: 5px;
+}
+
+.messages{
+    margin: 0;
+    background: #eeefff;
+    word-wrap: break-word;
+}

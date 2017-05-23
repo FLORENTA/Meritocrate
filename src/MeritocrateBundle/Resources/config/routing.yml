@@ -28,6 +28,10 @@ meritocrate_group_statistics:
     path:     /home/statistics/{id}
     defaults: { _controller: MeritocrateBundle:Default:groupStatistics }
 
+meritocrate_group_livechat:
+    path: /home/discussion/livechat/{id}
+    defaults: { _controller: MeritocrateBundle:Default:groupLivechat }
+
 meritocrate_set_speaker:
     path:     /speaks
     defaults: { _controller: MeritocrateBundle:Default:setSpeaker }

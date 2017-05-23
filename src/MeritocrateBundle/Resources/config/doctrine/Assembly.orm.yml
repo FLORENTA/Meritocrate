@@ -1,0 +1,27 @@
+MeritocrateBundle\Entity\Assembly:
+    type: entity
+    table: null
+    repositoryClass: MeritocrateBundle\Repository\AssemblyRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        text:
+            type: text
+        attachment:
+            type: string
+            length: 255
+            nullable: true
+        date:
+            type: datetimetz
+    manyToOne:
+        user:
+            targetEntity: MeritocrateBundle\Entity\User
+            inversedBy: assemblies
+        discussion:
+            targetEntity: MeritocrateBundle\Entity\Discussion
+            inversedBy: assemblies
+    lifecycleCallbacks: {  }

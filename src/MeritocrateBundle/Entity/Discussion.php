@@ -244,4 +244,43 @@ class Discussion
     {
         return $this->password;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $assemblies;
+
+
+    /**
+     * Add assembly
+     *
+     * @param \MeritocrateBundle\Entity\Assembly $assembly
+     *
+     * @return Discussion
+     */
+    public function addAssembly(\MeritocrateBundle\Entity\Assembly $assembly)
+    {
+        $this->assemblies[] = $assembly;
+
+        return $this;
+    }
+
+    /**
+     * Remove assembly
+     *
+     * @param \MeritocrateBundle\Entity\Assembly $assembly
+     */
+    public function removeAssembly(\MeritocrateBundle\Entity\Assembly $assembly)
+    {
+        $this->assemblies->removeElement($assembly);
+    }
+
+    /**
+     * Get assemblies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAssemblies()
+    {
+        return $this->assemblies;
+    }
 }

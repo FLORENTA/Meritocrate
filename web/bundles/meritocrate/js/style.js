@@ -9,6 +9,7 @@ var register = /\/register/;
 var profileEdit = /\/profile\/edit/;
 var discussion = /\/discussion/;
 var newGroup = /\/new/;
+var chat = /\/livechat/;
 
 /***** NAMESPACES *****/
 var namespaces = {
@@ -242,7 +243,7 @@ var namespaces = {
         }
     },
 
-    newGroup: function(){
+    newGroup : function(){
         namespaces.jQuery();
         var $privacyElt = $('#meritocratebundle_discussion_privacy');
         var $passwordInputElt = $('#password');
@@ -253,6 +254,30 @@ var namespaces = {
             else{
                 $passwordInputElt.fadeOut(800);
             }
+        });
+    },
+
+    ajaxChat : function(url, formData){
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.addEventListener('load', function(){
+            if(req.status >= 200 && req.status < 400){
+                show(req.responseText);
+            }
+        });
+        req.setRequestHeader('X-requested-With', 'XMLHttpRequest');
+        req.send(formData);
+    },
+
+    chat : function(){
+        var attachmentElt = document.getElementById('attachment');
+        var textareaElt = document.getElementById('message');
+
+        var formElt = document.querySelector('form');
+        formElt.addEventListener('submit', function(e){
+            e.preventDefault();
+            var formData = new FormData(this);
+            namespaces.ajaxChat(window.location.href, formData);
         });
     }
 };
@@ -270,6 +295,10 @@ if(profileEdit.test(location.href)) {
 /* if the route matches /new */
 if(newGroup.test(location.href)){
     namespaces.newGroup();
+}
+
+if(chat.test(location.href)){
+    namespaces.chat();
 }
 
 /* if the window width is less than 768 px, display burger menu */

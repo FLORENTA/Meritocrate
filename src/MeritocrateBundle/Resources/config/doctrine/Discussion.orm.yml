@@ -27,6 +27,9 @@ MeritocrateBundle\Entity\Discussion:
         speeches:
             targetEntity: MeritocrateBundle\Entity\Speech
             mappedBy: discussion
+        assemblies:
+            targetEntity: MeritocrateBundle\Entity\Assembly
+            mappedBy: discussion
     manyToOne:
         user:
             targetEntity: MeritocrateBundle\Entity\User
