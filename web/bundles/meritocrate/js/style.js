@@ -45,7 +45,6 @@ var namespaces = {
                     if (height === 400) {
                         liElts[3].style.display = "block";
                     }
-
                     inf768ListElt.style.height = height + '%';
                 }
             }
@@ -93,6 +92,7 @@ var namespaces = {
     },
 
     ajaxEdit: function ajaxPost(url, formData) {
+        /* See handle Request in the controller */
         var req = new XMLHttpRequest();
         req.open('post', url, true);
         req.addEventListener('load', function () {
@@ -248,10 +248,10 @@ var namespaces = {
         var $passwordInputElt = $('#password');
         $privacyElt.change(function(){
             if($(this).val() == 1){
-                $passwordInputElt.fadeIn(1000);
+                $passwordInputElt.fadeIn(800);
             }
             else{
-                $passwordInputElt.fadeOut(1000);
+                $passwordInputElt.fadeOut(800);
             }
         });
     }
@@ -267,10 +267,12 @@ if(profileEdit.test(location.href)) {
     namespaces.profileEdit();
 }
 
+/* if the route matches /new */
 if(newGroup.test(location.href)){
     namespaces.newGroup();
 }
 
+/* if the window width is less than 768 px, display burger menu */
 if(window.innerWidth <= 768){
     namespaces.burger();
 }

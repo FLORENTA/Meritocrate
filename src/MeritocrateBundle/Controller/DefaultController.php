@@ -148,7 +148,6 @@ class DefaultController extends Controller
                     'discussion' => $discussion
                 ));
             }
-
         }
         else{
             return $this->render('MeritocrateBundle:Default:show_discussion.html.twig', array(
@@ -159,46 +158,96 @@ class DefaultController extends Controller
         }
     }
 
-    public function groupStatisticsAction($id){
+    public function groupStatisticsAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
         $speeches = $em->getRepository('MeritocrateBundle:Speech')->myFindAll($discussion);
 
-        if(!empty($speeches)) {
-            /* Go checkout merits linked to each speech of the discussion chosen ($id) */
-            foreach ($speeches as $speech) {
-                $merits[] = $em->getRepository('MeritocrateBundle:Merits')->MyFindMerits($speech);
-            }
+        if($discussion->getPrivacy() == true) {
+            if ($request->isMethod('post')) {
+                $password = $password = $request->request->get('password');
+                if ($password == $discussion->getPassword()) {
+                    /*If any speech exist */
+                    if (!empty($speeches)) {
+                        /* Go checkout merits linked to each speech of the discussion chosen ($id) */
+                        foreach ($speeches as $speech) {
+                            $merits[] = $em->getRepository('MeritocrateBundle:Merits')->MyFindMerits($speech);
+                        }
 
-            /* Get the username of the user that has got the merits */
-            foreach ($speeches as $speech) {
-                if(count($speech->getMerits()) != 0){
-                    foreach ($speech->getMerits() as $merit){
-                        $users[] = $merit->getSpeech()->getUser()->getUsername();
+                        /* Get the username of the user that has got the merits */
+                        foreach ($speeches as $speech) {
+                            if (count($speech->getMerits()) != 0) {
+                                foreach ($speech->getMerits() as $merit) {
+                                    $users[] = $merit->getSpeech()->getUser()->getUsername();
+                                }
+                            }
+                        }
+
+                        /* How many merits per username if any speech ? */
+                        if (isset($users) && $users != null) {
+                            $statistics = array_count_values($users);
+
+                            return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                                'group' => $discussion,
+                                'speeches' => $merits,
+                                'statistics' => $statistics
+                            ));
+                        } else {
+                            return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                                'group' => $discussion
+                            ));
+                        }
+                    } else {
+                        return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                            'group' => $discussion
+                        ));
                     }
+                } else {
+                    return $this->render('MeritocrateBundle:Default:verify_access_stats.html.twig', array(
+                       'discussion' => $discussion
+                    ));
                 }
-            }
-
-            /* How many merits per username ? */
-            if(isset($users) && $users != null) {
-                $statistics = array_count_values($users);
-
-                return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
-                    'group' => $discussion,
-                    'speeches' => $merits,
-                    'statistics' => $statistics
-                ));
-            }
-            else{
-                return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
-                    'group' => $discussion
+            } else {
+                return $this->render('MeritocrateBundle:Default:verify_access_stats.html.twig', array(
+                    'discussion' => $discussion
                 ));
             }
         }
         else{
-            return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
-                'group' => $discussion
-            ));
+            if (!empty($speeches)) {
+                /* Go checkout merits linked to each speech of the discussion chosen ($id) */
+                foreach ($speeches as $speech) {
+                    $merits[] = $em->getRepository('MeritocrateBundle:Merits')->MyFindMerits($speech);
+                }
+
+                /* Get the username of the user that has got the merits */
+                foreach ($speeches as $speech) {
+                    if (count($speech->getMerits()) != 0) {
+                        foreach ($speech->getMerits() as $merit) {
+                            $users[] = $merit->getSpeech()->getUser()->getUsername();
+                        }
+                    }
+                }
+
+                /* How many merits per username if any speech ? */
+                if (isset($users) && $users != null) {
+                    $statistics = array_count_values($users);
+
+                    return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                        'group' => $discussion,
+                        'speeches' => $merits,
+                        'statistics' => $statistics
+                    ));
+                } else {
+                    return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                        'group' => $discussion
+                    ));
+                }
+            } else {
+                return $this->render('MeritocrateBundle:Default:show_group_statistics.html.twig', array(
+                    'group' => $discussion
+                ));
+            }
         }
     }
 
