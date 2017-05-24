@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+    <div id="connected">
+        <b>People online</b>
+        {% for user in discussion.users %}
+            <p><a href="{{ path('meritocrate_private_livechat', {id : user.id } ) }}">{{ user.username }}</a></p>
+        {% endfor %}
+    </div>
     <div class="container container-custom">
         <div class="row row-custom">
             <h5 id="chat-h5"> {{ discussion.name }} Livechat </h5>

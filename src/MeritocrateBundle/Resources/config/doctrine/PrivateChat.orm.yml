@@ -1,0 +1,26 @@
+MeritocrateBundle\Entity\PrivateChat:
+    type: entity
+    table: null
+    repositoryClass: MeritocrateBundle\Repository\PrivateChatRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        token:
+            type: string
+            length: 255
+            unique: true
+        creator:
+            type: string
+            length: 255
+        classmate:
+            type:
+            length: 255
+    oneToMany:
+        privateassemblies:
+            targetEntity: MeritocrateBundle\Entity\PrivateAssembly
+            mappedBy: privatechat
+    lifecycleCallbacks: {  }

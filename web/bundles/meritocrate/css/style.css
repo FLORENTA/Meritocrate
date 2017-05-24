@@ -382,3 +382,10 @@ textarea{
 ::-webkit-scrollbar{
     display: none;
 }
+
+#connected{
+    position: absolute;
+    left: 10px;
+    padding: 10px 30px 10px 30px;
+    background: #eee;
+}

@@ -3,6 +3,7 @@
 namespace MeritocrateBundle\Controller;
 
 use MeritocrateBundle\Entity\Assembly;
+use MeritocrateBundle\Entity\PrivateChat;
 use MeritocrateBundle\Entity\Speech;
 use MeritocrateBundle\Entity\User;
 use MeritocrateBundle\Entity\Merits;
@@ -363,6 +364,9 @@ class DefaultController extends Controller
 
         if($discussion->getPrivacy() == true){
             if($identification == true){
+                $this->getUser()->setDiscussion($discussion);
+                $discussion->addUser($this->getUser());
+                dump($discussion());
                 return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
                     'discussion' => $discussion,
                     'assemblies' => $assemblies
@@ -376,6 +380,10 @@ class DefaultController extends Controller
             }
         }
         else{
+            $this->getUser()->setDiscussion($discussion);
+            $discussion->addUser($this->getUser());
+            $em->flush();
+
             return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
                 'discussion' => $discussion,
                 'assemblies' => $assemblies
@@ -393,6 +401,28 @@ class DefaultController extends Controller
 
             return new Response(json_encode($assemblies));
         }
+    }
+
+    public function privateLiveChatAction($id){
+        $em = $this->getDoctrine()->getManager();
+        $userClick = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
+        $user = $this->getUser();
+
+        /* Looking for an already existing relation */
+
+        $privateChat = new PrivateChat();
+        $privateChat->setCreator($user);
+        $privateChat->setClassmate($userClick);
+        $password = md5(uniqId());
+        $privateChat->setToken($password);
+
+        return $this->RedirectToRoute('meritocrate_private_assembly', array(
+            'password' => $password
+        ));
+    }
+
+    public function privateAssemblyAction($password){
+        return $this->render('MeritocrateBundle:Default:show_private_livechat.html.twig');
     }
 
     public function addMeritAction(Request $request)

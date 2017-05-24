@@ -28,6 +28,14 @@ meritocrate_group_statistics:
     path:     /home/statistics/{id}
     defaults: { _controller: MeritocrateBundle:Default:groupStatistics }
 
+meritocrate_private_livechat:
+    path: /home/livechat/private/{id}
+    defaults: { _controller: MeritocrateBundle:Default:privateLiveChat }
+
+meritocrate_private_assembly:
+    path: /home/assembly/{password}
+    defaults: { _controller: MeritocrateBundle:Default:privateAssembly }
+
 meritocrate_group_livechat:
     path: /home/discussion/livechat/{id}/{identification}
     defaults: { _controller: MeritocrateBundle:Default:groupLivechat, identification: false }

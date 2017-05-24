@@ -1,0 +1,24 @@
+MeritocrateBundle\Entity\PrivateAssembly:
+    type: entity
+    table: null
+    repositoryClass: MeritocrateBundle\Repository\PrivateAssemblyRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        text:
+            type: text
+        date:
+            type: datetimetz
+        attachment:
+            type: string
+            length: 255
+            nullable: true
+    manyToOne:
+        privatechat:
+            targetEntity: MeritocrateBundle\Entity\PrivateChat
+            inversedBy: privateassemblies
+    lifecycleCallbacks: {  }
