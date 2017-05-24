@@ -6,7 +6,9 @@
         <h3>My profile</h3>
         {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
 
+        <div class="hide-field">
             {{ form_row(form.username) }}
+        </div>
             {{ form_row(form.email) }}
             {{ form_row(form.fullname) }}
             {{ form_row(form.gender) }}
@@ -54,6 +56,7 @@
                     </div>
                 </div>
             </div>
+        {{ dump(form) }}
                 {{ form_label(form.current_password, 'Insert your password before submitting') }}
                 {{ form_widget(form.current_password) }}
                 {{ form_errors(form.current_password) }}

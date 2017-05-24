@@ -16,6 +16,7 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('fullname')
+                ->remove('username')
                 ->add('gender', ChoiceType::class, array(
                     'choices' => array(
                         'Female-identifying' => 'F',
@@ -27,7 +28,8 @@ class RegistrationType extends AbstractType
                     'required' => false
                 ))
                 ->add('dateofbirth', BirthdayType::class, array(
-                    'required' => false
+                    'required' => false,
+                    'years' => range(date('Y') -20, date('Y') -100)
                 ))
                 ->add('nationality',CountryType::class, array(
                     'multiple'=> false,
