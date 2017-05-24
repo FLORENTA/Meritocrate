@@ -67,6 +67,7 @@
     function show(response){
         var response = JSON.parse(response);
         if(response.length>0) {
+            idLastSpeech = response[response.length]-1;
             for (var i = 0; i < response.length; i++) {
                 if (response[i].attachment) {
                     var attachment = response[i].attachment.split('.');
@@ -169,10 +170,8 @@
             refresh();
         }, 7000);
     }
+    refresh();
 
-    setTimeout(function(){
-        refresh();
-    }, 2000);
 
     </script>
 {% endblock %}

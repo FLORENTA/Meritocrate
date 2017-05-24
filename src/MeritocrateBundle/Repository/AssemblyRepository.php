@@ -36,7 +36,8 @@ class AssemblyRepository extends \Doctrine\ORM\EntityRepository
             ->setParameters(array(
                 'discussion' => $discussion,
                 'id' => $id
-            ));
+            ))
+            ->orderBy('a.date', 'ASC');
         return $qb->getquery()->getResult();
     }
 }
