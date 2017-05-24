@@ -404,16 +404,22 @@ class DefaultController extends Controller
         }
     }
 
-    public function privateLiveChatAction($id){
+    public function privateLiveChatAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();
-        $userClicked = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
+        /*$userClicked = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
         $user = $this->getUser();
+*/
+        $user = $em->getRepository('MeritocrateBundle:User')->findOneById(2);
+        $userClicked = $this->getUser();
 
         /* Looking for an already existing relation */
+        /* But who is the creator & who is the classmate */
         $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->findOneBy(array(
             'creator' => $this->getUser()->getUsername(),
             'classmate' => $userClicked->getUsername()
         ));
+
+        dump($request);
 
         if(isset($privateChat) && !empty($privateChat)){
             $password = $privateChat->getToken();
@@ -422,6 +428,22 @@ class DefaultController extends Controller
             ));
         }
         else{
+            $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->findOneBy(array(
+                'creator' => $userClicked->getUsername(),
+                'classmate' => $this->getUser()->getUsername()
+            ));
+            if(isset($privateChat) && !empty($privateChat)){
+                $password = $privateChat->getToken();
+                return $this->RedirectToRoute('meritocrate_private_assembly', array(
+                    'password' => $password
+                ));
+            }
+            else{
+                $created = false;
+            }
+        }
+
+        if($created == false){
             $privateChat = new PrivateChat();
             $privateChat->setCreator($user);
             $privateChat->setClassmate($userClicked);
