@@ -3,6 +3,7 @@
 namespace MeritocrateBundle\Controller;
 
 use MeritocrateBundle\Entity\Assembly;
+use MeritocrateBundle\Entity\PrivateAssembly;
 use MeritocrateBundle\Entity\PrivateChat;
 use MeritocrateBundle\Entity\Speech;
 use MeritocrateBundle\Entity\User;
@@ -405,24 +406,67 @@ class DefaultController extends Controller
 
     public function privateLiveChatAction($id){
         $em = $this->getDoctrine()->getManager();
-        $userClick = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
+        $userClicked = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
         $user = $this->getUser();
 
         /* Looking for an already existing relation */
-
-        $privateChat = new PrivateChat();
-        $privateChat->setCreator($user);
-        $privateChat->setClassmate($userClick);
-        $password = md5(uniqId());
-        $privateChat->setToken($password);
-
-        return $this->RedirectToRoute('meritocrate_private_assembly', array(
-            'password' => $password
+        $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->findOneBy(array(
+            'creator' => $this->getUser()->getUsername(),
+            'classmate' => $userClicked->getUsername()
         ));
+
+        if(isset($privateChat) && !empty($privateChat)){
+            $password = $privateChat->getToken();
+            return $this->RedirectToRoute('meritocrate_private_assembly', array(
+                'password' => $password
+            ));
+        }
+        else{
+            $privateChat = new PrivateChat();
+            $privateChat->setCreator($user);
+            $privateChat->setClassmate($userClicked);
+            $password = md5(uniqId());
+            $privateChat->setToken($password);
+
+            $em->persist($privateChat);
+            $em->flush();
+
+            return $this->RedirectToRoute('meritocrate_private_assembly', array(
+                'password' => $password
+            ));
+        }
     }
 
-    public function privateAssemblyAction($password){
-        return $this->render('MeritocrateBundle:Default:show_private_livechat.html.twig');
+    public function privateAssemblyAction($password, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->findOneByToken($password);
+
+        if($request->isXmlHttpRequest()){
+            $privateAssembly = new PrivateAssembly();
+
+            $message = $request->request->get('message');
+            $file = $request->files->get('attachment');
+
+            if(isset($file) && !empty($file)){
+                $fileName = uniqId() . '.' . $file->guessExtension();
+                $file->move($this->getParameter('image_directory'), $fileName);
+                $privateAssembly->setAttachment($fileName);
+            }
+            else{
+                $privateAssembly->setAttachment(NULL);
+            }
+
+            $this->getUser()->addPrivateassembly($privateAssembly);
+            $privateAssembly->setPrivatechat($privateChat);
+            $privateAssembly->setUser($this->getUser());
+            $privateAssembly->setText($message);
+        }
+
+        $privateAssemblies = $em->getRepository('MeritocrateBundle:PrivateAssembly')->myFindBy($privateChat);
+
+        return $this->render('MeritocrateBundle:Default:show_private_livechat.html.twig', array(
+            'privateAssemblies' => $privateAssemblies
+        ));
     }
 
     public function addMeritAction(Request $request)

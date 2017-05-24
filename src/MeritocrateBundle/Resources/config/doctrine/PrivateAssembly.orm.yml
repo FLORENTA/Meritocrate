@@ -21,4 +21,7 @@ MeritocrateBundle\Entity\PrivateAssembly:
         privatechat:
             targetEntity: MeritocrateBundle\Entity\PrivateChat
             inversedBy: privateassemblies
+        user:
+            targetEntity: MeritocrateBundle\Entity\User
+            inversedBy: privateassemblies
     lifecycleCallbacks: {  }

@@ -10,4 +10,10 @@ namespace MeritocrateBundle\Repository;
  */
 class PrivateAssemblyRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function myFindBy($privateChat){
+        $qb = $this->createQueryBuilder('pa');
+        $qb->where('pa.privatechat = :privatechat')
+            ->setParameter('privatechat', $privateChat);
+        return $qb->getquery()->getResult();
+    }
 }

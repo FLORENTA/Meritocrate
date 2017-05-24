@@ -345,4 +345,43 @@ class User extends BaseUser
     {
         return $this->discussion;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $privateassemblies;
+
+
+    /**
+     * Add privateassembly
+     *
+     * @param \MeritocrateBundle\Entity\PrivateAssembly $privateassembly
+     *
+     * @return User
+     */
+    public function addPrivateassembly(\MeritocrateBundle\Entity\PrivateAssembly $privateassembly)
+    {
+        $this->privateassemblies[] = $privateassembly;
+
+        return $this;
+    }
+
+    /**
+     * Remove privateassembly
+     *
+     * @param \MeritocrateBundle\Entity\PrivateAssembly $privateassembly
+     */
+    public function removePrivateassembly(\MeritocrateBundle\Entity\PrivateAssembly $privateassembly)
+    {
+        $this->privateassemblies->removeElement($privateassembly);
+    }
+
+    /**
+     * Get privateassemblies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrivateassemblies()
+    {
+        return $this->privateassemblies;
+    }
 }

@@ -316,4 +316,33 @@ class User extends BaseUser
     {
         return $this->assemblies;
     }
+    /**
+     * @var \MeritocrateBundle\Entity\Discussion
+     */
+    private $discussion;
+
+
+    /**
+     * Set discussion
+     *
+     * @param \MeritocrateBundle\Entity\Discussion $discussion
+     *
+     * @return User
+     */
+    public function setDiscussion(\MeritocrateBundle\Entity\Discussion $discussion = null)
+    {
+        $this->discussion = $discussion;
+
+        return $this;
+    }
+
+    /**
+     * Get discussion
+     *
+     * @return \MeritocrateBundle\Entity\Discussion
+     */
+    public function getDiscussion()
+    {
+        return $this->discussion;
+    }
 }

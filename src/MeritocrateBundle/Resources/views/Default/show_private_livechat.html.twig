@@ -11,7 +11,44 @@
 #}
 <div class="container container-custom">
     <div class="row row-custom">
-
+        <div class="divMessages">
+        {% for privateAssembly in privateAssemblies %}
+            <b><i>{{ privateAssembly.user.username }}</i></b>
+            <span> on {{ privateAssembly.date|date('m-d-Y') }} at {{ privateAssembly.date|date('h:i:s a') }}</span>
+            <div class="messages">{{ privateAssembly.text }}</div>
+            {% if privateAssembly.attachment != null %}
+                {% set extension = privateAssembly.attachment|split('.')|last %}
+                {% if (extension == 'jpg') or (extension == 'jpeg') or (extension == 'gif') or (extension == 'png') or (extension == 'tiff') or (extension == 'bmp') %}
+                    <a href="{{ asset('bundles/meritocrate/images/'~privateAssembly.attachment) }}"><img src="{{ asset('bundles/meritocrate/images/'~privateAssembly.attachment) }}"/></a>
+                {% else %}
+                    <a href="{{ asset('bundles/meritocrate/images/'~privateAssembly.attachment) }}"><img src="{{ asset('images/trombone.png') }}"/></a>
+                {% endif %}
+            {% endif %}
+            {#<input type="hidden" name="idDiscussion" value="{{ privateAssembly.discussionId }}"/>#}
+            <input type="hidden" name="idElt" value="{{ privateAssembly.id }}"/>
+        {% endfor %}
+        </div>
+        <div class="col s12" id="textarea-box">
+            <form name="message">
+                <textarea name="message" id="message" placeholder="Write your message here..."/></textarea>
+                <div class="file-field input-field" id="attach">
+                    <span><i class="material-icons" >attach_file</i> Attach a file <input type="file" name="attachment"></span>
+                    <div class="file-path-wrapper" id="file-path">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light right" id="send">Send</button>
+                <button class="btn waves-effect waves-light right red" id="processing">Please wait</button>
+            </form>
+        </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var req = new XMLHttpRequest();
+        req.open('post', url, true);
+        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        req.send();
+    </script>
 {% endblock %}

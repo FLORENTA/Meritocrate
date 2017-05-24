@@ -63,15 +63,11 @@ class PrivateAssembly
     }
 
     /**
-     * Set date
-     *
-     * @param \DateTime $date
-     *
-     * @return PrivateAssembly
+     * Constructor
      */
-    public function setDate($date)
+    public function __construct()
     {
-        $this->date = $date;
+        $this->date = new \DateTime();
 
         return $this;
     }
@@ -138,5 +134,34 @@ class PrivateAssembly
     public function getPrivatechat()
     {
         return $this->privatechat;
+    }
+    /**
+     * @var \MeritocrateBundle\Entity\User
+     */
+    private $user;
+
+
+    /**
+     * Set user
+     *
+     * @param \MeritocrateBundle\Entity\User $user
+     *
+     * @return PrivateAssembly
+     */
+    public function setUser(\MeritocrateBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \MeritocrateBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

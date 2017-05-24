@@ -40,6 +40,9 @@ MeritocrateBundle\Entity\User:
         assemblies:
             targetEntity: MeritocrateBundle\Entity\Assembly
             mappedBy: user
+        privateassemblies:
+            targetEntity: MeritocrateBundle\Entity\PrivateAssembly
+            mappedBy: user
     manyToOne:
         discussion:
             targetEntity: MeritocrateBundle\Entity\Discussion
