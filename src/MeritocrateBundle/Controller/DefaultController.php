@@ -383,23 +383,6 @@ class DefaultController extends Controller
         }
     }
 
-    public function groupLivechatCheckAccessAction($id, Request $request){
-        $em = $this->getDoctrine()->getManager();
-        $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
-        dump($discussion);die();
-        if($password == $discussion->getPassword()){
-            return $this->redirectToRoute('meritocrate_group_livechat', array(
-                'id' => $idGroup,
-                'identification' => true
-            ));
-        }
-        else{
-            return $this->render('MeritocrateBundle:Default:verify_access_chat.html.twig', array(
-                'discussion' => $discussion,
-            ));
-        }
-    }
-
     public function getNewMessagesAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         if($request->isXmlHttpRequest()){

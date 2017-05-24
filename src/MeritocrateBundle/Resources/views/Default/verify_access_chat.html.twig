@@ -6,7 +6,7 @@
             <h4> {{ discussion.name }} group </h4>
             <p> Created by <b style="color: #26a69a;">{{ discussion.user.username }}</b> on {{ discussion.datecreation|date('m/d/Y') }} at {{ discussion.datecreation|date('h:i:s a') }}</p>
             <h5>Enter the password to access the Livechat</h5>
-            <form method="post" name="form_password" action="{{ path('meritocrate_group_livechat_check_access', {idGroup : discussion.id} ) }}">
+            <form method="post" name="form_password" action="{{ path('meritocrate_group_livechat', {id : discussion.id} ) }}">
                 <label for="password" id="password"> Enter password </label>
                 <input type="text" name="password" id="password"/>
                 <button class="btn waves-effect waves-light right" type="submit"> Submit </button>

@@ -32,10 +32,6 @@ meritocrate_group_livechat:
     path: /home/discussion/livechat/{id}/{identification}
     defaults: { _controller: MeritocrateBundle:Default:groupLivechat, identification: false }
 
-meritocrate_group_livechat_check_access:
-    path: /home/discussion/livechat/{idGroup}
-    defaults: { _controller: MeritocrateBundle:Default:groupLivechatCheckAccess }
-
 meritocrate_group_new_messages:
     path: /newMessages
     defaults: { _controller: MeritocrateBundle:Default:getNewMessages }
