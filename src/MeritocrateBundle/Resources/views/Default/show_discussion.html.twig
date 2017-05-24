@@ -1,31 +1,37 @@
 {% extends 'base.html.twig' %}
 
+{% block h2 %}
+    <h2 id="h2SpeakPage">Meritocrate</h2>
+{% endblock %}
+{% block speak %}
+    <div id="mic">
+        {% if app.request.get('_route') == 'meritocrate_discussion_group' %}
+            <div id="speak2">
+                Press to speak
+            </div>
+            <div id="processing2">
+                Please wait
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="container container-custom">
         <div class="row">
             <div class="col s12">
-                <h4>{{ group.name }} Group </h4>
-                <p id="group-date-creation"> Created by <span style="color: #26a69a;"> {{ group.user.username }} </span> on {{ group.datecreation|date('m/d/Y') }} at {{ group.datecreation|date('h:i:s a') }} </p>
+                <h5>{{ group.name }} Group </h5>
             </div>
         </div>
         {% if group.ongoing == "true" %}
-            <div class="row">
-                <div class="col s12">
-                    <a href="{{ path('meritocrate_join_discussion') }}">
-                        <button class="btn waves-effet waves-light">
-                            Exit Group
-                        </button>
-                    </a>
-                </div>
-            </div>
             <div class="row">
                 <table class="highlight centered table-custom">
                     <thead>
                         <tr>
                             <td>Timestamp</td>
-                            <td>Display Name</td>
+                            <td>Name</td>
                             <td>Picture</td>
-                            <td>Merit</td>
+                            <td>Merit ?</td>
                         </tr>
                     </thead>
                     <tbody id="tbody">
@@ -91,6 +97,9 @@
 
 <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 <script type="text/javascript">
+    /******************************************************************
+      By Florent Alemany, Wild Code School Fontainebleau, May 2017
+    ******************************************************************/
 
     /* If route matches /discussion/ */
     if(discussion.test(window.location.href)) {
@@ -104,27 +113,41 @@
         var tBodyElt = document.getElementById('tbody');
 
         /***** SENDS A REQUEST WHEN SOMEONE PRESSES TO SPEAK *****/
-        buttonSpeakElt1.addEventListener("click", function () {
+        buttonSpeakElt1.addEventListener("click", setSpeaker1);
+        function setSpeaker1(){
+            this.removeEventListener('click', setSpeaker1);
             this.style.display = "none";
-            this.nextElementSibling.style.display = "block";
+            buttonProcessElt1.style.display = "block";
             window.scrollTo(0,0);
+
+            setTimeout(function(){
+                buttonSpeakElt1.style.display = "block";
+                buttonProcessElt1.style.display = "none";
+            }, 1000);
 
             var idUser = {{ user.id }};
 
             /* File style.js */
             namespaces.speak('{{ path('meritocrate_set_speaker') }}', idUser, idGroup);
-        });
+        }
 
-        buttonSpeakElt2.addEventListener("click", function () {
+        buttonSpeakElt2.addEventListener("click", setSpeaker2);
+        function setSpeaker2(){
+            this.removeEventListener('click', setSpeaker2);
             this.style.display = "none";
             this.nextElementSibling.style.display = "block";
             window.scrollTo(0,0);
+
+            setTimeout(function(){
+                buttonSpeakElt2.style.display = "block";
+                buttonProcessElt2.style.display = "none";
+            }, 1000);
 
             var idUser = {{ user.id }};
 
             /* File style.js */
             namespaces.speak('{{ path('meritocrate_set_speaker') }}', idUser, idGroup);
-        });
+        }
 
         /* How many rows in the table body ? */
         var tBodyTrElts = document.querySelectorAll('#tbody tr');
@@ -143,15 +166,10 @@
                 /* Function executed in case of success of the request */
                 function show(response) {
                     if (response !== "NOR") {
-                        if(window.innerWidth > 768){
-                            buttonProcessElt1.style.display = "none";
-                            buttonSpeakElt1.style.display = "block";
-                        }
-                        else{
-                            buttonSpeakElt2.style.display = "block";
-                            buttonProcessElt2.style.display = "none";
-                        }
-
+                        setTimeout(function(){
+                            buttonSpeakElt1.addEventListener("click", setSpeaker1);
+                            buttonSpeakElt2.addEventListener("click", setSpeaker2);
+                        }, 1000);
                         response = JSON.parse(response);
                         idLastSpeech = response[0].id;
 
@@ -240,7 +258,7 @@
                 /* File style.js */
                 namespaces.users('{{ path('meritocrate_get_speakers') }}', show, idLastSpeech, idGroup);
                 refresh();
-            }, 7000);
+            }, 5000);
         }
         refresh();
 
@@ -261,9 +279,6 @@
         }
         addMerits();
     }
-
-/* By Florent Alemany, Wild Code School Fontainebleau, May 2017 */
-
 </script>
 
 {% endblock %}

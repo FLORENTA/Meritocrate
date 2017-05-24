@@ -110,16 +110,25 @@ body{
 }
 
 #speak1,
-#speak2,
-#processing1,
-#processing2{
+#processing1{
     position: absolute;
     right: 5px;
     z-index: 2;
 }
 
+#mic{
+    display: none;
+    background: #26a69a;
+    height: 15vh;
+    line-height: 15vh;
+    margin-top: 55px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+}
+
 .container-custom{
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 
 .row-custom{
@@ -144,6 +153,10 @@ body{
 
     .material-custom{
         display: none;
+    }
+
+    #mic{
+        display: block;
     }
 }
 
@@ -184,6 +197,20 @@ h2{
 }
 
 @media all and (max-width: 768px){
+    #speak2,
+    #processing2{
+        text-align: center;
+        font-size: 2em;
+    }
+
+    #speak2:hover{
+        cursor: pointer;
+    }
+
+    #h2SpeakPage{
+        display: none;
+    }
+
     h2{
         font-size: 2.5em;
         height: 15vh;
@@ -209,8 +236,13 @@ td{
 }
 
 @media all and (max-width: 768px){
+    thead,
+    td {
+        font-size: .95em;
+    }
+
     td button{
-        font-size: .9em;
+        font-size: .95em;
         width: 100%;
     }
 }
@@ -222,6 +254,21 @@ td:nth-of-type(3) img{
     width:80px;
     height:80px;
     box-shadow: 1px 1px 3px black;
+}
+
+@media all and (max-width: 768px){
+    td:nth-of-type(3) img{
+        -webkit-border-radius:50px;
+        -moz-border-radius:50px;
+        border-radius:50px;
+        width:50px;
+        height:50px;
+        box-shadow: 1px 1px 3px black;
+    }
+
+    h5{
+        margin: 0;
+    }
 }
 
 .merits{

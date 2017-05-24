@@ -253,7 +253,9 @@ class DefaultController extends Controller
 
     public function joinDiscussionAction(){
         $em = $this->getDoctrine()->getManager();
-        $groups = $em->getRepository('MeritocrateBundle:Discussion')->findAll();
+        $groups = $em->getRepository('MeritocrateBundle:Discussion')->findBy([], array(
+            'datecreation' => 'DESC'
+        ));
 
         return $this->render('MeritocrateBundle:Default:show_groups.html.twig', array(
             'groups' => $groups

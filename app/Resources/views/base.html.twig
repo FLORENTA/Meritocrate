@@ -35,12 +35,6 @@
     <nav id="inf768">
         <div id="burger"><img src="{{ asset('images/burger.png') }}"/></div>
         <div id="cross"><img src="{{ asset('images/cross.png') }}"/></div>
-        {% if app.request.get('_route') == 'meritocrate_discussion_group' %}
-        <ul class="right right-custom">
-            <li id="speak2">Speak<a class="btn-floating btn waves-effect waves-light pulse"><i class="material-icons left">mic</i></a></li>
-            <li id="processing2"><a class="waves-effect waves-light btn red darken-1">Please wait <i class="material-icons left">query_builder</i></a></li>
-        </ul>
-        {% endif %}
         <ul id="inf768List">
             {% if is_granted('ROLE_USER') %}
                 <li><a href="{{ path('fos_user_security_logout') }}">Logout<i class="material-icons left">exit_to_app</i></a></li>
@@ -54,10 +48,14 @@
             {% endif %}
         </ul>
     </nav>
-    <h2> Meritocrate </h2>
+    {% block h2 %}
+    {% endblock %}
+    {% block speak %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
-    <footer><a href="#">&copy; 2017, Meritocrate </a></footer>
+    {% block footer %}
+    {% endblock %}
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>

@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block h2 %}
+    <h2> Meritocrate </h2>
+{% endblock %}
 {% block content %}
     <div class="container container-custom">
         <div class="row row-custom">
-            <h4>Enter the password to access discussion</h4>
+            <h4> {{ discussion.name }} group </h4>
+            <p> Created by <b style="color: #26a69a;">{{ discussion.user.username }}</b> on {{ discussion.datecreation|date('m/d/Y') }} at {{ discussion.datecreation|date('h:i:s a') }}</p>
+            <h5>Enter the password to access the results</h5>
             <form method="post" action="{{ path('meritocrate_group_statistics', {id : discussion.id} ) }}">
                 <label for="password" id="password"> Enter password </label>
                 <input type="text" name="password" id="password"/>
@@ -12,4 +17,7 @@
             </form>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}

@@ -1,15 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block h2 %}
+    <h2> Meritocrate </h2>
+{% endblock %}
 {% block content %}
     <div class="container container-custom">
         {% if statistics is defined %}
             <div class="row">
                     <div class="col s12">
-                        <a href="{{ path('meritocrate_admin') }}">
-                            <button class="btn waves-effect waves-light black">
-                                Back to home
-                            </button>
-                        </a>
                         <h5> TOP-RANKED STUDENTS </h5>
                         <div id="podium">
                         {% for key, statistic in statistics|sort|reverse %}
