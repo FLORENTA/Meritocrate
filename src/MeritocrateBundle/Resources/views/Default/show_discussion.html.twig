@@ -39,7 +39,7 @@
                             {% for speech in speeches %}
                                 <tr>
                                     <td>{{ speech.timestamp|date('h:i:s a') }}</td>
-                                    <td>{{ speech.user.username }}</td>
+                                    <td>{{ speech.user.fullname }}</td>
                                     <td>
                                         {% if speech.user.picture == 'avatar.png' %}
                                             <img src="{{ asset('images/'~speech.user.picture) }}"/>
@@ -216,7 +216,7 @@
                             }
 
                             tdElt1.textContent = date;
-                            tdElt2.textContent = response[i].username;
+                            tdElt2.textContent = response[i].fullname;
 
                             tdElt3.appendChild(imgElt);
                             tdElt4.appendChild(inputIdSpeechElt);

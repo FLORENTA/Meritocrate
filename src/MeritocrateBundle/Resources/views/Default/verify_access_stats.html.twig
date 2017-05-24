@@ -7,7 +7,7 @@
     <div class="container container-custom">
         <div class="row row-custom">
             <h4> {{ discussion.name }} group </h4>
-            <p> Created by <b style="color: #26a69a;">{{ discussion.user.username }}</b> on {{ discussion.datecreation|date('m/d/Y') }} at {{ discussion.datecreation|date('h:i:s a') }}</p>
+            <p> Created by <b style="color: #26a69a;">{{ discussion.user.fullname }}</b> on {{ discussion.datecreation|date('m/d/Y') }} at {{ discussion.datecreation|date('h:i:s a') }}</p>
             <h5>Enter the password to access the results</h5>
             <form method="post" action="{{ path('meritocrate_group_statistics', {id : discussion.id} ) }}">
                 <label for="password" id="password"> Enter password </label>
