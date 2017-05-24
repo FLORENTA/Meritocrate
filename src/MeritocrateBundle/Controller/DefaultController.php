@@ -409,7 +409,7 @@ class DefaultController extends Controller
 
         $userClicked = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
         $user = $this->getUser();
-
+        
         /* Looking for an already existing relation */
         /* But who is the creator & who is the classmate */
         $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->myFindBy($user->getUsername(), $userClicked->getUsername());
