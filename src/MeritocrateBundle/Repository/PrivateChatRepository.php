@@ -10,4 +10,14 @@ namespace MeritocrateBundle\Repository;
  */
 class PrivateChatRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function myFindBy($user, $userClicked){
+        $qb = $this->createQueryBuilder('pc');
+        $qb->where('pc.creator = :creator')
+            ->andWhere('pc.classmate = :classmate')
+            ->setParameters(array(
+                'creator' => $user,
+                'classmate' => $userClicked
+            ));
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -406,34 +406,24 @@ class DefaultController extends Controller
 
     public function privateLiveChatAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();
-        /*$userClicked = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
+
+        $userClicked = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
         $user = $this->getUser();
-*/
-        $user = $em->getRepository('MeritocrateBundle:User')->findOneById(2);
-        $userClicked = $this->getUser();
 
         /* Looking for an already existing relation */
         /* But who is the creator & who is the classmate */
-        $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->findOneBy(array(
-            'creator' => $this->getUser()->getUsername(),
-            'classmate' => $userClicked->getUsername()
-        ));
-
-        dump($request);
+        $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->myFindBy($user->getUsername(), $userClicked->getUsername());
 
         if(isset($privateChat) && !empty($privateChat)){
-            $password = $privateChat->getToken();
+            $password = $privateChat[0]->getToken();
             return $this->RedirectToRoute('meritocrate_private_assembly', array(
                 'password' => $password
             ));
         }
         else{
-            $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->findOneBy(array(
-                'creator' => $userClicked->getUsername(),
-                'classmate' => $this->getUser()->getUsername()
-            ));
+            $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->myFindBy($userClicked->getUsername(), $user->getUsername());
             if(isset($privateChat) && !empty($privateChat)){
-                $password = $privateChat->getToken();
+                $password = $privateChat[0]->getToken();
                 return $this->RedirectToRoute('meritocrate_private_assembly', array(
                     'password' => $password
                 ));
