@@ -318,45 +318,86 @@ class DefaultController extends Controller
         }
     }
 
-    public function groupLivechatAction($id, Request $request){
+    public function groupLivechatAction($id, $identification, Request $request){
         $em = $this->getDoctrine()->getManager();
         $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($id);
         $assemblies = $em->getRepository('MeritocrateBundle:Assembly')->myFindByDiscussion($discussion, 0);
 
         if($request->isMethod('post')){
-            $assembly = new Assembly();
-            $message = $request->request->get('message');
-            $file = $request->files->get('attachment');
+            if($request->request->get('message') || $request->files->get('attachment')){
+                $assembly = new Assembly();
+                $message = $request->request->get('message');
+                $file = $request->files->get('attachment');
 
-            $assembly->setText($message);
-            $assembly->setDiscussion($discussion);
-            $assembly->setUser($this->getUser());
+                $assembly->setText($message);
+                $assembly->setDiscussion($discussion);
+                $assembly->setUser($this->getUser());
 
-            if(isset($file) && !empty($file)){
-                $fileName = uniqId() . '.' . $file->guessExtension();
-                $file->move($this->getParameter('image_directory'), $fileName);
-                $assembly->setAttachment($fileName);
+                if(isset($file) && !empty($file)){
+                    $fileName = uniqId() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('image_directory'), $fileName);
+                    $assembly->setAttachment($fileName);
+                }
+                else{
+                    $assembly->setAttachment(NULL);
+                }
+
+                $em->persist($assembly);
+                $em->flush();
+
+                $userAssemblies = $em->getRepository('MeritocrateBundle:Assembly')->myFindBy($this->getUser());
+                $userAssembly = $userAssemblies[count($userAssemblies)-1];
+
+                $response = new Response(json_encode($userAssembly));
+                $response->headers->set('Content-Type', 'application/json');
+
+                return $response;
             }
             else{
-                $assembly->setAttachment(NULL);
+                $password = $request->request->get('password');
+                if($password == $discussion->getPassword()){
+                    $identification = true;
+                }
             }
-
-            $em->persist($assembly);
-            $em->flush();
-
-            $userAssemblies = $em->getRepository('MeritocrateBundle:Assembly')->myFindBy($this->getUser());
-            $userAssembly = $userAssemblies[count($userAssemblies)-1];
-
-            $response = new Response(json_encode($userAssembly));
-            $response->headers->set('Content-Type', 'application/json');
-
-            return $response;
         }
 
-        return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
-            'discussion' => $discussion,
-            'assemblies' => $assemblies
-        ));
+        if($discussion->getPrivacy() == true){
+            if($identification == true){
+                return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
+                    'discussion' => $discussion,
+                    'assemblies' => $assemblies
+                ));
+            }
+            else
+            {
+                return $this->render('MeritocrateBundle:Default:verify_access_chat.html.twig', array(
+                   'discussion' => $discussion
+                ));
+            }
+        }
+        else{
+            return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
+                'discussion' => $discussion,
+                'assemblies' => $assemblies
+            ));
+        }
+    }
+
+    public function groupLivechatCheckAccessAction($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $discussion = $em->getRepository('MeritocrateBundle:Discussion')->findOneById($idGroup);
+        dump($discussion);die();
+        if($password == $discussion->getPassword()){
+            return $this->redirectToRoute('meritocrate_group_livechat', array(
+                'id' => $idGroup,
+                'identification' => true
+            ));
+        }
+        else{
+            return $this->render('MeritocrateBundle:Default:verify_access_chat.html.twig', array(
+                'discussion' => $discussion,
+            ));
+        }
     }
 
     public function getNewMessagesAction(Request $request){

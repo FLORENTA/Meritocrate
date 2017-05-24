@@ -4,37 +4,50 @@
     <div class="container container-custom">
         <div class="row row-custom">
             <h5 id="chat-h5"> {{ discussion.name }} Livechat </h5>
-            <div class="col s12" id="chat-window">
-                {% for assembly in assemblies %}
-                    <div class="divMessages">
-                        <b><i>{{ assembly.username }}</i></b>
-                        <span> on {{ assembly.date|date('m-d-Y') }} at {{ assembly.date|date('h:i:s a') }}</span>
-                        <div class="messages">{{ assembly.text }}</div>
-                        {% if assembly.attachment != null %}
-                            {% set extension = assembly.attachment|split('.')|last %}
-                            {% if (extension == 'jpg') or (extension == 'jpeg') or (extension == 'gif') or (extension == 'png') or (extension == 'tiff') %}
-                                <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"/></a>
-                            {% else %}
-                                <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('images/trombone.png') }}"/></a>
+            {% if discussion.ongoing == "true" %}
+                <div class="col s12" id="chat-window">
+                    {% for assembly in assemblies %}
+                        <div class="divMessages">
+                            <b><i>{{ assembly.username }}</i></b>
+                            <span> on {{ assembly.date|date('m-d-Y') }} at {{ assembly.date|date('h:i:s a') }}</span>
+                            <div class="messages">{{ assembly.text }}</div>
+                            {% if assembly.attachment != null %}
+                                {% set extension = assembly.attachment|split('.')|last %}
+                                {% if (extension == 'jpg') or (extension == 'jpeg') or (extension == 'gif') or (extension == 'png') or (extension == 'tiff') or (extension == 'bmp') %}
+                                    <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"/></a>
+                                {% else %}
+                                    <a href="{{ asset('bundles/meritocrate/images/'~assembly.attachment) }}"><img src="{{ asset('images/trombone.png') }}"/></a>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                        <input type="hidden" name="idDiscussion" value="{{ assembly.discussionId }}"/>
-                        <input type="hidden" name="idElt" value="{{ assembly.id }}"/>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="col s12" id="textarea-box">
-                <form name="message">
-                    <textarea name="message" id="message" placeholder="Write your message here..."/></textarea>
-                    <div class="file-field input-field" id="attach">
-                        <span><i class="material-icons" >attach_file</i> Attach a file <input type="file" name="attachment"></span>
-                        <div class="file-path-wrapper" id="file-path">
-                            <input class="file-path validate" type="text">
+                            <input type="hidden" name="idDiscussion" value="{{ assembly.discussionId }}"/>
+                            <input type="hidden" name="idElt" value="{{ assembly.id }}"/>
                         </div>
-                    </div>
-                    <button class="btn waves-effect waves-light right">Send</button>
-                </form>
-            </div>
+                    {% endfor %}
+                </div>
+                <div class="col s12" id="textarea-box">
+                    <form name="message">
+                        <textarea name="message" id="message" placeholder="Write your message here..."/></textarea>
+                        <div class="file-field input-field" id="attach">
+                            <span><i class="material-icons" >attach_file</i> Attach a file <input type="file" name="attachment"></span>
+                            <div class="file-path-wrapper" id="file-path">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light right" id="send">Send</button>
+                        <button class="btn waves-effect waves-light right red" id="processing">Please wait</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>
+                    This group has been closed by the owner.
+                    Get back to home :
+                </p>
+                <a href="{{ path('meritocrate_admin') }}">
+                    <button class="btn btn-large waves-effect waves-light left black">
+                        Back to Home
+                    </button>
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -53,7 +66,6 @@
 
     function show(response){
         var response = JSON.parse(response);
-
         if(response.length>0) {
             for (var i = 0; i < response.length; i++) {
                 if (response[i].attachment) {
@@ -76,7 +88,6 @@
                         linkElt.appendChild(fileElt);
                     }
                 }
-
                 var date = response[i].date.date;
                 date = date.substr(0, 19);
 
@@ -97,7 +108,6 @@
                         date = date.substr(0, 11) + ' at 0' + dateHour + date.substr(13, 7) + ' pm';
                     }
                 }
-
                 var inputElt1 = document.createElement('input');
                 inputElt1.setAttribute('name', 'idElt');
                 inputElt1.setAttribute('type', 'hidden');
@@ -133,7 +143,6 @@
                 if (linkElt) {
                     divElt.appendChild(linkElt);
                 }
-
                 divElt.appendChild(inputElt1);
                 divElt.appendChild(inputElt2);
                 chatWindowElt.appendChild(divElt);

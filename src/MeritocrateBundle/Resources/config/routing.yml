@@ -29,8 +29,12 @@ meritocrate_group_statistics:
     defaults: { _controller: MeritocrateBundle:Default:groupStatistics }
 
 meritocrate_group_livechat:
-    path: /home/discussion/livechat/{id}
-    defaults: { _controller: MeritocrateBundle:Default:groupLivechat }
+    path: /home/discussion/livechat/{id}/{identification}
+    defaults: { _controller: MeritocrateBundle:Default:groupLivechat, identification: false }
+
+meritocrate_group_livechat_check_access:
+    path: /home/discussion/livechat/{idGroup}
+    defaults: { _controller: MeritocrateBundle:Default:groupLivechatCheckAccess }
 
 meritocrate_group_new_messages:
     path: /newMessages

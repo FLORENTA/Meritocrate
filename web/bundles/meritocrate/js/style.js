@@ -285,6 +285,7 @@ var namespaces = {
         formElt.addEventListener('submit', function(e){
             e.preventDefault();
             var formData = new FormData(this);
+            this.reset();
             namespaces.ajaxChat(window.location.href, formData);
         });
     }

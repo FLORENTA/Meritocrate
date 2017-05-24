@@ -204,10 +204,7 @@ h2{
 
 td{
     border-bottom: 1px solid #d8d8d8;
-}
-
-th{
-    vertical-align: middle;
+    text-align: center;
 }
 
 @media all and (max-width: 768px){
@@ -380,4 +377,8 @@ textarea{
     background: #eeefff;
     line-break: auto;
     border: none;
+}
+
+::-webkit-scrollbar{
+    display: none;
 }
