@@ -27,6 +27,8 @@ MeritocrateBundle\Entity\User:
             type: string
             length: 255
             nullable: true
+        online:
+            type: boolean
     oneToMany:
         merits:
             targetEntity: MeritocrateBundle\Entity\Merits
@@ -43,7 +45,3 @@ MeritocrateBundle\Entity\User:
         privateassemblies:
             targetEntity: MeritocrateBundle\Entity\PrivateAssembly
             mappedBy: user
-    manyToOne:
-        discussion:
-            targetEntity: MeritocrateBundle\Entity\Discussion
-            inversedBy: users

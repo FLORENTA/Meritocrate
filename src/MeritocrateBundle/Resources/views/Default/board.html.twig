@@ -19,6 +19,18 @@
     </div>
 </div>
 {% endblock %}
+{% block chat %}
+    <div id="connected">
+        <b>People online</b>
+        {% for user in users %}
+            {% if user.online == true %}
+                <p><a href="{{ path('meritocrate_private_livechat', {id : user.id } ) }}">{{ user.fullname }}</a></p>
+            {% else %}
+                <p><span class="outline"></span><a href="{{ path('meritocrate_private_livechat', {id : user.id } ) }}">{{ user.fullname }}</a></p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
 {% block javascripts %}
     <script src="{{ asset('bundles/meritocrate/js/style.js') }}"></script>
 {% endblock %}

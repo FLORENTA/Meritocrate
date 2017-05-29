@@ -316,33 +316,44 @@ class User extends BaseUser
     {
         return $this->assemblies;
     }
+
     /**
-     * @var \MeritocrateBundle\Entity\Discussion
+     * @var \Doctrine\Common\Collections\Collection
      */
-    private $discussion;
+    private $privateassemblies;
 
 
     /**
-     * Set discussion
+     * Add privateassembly
      *
-     * @param \MeritocrateBundle\Entity\Discussion $discussion
+     * @param \MeritocrateBundle\Entity\PrivateAssembly $privateassembly
      *
      * @return User
      */
-    public function setDiscussion(\MeritocrateBundle\Entity\Discussion $discussion = null)
+    public function addPrivateassembly(\MeritocrateBundle\Entity\PrivateAssembly $privateassembly)
     {
-        $this->discussion = $discussion;
+        $this->privateassemblies[] = $privateassembly;
 
         return $this;
     }
 
     /**
-     * Get discussion
+     * Remove privateassembly
      *
-     * @return \MeritocrateBundle\Entity\Discussion
+     * @param \MeritocrateBundle\Entity\PrivateAssembly $privateassembly
      */
-    public function getDiscussion()
+    public function removePrivateassembly(\MeritocrateBundle\Entity\PrivateAssembly $privateassembly)
     {
-        return $this->discussion;
+        $this->privateassemblies->removeElement($privateassembly);
+    }
+
+    /**
+     * Get privateassemblies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrivateassemblies()
+    {
+        return $this->privateassemblies;
     }
 }

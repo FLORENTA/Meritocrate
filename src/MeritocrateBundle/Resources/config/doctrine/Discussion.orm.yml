@@ -30,9 +30,6 @@ MeritocrateBundle\Entity\Discussion:
         assemblies:
             targetEntity: MeritocrateBundle\Entity\Assembly
             mappedBy: discussion
-        users:
-            targetEntity: MeritocrateBundle\Entity\User
-            mappedBy: discussion
     manyToOne:
         user:
             targetEntity: MeritocrateBundle\Entity\User

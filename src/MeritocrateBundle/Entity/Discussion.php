@@ -283,43 +283,4 @@ class Discussion
     {
         return $this->assemblies;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $users;
-
-
-    /**
-     * Add user
-     *
-     * @param \MeritocrateBundle\Entity\User $user
-     *
-     * @return Discussion
-     */
-    public function addUser(\MeritocrateBundle\Entity\User $user)
-    {
-        $this->users[] = $user;
-
-        return $this;
-    }
-
-    /**
-     * Remove user
-     *
-     * @param \MeritocrateBundle\Entity\User $user
-     */
-    public function removeUser(\MeritocrateBundle\Entity\User $user)
-    {
-        $this->users->removeElement($user);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
 }

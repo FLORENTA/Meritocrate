@@ -2,6 +2,7 @@
 
 namespace MeritocrateBundle\Controller;
 
+use FOS\UserBundle\Model\UserInterface;
 use MeritocrateBundle\Entity\Assembly;
 use MeritocrateBundle\Entity\PrivateAssembly;
 use MeritocrateBundle\Entity\PrivateChat;
@@ -27,7 +28,12 @@ class DefaultController extends Controller
 
     public function boardAction()
     {
-        return $this->render('MeritocrateBundle:Default:board.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $allUsers = $em->getRepository('MeritocrateBundle:User')->myFindAll();
+
+        return $this->render('MeritocrateBundle:Default:board.html.twig', array(
+            'users' => $allUsers
+        ));
     }
 
     /* Method for creating a new discussion */
@@ -365,9 +371,6 @@ class DefaultController extends Controller
 
         if($discussion->getPrivacy() == true){
             if($identification == true){
-                $this->getUser()->setDiscussion($discussion);
-                $discussion->addUser($this->getUser());
-                dump($discussion());
                 return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
                     'discussion' => $discussion,
                     'assemblies' => $assemblies
@@ -381,10 +384,6 @@ class DefaultController extends Controller
             }
         }
         else{
-            $this->getUser()->setDiscussion($discussion);
-            $discussion->addUser($this->getUser());
-            $em->flush();
-
             return $this->render('MeritocrateBundle:Default:show_group_livechat.html.twig', array(
                 'discussion' => $discussion,
                 'assemblies' => $assemblies
@@ -409,7 +408,7 @@ class DefaultController extends Controller
 
         $userClicked = $em->getRepository('MeritocrateBundle:User')->findOneById($id);
         $user = $this->getUser();
-        
+
         /* Looking for an already existing relation */
         /* But who is the creator & who is the classmate */
         $privateChat = $em->getRepository('MeritocrateBundle:PrivateChat')->myFindBy($user->getUsername(), $userClicked->getUsername());

@@ -385,7 +385,12 @@ textarea{
 
 #connected{
     position: absolute;
+    top: 35vh;
+    width: 20vw;
     left: 10px;
     padding: 10px 30px 10px 30px;
     background: #eee;
+    overflow-y: scroll;
+    height: 40vh;
+    box-shadow: 1px 2px 7px #777;
 }

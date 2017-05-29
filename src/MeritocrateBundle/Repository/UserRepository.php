@@ -10,4 +10,9 @@ namespace MeritocrateBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function myFindAll(){
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('u.id, u.fullname, u.online');
+        return $qb->getQuery()->getResult();
+    }
 }

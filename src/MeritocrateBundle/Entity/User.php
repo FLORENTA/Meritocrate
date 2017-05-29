@@ -316,35 +316,7 @@ class User extends BaseUser
     {
         return $this->assemblies;
     }
-    /**
-     * @var \MeritocrateBundle\Entity\Discussion
-     */
-    private $discussion;
 
-
-    /**
-     * Set discussion
-     *
-     * @param \MeritocrateBundle\Entity\Discussion $discussion
-     *
-     * @return User
-     */
-    public function setDiscussion(\MeritocrateBundle\Entity\Discussion $discussion = null)
-    {
-        $this->discussion = $discussion;
-
-        return $this;
-    }
-
-    /**
-     * Get discussion
-     *
-     * @return \MeritocrateBundle\Entity\Discussion
-     */
-    public function getDiscussion()
-    {
-        return $this->discussion;
-    }
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -383,5 +355,34 @@ class User extends BaseUser
     public function getPrivateassemblies()
     {
         return $this->privateassemblies;
+    }
+    /**
+     * @var boolean
+     */
+    private $online;
+
+
+    /**
+     * Set online
+     *
+     * @param boolean $online
+     *
+     * @return User
+     */
+    public function setOnline($online)
+    {
+        $this->online = $online;
+
+        return $this;
+    }
+
+    /**
+     * Get online
+     *
+     * @return boolean
+     */
+    public function getOnline()
+    {
+        return $this->online;
     }
 }
